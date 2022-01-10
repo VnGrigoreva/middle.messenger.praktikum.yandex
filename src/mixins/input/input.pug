@@ -1,0 +1,4 @@
+mixin input(label, id, type)
+  .input-container
+    input(type=type || 'text', name=id, id=id, placeholder=' ', class='input')
+    label(for=id, class='placeholder') #{label}

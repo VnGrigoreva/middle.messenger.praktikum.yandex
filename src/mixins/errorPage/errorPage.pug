@@ -1,0 +1,8 @@
+include ../link/link.pug
+
+mixin errorPage(code, message)
+  .error-container
+    .error-code #{code}
+    .error-message #{message}
+    +link('Назад к чатам', '#')
+    

@@ -1,0 +1,7 @@
+extends ./views/layout/layout
+include ./mixins/errorPage/errorPage
+block content 
+  //- include ./views/authorization/login.pug
+  //- +errorPage(500, 'Мы уже фиксим')
+  //- include ./views/authorization/registration.pug
+  include ./views/chats/chats.pug

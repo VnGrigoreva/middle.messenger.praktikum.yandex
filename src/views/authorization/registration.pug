@@ -1,0 +1,21 @@
+extends ../layout/layout
+
+include ../../mixins/input/input
+include ../../mixins/link/link
+
+block content 
+  .authorization
+    .authorization-container
+      h2 Регистрация
+      form(method=GET action='/registration' class='authorization-form')
+        .authorization-form__inner
+          +input('Почта', 'email', 'email')
+          +input('Логин', 'login')
+          +input('Имя', 'first_name')
+          +input('Фамилия', 'second_name')
+          +input('Телефон', 'phone')
+          +input('Пароль', 'password', 'password')
+          +input('Пароль (еще раз)', 'verify_password', 'password')
+        .authorization-form__inner
+          input(type='submit' value='Авторизироваться' class='authorization-form__button')
+          +link('Войти', '#')
