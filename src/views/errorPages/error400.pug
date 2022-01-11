@@ -1,0 +1,5 @@
+extends ../layout/layout
+include ../../mixins/errorPage/errorPage
+
+block content 
+  +errorPage(404, 'Не туда попали')

@@ -1,11 +1,6 @@
-@import 'src/styles/colors.scss';
-
 .authorization {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include full;
+  @include centered;
 
   &-container {
     width: 340px;

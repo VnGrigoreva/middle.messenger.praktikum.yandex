@@ -1,16 +1,11 @@
-@import 'src/styles/colors.scss';
-
 .profile {
   display: flex;
-  width: 100vw;
-  height: 100vh;
+  @include full;
 
   &-content {
-    display: flex;
+    @include centered;
     flex-direction: column;
     width: 100%;
-    align-items: center;
-    justify-content: center;
 
     &__inner {
       display: flex;

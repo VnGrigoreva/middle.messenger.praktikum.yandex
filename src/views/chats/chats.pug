@@ -1,4 +1,7 @@
 extends ../layout/layout
+
+include ../../mixins/link/link
+
 block content
   h2 Страница чатов
-  +link('Профиль >', './views/profile/profile.pug', 'secondary')
+  +link('Профиль >', '../profile/profile.pug', 'secondary')

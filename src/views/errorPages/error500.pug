@@ -1,0 +1,5 @@
+extends ../layout/layout
+include ../../mixins/errorPage/errorPage
+
+block content 
+  +errorPage(500, 'Мы уже фиксим')

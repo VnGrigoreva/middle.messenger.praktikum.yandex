@@ -54,3 +54,12 @@ h3 {
 .ai-c {
   align-items: center;
 }
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}

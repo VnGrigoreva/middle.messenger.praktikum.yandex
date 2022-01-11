@@ -5,23 +5,28 @@ include ./mixins/aside/aside
 include ../../mixins/link/link
 
 block content
+  - const isEdit = true; //временная константа, указывает открыт профиль на редактирование или просмотр
   .profile
     +aside
     .profile-content
       .profile-content__inner.ai-c
-        img(src="../../assets/images/default_avatar.png", alt="avatar" class="profile__avatar")
+        img(src="../../assets/images/default_avatar.png", alt="avatar", class="profile__avatar")
         h3 Иван
-      form(method=GET action='/profile' class='profile-content__form')
-        +infoRow('Почта', 'pochta@yandex.ru', 'email', 'email', true)
-        +infoRow('Логин', 'ivanivanov', 'login', undefined, true)
-        +infoRow('Имя', 'Иван', 'first_name', undefined, true)
-        +infoRow('Фамилия', 'Иванов', 'second_name', undefined, true)
-        +infoRow('Имя в чате', 'Иван', 'display_name', undefined, true) 
-        +infoRow('Телефон', '+7 (909) 967 30 30', 'phone', 'tel', true)
-      .profile-content__inner
-        +link('Изменить данные', '#', 'border')
-        +link('Изменить пароль', './passwordEditing/passwordEditing.pug', 'border')
-        +link('Выйти', '#', 'danger')
+      form(method=GET, action='/profile', class='profile-content__form')
+        +infoRow('Почта', 'pochta@yandex.ru', 'email', 'email', !isEdit)
+        +infoRow('Логин', 'ivanivanov', 'login', undefined, !isEdit)
+        +infoRow('Имя', 'Иван', 'first_name', undefined, !isEdit)
+        +infoRow('Фамилия', 'Иванов', 'second_name', undefined, !isEdit)
+        +infoRow('Имя в чате', 'Иван', 'display_name', undefined, !isEdit) 
+        +infoRow('Телефон', '+7 (909) 967 30 30', 'phone', 'tel', !isEdit)
+      if !isEdit
+        .profile-content__inner
+          +link('Изменить данные', '/', 'border')
+          +link('Изменить пароль', './passwordEditing/passwordEditing.pug', 'border')
+          +link('Выйти', '/', 'danger')
+      else 
+        .profile-content__inner.ai-c
+          input(type='submit', value='Сохранить', class='button')
       
 
       
