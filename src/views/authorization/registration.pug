@@ -7,15 +7,17 @@ block content
   .authorization
     .authorization-container
       h2 Регистрация
-      form(method=GET, action='/registration', class='authorization-form')
+      form(method=GET, action='/registration', class='authorization-form' onsubmit='handleSubmit(event)')
         .authorization-form__inner
-          +input('Почта', 'email', 'email')
+          +input('Почта', 'email', 'email', undefined, 'Почта не валидна')
           +input('Логин', 'login')
           +input('Имя', 'first_name')
           +input('Фамилия', 'second_name')
-          +input('Телефон', 'phone')
-          +input('Пароль', 'password', 'password')
-          +input('Пароль (еще раз)', 'password', 'password')
+          +input('Телефон', 'phone', 'tel', undefined, 'Телефон не валидный', pattern='(\\+[0-9]|[0-9])([0-9]{10})')
+          +input('Пароль', 'password', 'password', onkeypress='handleKeypress()')
+          +input('Пароль (еще раз)', 'verify_password', 'password', onkeypress='handleKeypress()', 'Пароли не совпадают')
         .authorization-form__inner
-          input(type='submit', value='Авторизироваться', class='button')
+          input(type='submit', value='Зарегистрироваться', class='button', id='registration')
           +link('Войти', '/')
+  script(src='./authorization.js')
+  

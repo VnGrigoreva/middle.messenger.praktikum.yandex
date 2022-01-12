@@ -5,7 +5,7 @@ include ./mixins/aside/aside
 include ../../mixins/link/link
 
 block content
-  - const isEdit = true; //временная константа, указывает открыт профиль на редактирование или просмотр
+  - const isView = true; //временная константа, указывает открыт профиль на редактирование (false) или просмотр (true)
   .profile
     +aside
     .profile-content
@@ -13,13 +13,13 @@ block content
         img(src="../../assets/images/default_avatar.png", alt="avatar", class="profile__avatar")
         h3 Иван
       form(method=GET, action='/profile', class='profile-content__form')
-        +infoRow('Почта', 'pochta@yandex.ru', 'email', 'email', !isEdit)
-        +infoRow('Логин', 'ivanivanov', 'login', undefined, !isEdit)
-        +infoRow('Имя', 'Иван', 'first_name', undefined, !isEdit)
-        +infoRow('Фамилия', 'Иванов', 'second_name', undefined, !isEdit)
-        +infoRow('Имя в чате', 'Иван', 'display_name', undefined, !isEdit) 
-        +infoRow('Телефон', '+7 (909) 967 30 30', 'phone', 'tel', !isEdit)
-      if !isEdit
+        +infoRow('Почта', 'pochta@yandex.ru', 'email', 'email', isView)
+        +infoRow('Логин', 'ivanivanov', 'login', undefined, isView)
+        +infoRow('Имя', 'Иван', 'first_name', undefined, isView)
+        +infoRow('Фамилия', 'Иванов', 'second_name', undefined, isView)
+        +infoRow('Имя в чате', 'Иван', 'display_name', undefined, isView) 
+        +infoRow('Телефон', '+7 (909) 967 30 30', 'phone', 'tel', isView)
+      if isView
         .profile-content__inner
           +link('Изменить данные', '/', 'border')
           +link('Изменить пароль', './passwordEditing/passwordEditing.pug', 'border')

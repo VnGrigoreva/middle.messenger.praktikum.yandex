@@ -17,6 +17,10 @@
       position: relative;
       width: 100%;
     }
+
+    &-error {
+      color: $red;
+    }
   }
 
   .placeholder {

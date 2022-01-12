@@ -63,3 +63,27 @@ h3 {
   width: 100vw;
   height: 100vh;
 }
+
+.error {
+  color: $red;
+  font-weight: normal;
+  font-size: 8px;
+  line-height: 8px;
+  margin: 7px 0;
+}
+
+input[type='tel'],
+input[type='email'] {
+  &:invalid:not(:focus):not(:placeholder-shown) {
+    color: $red;
+
+    &~div.is-hidden {
+      display: block;
+    }
+    
+  }
+}
+
+.is-hidden {
+  display: none;
+}
