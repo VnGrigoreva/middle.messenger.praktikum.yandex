@@ -6,7 +6,6 @@
   "private": "true",
   "scripts": {
     "dev": "parcel src/*.pug --open --port 4000",
-    "prod": "parcel src/*.pug --open --port 4000",
     "start": "parcel build src/*.pug && node server/index"
   },
   "devDependencies": {
