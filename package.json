@@ -10,6 +10,8 @@
     "build": "parcel build src/*.pug"
   },
   "devDependencies": {
+    "@parcel/transformer-pug": "^2.2.0",
+    "@parcel/transformer-sass": "^2.2.0",
     "parcel": "2.2.0",
     "pug": "^3.0.2",
     "sass": "^1.45.2"
