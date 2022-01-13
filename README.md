@@ -1,4 +1,4 @@
-### [WinMessager](https://condescending-lamport-4f12e6.netlify.app)
+### [WiNMessager](https://condescending-lamport-4f12e6.netlify.app)
 ---
 
 Простой месседжер для общения.
@@ -11,6 +11,7 @@
 - Профиль
 - Страницы 500 и 404
 - Список чатов (заглушка)
+
 [Ссылка](https://condescending-lamport-4f12e6.netlify.app) для просмотра
 
 ## Как будет выглядеть месседжер
