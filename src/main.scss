@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import './src/styles/reset.scss';
+@import './src/styles/colors.scss';
+@import './src/styles/common.scss';
+@import './src/styles/mixins.scss';
+
+@import './views/authorization/authorization.scss';
+@import './views/chats/chats.scss';
+@import './views/profile/profile.scss';
+@import './views/profile/mixins/infoRow/infoRow.scss';
+@import './views/profile/mixins/aside/aside.scss';
+
+@import './mixins/input/input.scss';
+@import './mixins/link/link.scss';
+@import './mixins/errorPage/errorPage.scss';
