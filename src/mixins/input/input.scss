@@ -1,35 +1,31 @@
 .input {
-    border-bottom: solid 1px $blue;
-    font-size: 13px;
-    line-height: 13px;
+  border-bottom: solid 1px $blue;
+  font-size: 13px;
+  line-height: 13px;
+  width: 100%;
+  &::placeholder {
+    color: transparent;
+  }
+  &:focus ~ .placeholder,
+  &:not(:placeholder-shown) ~ .placeholder  {
+    transform: translateY(-17px) scale(0.7);
+  }
+  &-container {
+    margin: 16px 0;
+    position: relative;
     width: 100%;
-
-    &::placeholder {
-      color: transparent;
-    }
-    &:focus ~ .placeholder,
-    &:not(:placeholder-shown) ~ .placeholder  {
-      transform: translateY(-17px) scale(0.7);
-    }
-
-    &-container {
-      margin: 16px 0;
-      position: relative;
-      width: 100%;
-    }
-
-    &-error {
-      color: $red;
-    }
   }
-
-  .placeholder {
-    color: $gray;
-    font-size: 13px;
-    line-height: 13px;
-    pointer-events: none;
-    position: absolute;
-    transform-origin: 0 50%;
-    transition: transform 200ms, color 200ms;
-    left: 0;
+  &-error {
+    color: $red;
   }
+}
+.placeholder {
+  color: $gray;
+  font-size: 13px;
+  line-height: 13px;
+  pointer-events: none;
+  position: absolute;
+  transform-origin: 0 50%;
+  transition: transform 200ms, color 200ms;
+  left: 0;
+}
