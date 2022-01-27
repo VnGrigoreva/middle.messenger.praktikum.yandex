@@ -4,14 +4,14 @@ module.exports = {
     node: true,
   },
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
-  settings: {
-    'import/resolver': {
-      alias: {
-        map: [['@', './src']],
-        extensions: ['.ts,', '.js'],
-      },
-    },
-  },
+  // settings: {
+  //   'import/resolver': {
+  //     alias: {
+  //       map: [['@', './src']],
+  //       extensions: ['.ts,', '.js'],
+  //     },
+  //   },
+  // },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
