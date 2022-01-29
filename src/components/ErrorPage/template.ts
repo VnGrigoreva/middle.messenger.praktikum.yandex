@@ -1,8 +1,8 @@
-include ../link/link.pug
-
+export default `
 mixin errorPage(code, message)
   .error-container
     .error-code #{code}
     .error-message #{message}
-    +link('Назад к чатам', '/')
-    
+    #{backLink}
++errorPage(code, message)
+`

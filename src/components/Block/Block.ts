@@ -1,6 +1,6 @@
 import { EventBus } from '../../modules';
 import { CallbackType } from '../../modules/eventBus/eventBus';
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 
 export type PropsType = { [key: string]: any };
 

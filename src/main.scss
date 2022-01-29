@@ -10,6 +10,6 @@
 @import './views/profile/mixins/infoRow/infoRow.scss';
 @import './views/profile/mixins/aside/aside.scss';
 
-@import './mixins/input/input.scss';
-@import './mixins/link/link.scss';
-@import './mixins/errorPage/errorPage.scss';
+@import './components/Input/input.scss';
+@import './components/Link/link.scss';
+@import './components/ErrorPage/errorPage.scss';

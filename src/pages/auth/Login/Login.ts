@@ -1,11 +1,11 @@
-import { Block } from '../Block/Block';
+import { Block } from '../../../components/Block/Block';
 import template from './template';
-import { Input } from '../Input/Input';
-import compile from '../../utils/compile';
+import { Input } from '../../../components/Input/Input';
+import compile from '../../../utils/compile';
 
-export class Form extends Block {
-  constructor(props?: any) {
-    super(props, 'div', 'authorization');
+export class Login extends Block {
+  constructor() {
+    super({}, 'div', 'authorization');
   }
 
   render() {
@@ -17,7 +17,7 @@ export class Form extends Block {
         input: (event) => console.log(event.target.value),
       },
     });
-    const inputPas = new Input({ label: 'Пароль', id: 'password' });
+    const inputPas = new Input({ label: 'Пароль', id: 'password', type: 'password' });
 
     // setTimeout(() => {
     //   inputLogin.setProps({
