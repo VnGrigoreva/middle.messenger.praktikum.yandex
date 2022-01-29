@@ -1,7 +1,8 @@
-import {EventBus} from '../../modules';
-import {CallbackType} from '../../modules/eventBus/eventBus';
+import { EventBus } from '../../modules';
+import { CallbackType } from '../../modules/eventBus/eventBus';
+import {nanoid} from 'nanoid';
 
-export type PropsType = {[key: string]: unknown};
+export type PropsType = { [key: string]: any };
 
 export enum Events {
   init = 'init',
@@ -10,7 +11,7 @@ export enum Events {
   render = 'flow:render',
 }
 
-export class Block<TProps extends PropsType> {
+export class Block<TProps extends PropsType = any> {
   static EVENTS = {
     INIT: Events.init,
     FLOW_CDM: Events.cdm,
@@ -19,11 +20,14 @@ export class Block<TProps extends PropsType> {
   };
 
   _meta: {
-    props: TProps,
+    props: TProps;
+    tagName: string;
+    className?: string;
   };
   _element: HTMLElement | null = null;
   props: TProps;
-  eventBus:() => EventBus;
+  eventBus: () => EventBus;
+  public id = nanoid(6);
 
   /** JSDoc
    * @param {string} template
@@ -31,10 +35,12 @@ export class Block<TProps extends PropsType> {
    *
    * @returns {void}
    */
-  constructor(props = {} as TProps) {
+  constructor(props = {} as TProps, tagName = 'div', className?: string) {
     const eventBus = new EventBus();
 
     this._meta = {
+      className,
+      tagName,
       props,
     };
 
@@ -49,12 +55,16 @@ export class Block<TProps extends PropsType> {
   _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this) as CallbackType);
+    eventBus.on(
+      Block.EVENTS.FLOW_CDU,
+      this._componentDidUpdate.bind(this) as CallbackType
+    );
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
   init() {
     if (!this._element) {
+      this._element = this._createDocumentElement();
       this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     }
   }
@@ -104,23 +114,36 @@ export class Block<TProps extends PropsType> {
 
   _render() {
     const template = this.render();
-    const result = this._createDocumentElement(template);
-    if (!this._element) {
-      this._element = result;
-    } else {
-      this._element.innerHTML = result.innerHTML;
-    }
+
+    this._removeEvents();
+    this._element!.innerHTML = '';
+
+    // const result = this._createDocumentElement(template);
+    // if (!this._element) {
+    //   this._element = template as unknown as HTMLElement;
+    // } else {
+    //   this._element.innerHTML = (template as unknown as HTMLElement)?.innerHTML;
+    // }
+
+    this._element!.appendChild(template);
+    this._addEvents();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  render(): string {return ""}
+  // render(): string {
+  //   return '';
+  // }
+
+  render(): DocumentFragment {
+    return new DocumentFragment();
+  }
 
   getContent() {
-    return this.element as HTMLElement;
+    return this._element as HTMLElement;
   }
 
   _makePropsProxy(props: TProps) {
-    const newProps = {...props};
+    const newProps = { ...props };
     for (const key in props) {
       if (key.indexOf('_') !== 0) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -131,6 +154,7 @@ export class Block<TProps extends PropsType> {
     const proxyData = new Proxy(newProps, {
       get(target, prop: string) {
         if (prop.indexOf('_') === 0) {
+          return target[prop];
           throw new Error('Отказано в доступе');
         }
         const value = target['_' + prop];
@@ -143,21 +167,48 @@ export class Block<TProps extends PropsType> {
     return proxyData;
   }
 
-  _createDocumentElement(template: string) {
-    console.log(template);
-    const domParser = new DOMParser();
-    return domParser.parseFromString(template, 'text/html').body.childNodes[0] as HTMLElement;
+  _createDocumentElement() {
+    const {tagName, className} = this._meta;
+    const result = document.createElement(tagName);
+    if (className) {
+      result.className = className;
+    }
+    return result;
   }
 
   show() {
     if (this.element) {
-      this.element.setAttribute('style','display: block');
+      this.element.setAttribute('style', 'display: block');
     }
   }
 
   hide() {
     if (this.element) {
-      this.element.setAttribute('style','display: none');
+      this.element.setAttribute('style', 'display: none');
     }
+  }
+
+  _addEvents() {
+    const events: Record<string, () => void> = (this.props as any).events;
+
+    if (!events) {
+      return;
+    }
+
+    Object.entries(events).forEach(([event, listener]) => {
+      this._element!.addEventListener(event, listener);
+    });
+  }
+
+  _removeEvents() {
+    const events: Record<string, () => void> = (this.props as any).events;
+
+    if (!events || !this.element) {
+      return;
+    }
+
+    Object.entries(events).forEach(([event, listener]) => {
+      this._element!.removeEventListener(event, listener);
+    });
   }
 }

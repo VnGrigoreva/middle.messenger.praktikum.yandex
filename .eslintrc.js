@@ -19,6 +19,6 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    "max-len": [2, 100],
+    "max-len": [2, 200],
   },
 };

@@ -1,20 +1,13 @@
-import {Input, Block} from './components';
+import {Form, Block} from './components';
 
-function render(query: string, block: Block<any>) {
+function render(query: string, block: Block) {
     const root = document.querySelector(query);
     root?.appendChild(block.getContent());
     return root;
   }
   
-  const input = new Input({label: 'Hello mazafacker'});
-  
-  // app — это class дива в корне DOM
-  render(".app", input);
+  const form = new Form();
 
-  setTimeout(() => {
-    input.setProps({
-      label: 'Hello mazafacker, please',
-    });
-  }, 1000);
+  render(".app", form);
 
 
