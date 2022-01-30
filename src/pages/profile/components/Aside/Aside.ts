@@ -1,6 +1,7 @@
 import { Block } from '../../../../components';
 import template from './template';
 import { compile } from '../../../../utils';
+import backUrl from '../../../../assets/images/back.png';
 
 export class Aside extends Block {
   constructor() {
@@ -8,6 +9,6 @@ export class Aside extends Block {
   }
 
   render() {
-    return compile(template);
+    return compile(template, {src: backUrl});
   }
 }

@@ -5,7 +5,7 @@ import compile from '../../utils/compile';
 type LinkPropsType = {
   label: string;
   path: string;
-  mode: 'primary' | 'secondar' | 'danger' | 'border';
+  mode: 'primary' | 'secondary' | 'danger' | 'border';
 };
 
 export class Link extends Block<LinkPropsType> {

@@ -2,10 +2,11 @@ import { Block, Link } from '../../components';
 import { Aside, InfoRow } from './components';
 import template from './template';
 import { compile } from '../../utils';
+import avatarUrl from '../../assets/images/default_avatar.png';
 
 export type ProfilePropsType = {
   isView: boolean;
-}
+};
 
 export class Profile extends Block<ProfilePropsType> {
   constructor(props: ProfilePropsType) {
@@ -13,7 +14,7 @@ export class Profile extends Block<ProfilePropsType> {
   }
 
   render() {
-    const {isView} = this.props;
+    const { isView } = this.props;
     const aside = new Aside();
     const emailInfo = new InfoRow({
       label: 'Почта',
@@ -53,15 +54,23 @@ export class Profile extends Block<ProfilePropsType> {
       id: 'phone',
       readonly: isView,
     });
-    const changeDataLink = new Link({label: 'Изменить данные', path: '/', mode: 'border'});
-    const changePasswordLink = new Link({label: 'Изменить пароль', path: '/', mode: 'border'});
-    const logoutLink = new Link({label: 'Выйти', path: '/', mode: 'danger'});
+    const changeDataLink = new Link({
+      label: 'Изменить данные',
+      path: '/',
+      mode: 'border',
+    });
+    const changePasswordLink = new Link({
+      label: 'Изменить пароль',
+      path: '/',
+      mode: 'border',
+    });
+    const logoutLink = new Link({ label: 'Выйти', path: '/', mode: 'danger' });
 
     return compile(template, {
       ...this.props,
       aside: aside,
       email: emailInfo,
-      login: loginInfo, 
+      login: loginInfo,
       firstName: firstNameInfo,
       secondName: secondNameInfo,
       displayName: displayNameInfo,
@@ -69,6 +78,7 @@ export class Profile extends Block<ProfilePropsType> {
       changeData: changeDataLink,
       changePassword: changePasswordLink,
       logout: logoutLink,
+      src: avatarUrl,
     });
   }
 }

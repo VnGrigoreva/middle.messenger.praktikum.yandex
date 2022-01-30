@@ -2,7 +2,7 @@ export default `
 #{aside}
 .profile-content
   .profile-content__inner.ai-c
-    img(src="~src/assets/images/default_avatar.png", alt="avatar", class="profile__avatar")
+    img(src=src, alt="avatar", class="profile__avatar")
     h3 Иван
   form(method=GET, action='/profile', class='profile-content__form')
     #{email}
