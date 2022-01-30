@@ -1,23 +1,5 @@
 extends ../layout/layout
 
-include ../../mixins/input/input
-include ../../mixins/link/link
-
-block content 
-  .authorization
-    .authorization-container
-      h2 Регистрация
-      form(method=GET, action='/registration', class='authorization-form' onsubmit='handleSubmit(event)')
-        .authorization-form__inner
-          +input('Почта', 'email', 'email', undefined, 'Почта не валидна')
-          +input('Логин', 'login')
-          +input('Имя', 'first_name')
-          +input('Фамилия', 'second_name')
-          +input('Телефон', 'phone', 'tel', undefined, 'Телефон не валидный', pattern='(\\+[0-9]|[0-9])([0-9]{10})')
-          +input('Пароль', 'password', 'password', onkeypress='handleKeypress()')
-          +input('Пароль (еще раз)', 'verify_password', 'password', onkeypress='handleKeypress()', 'Пароли не совпадают')
-        .authorization-form__inner
-          input(type='submit', value='Зарегистрироваться', class='button', id='registration')
-          +link('Войти', '/')
-  script(src='./authorization.ts')
-  
+block content
+  .app
+  script(src='./registration.ts' type="module")

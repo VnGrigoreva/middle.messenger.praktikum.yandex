@@ -4,11 +4,11 @@
 @import './src/styles/common.scss';
 @import './src/styles/mixins.scss';
 
-@import './views/authorization/authorization.scss';
+@import './pages/auth/authorization.scss';
 @import './views/chats/chats.scss';
-@import './views/profile/profile.scss';
-@import './views/profile/mixins/infoRow/infoRow.scss';
-@import './views/profile/mixins/aside/aside.scss';
+@import './pages/profile/profile.scss';
+@import './pages/profile/components/InfoRow/infoRow.scss';
+@import './pages/profile/components/Aside/aside.scss';
 
 @import './components/Input/input.scss';
 @import './components/Link/link.scss';

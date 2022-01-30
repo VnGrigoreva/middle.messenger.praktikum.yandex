@@ -1,0 +1,7 @@
+export default `
+mixin infoRow(label, value, id, type, readonly)
+  .info-row
+    label(for=id, class='info-row__left') #{label}
+    input(type=type || 'text', name=id, id=id, value=value, class='info-row__right', readonly=readonly)
++infoRow(label, value, id, type, readonly)
+`

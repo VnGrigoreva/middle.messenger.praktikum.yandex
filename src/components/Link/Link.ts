@@ -5,12 +5,12 @@ import compile from '../../utils/compile';
 type LinkPropsType = {
   label: string;
   path: string;
-  mode: 'primary' | 'secondar' | 'danger';
+  mode: 'primary' | 'secondar' | 'danger' | 'border';
 };
 
 export class Link extends Block<LinkPropsType> {
   constructor(props: LinkPropsType) {
-    super(props);
+    super(props, 'div', 'p-10');
   }
 
   render() {
