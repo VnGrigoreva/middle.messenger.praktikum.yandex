@@ -4,10 +4,10 @@ import { compile } from '../../../../utils';
 
 type InfoRowPropsType = {
   label: string;
-  value: string;
+  value?: string;
   id: string;
   type?: string;
-  readonly: boolean;
+  readonly?: boolean;
 };
 
 export class InfoRow extends Block<InfoRowPropsType> {

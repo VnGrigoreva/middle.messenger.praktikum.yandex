@@ -1,7 +1,7 @@
 import { Block, Link } from '../../components';
 import { Aside, InfoRow } from './components';
 import template from './template';
-import compile from '../../utils/compile';
+import { compile } from '../../utils';
 
 export type ProfilePropsType = {
   isView: boolean;
