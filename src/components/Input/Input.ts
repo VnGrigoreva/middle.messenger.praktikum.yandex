@@ -11,7 +11,7 @@ type InputPropsType = {
   onkeypress?(): void;
   type?: string;
   events?: any;
-  autocomplete?: 'new-password';
+  autocomplete?: 'new-password' | 'username';
   value?: string;
 };
 

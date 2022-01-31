@@ -10,13 +10,11 @@ export class Mediator {
     return Mediator.instance || (Mediator.instance = new Mediator()) 
   }
 
-  //private validateService = new ValidateService();
-
-  validateEmail(str: string): boolean {
-    return ValidateService.validateEmail(str);
+  validateEmail(email: string): boolean {
+    return ValidateService.validateEmail(email);
   }
 
-  validatePassword(password: string, verifyPassword: string): boolean {
-    return ValidateService.validatePassword(password, verifyPassword);
+  validatePassword(password: string): boolean {
+    return ValidateService.validatePassword(password);
   }
 }
