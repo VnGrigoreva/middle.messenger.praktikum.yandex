@@ -14,7 +14,7 @@ export class Login extends Block {
       id: 'login',
       error: 'error',
       events: {
-        input: (event) => console.log(event.target.value),
+        click: (event) => console.log(event.target.value),
       },
     });
     const inputPas = new Input({ label: 'Пароль', id: 'password', type: 'password' });

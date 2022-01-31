@@ -11,6 +11,8 @@ type InputPropsType = {
   onkeypress?(): void;
   type?: string;
   events?: any;
+  autocomplete?: 'new-password';
+  value?: string;
 };
 
 export class Input extends Block<InputPropsType> {

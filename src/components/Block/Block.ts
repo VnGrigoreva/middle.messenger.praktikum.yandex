@@ -92,8 +92,9 @@ export class Block<TProps extends PropsType = any> {
     return true;
   }
 
-  setProps = (nextProps: TProps) => {
-    if (!nextProps) {
+  setProps = (nextProps: Partial<TProps>) => {
+  console.log('setProps', nextProps);
+  if (!nextProps) {
       return;
     }
     const oldProps = this.props;
@@ -117,7 +118,6 @@ export class Block<TProps extends PropsType = any> {
 
     this._removeEvents();
     this._element!.innerHTML = '';
-
     // const result = this._createDocumentElement(template);
     // if (!this._element) {
     //   this._element = template as unknown as HTMLElement;

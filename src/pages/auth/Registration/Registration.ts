@@ -1,8 +1,11 @@
 import template from './template';
 import { Input, Block, Link } from '../../../components';
 import compile from '../../../utils/compile';
+import { Mediator } from '../../../modules/mediator';
 
 export class Registration extends Block {
+  password='';
+
   constructor() {
     super({}, 'div', 'authorization');
   }
@@ -11,7 +14,6 @@ export class Registration extends Block {
     const inputEmail = new Input({
       label: 'Почта',
       id: 'email',
-      error: 'Почта не валидна',
     });
     const inputLogin = new Input({ label: 'Логин', id: 'login' });
     const inputFirstName = new Input({ label: 'Имя', id: 'first_name' });
@@ -20,21 +22,29 @@ export class Registration extends Block {
       label: 'Телефон',
       id: 'phone',
       type: 'tel',
-      error: 'Телефон не валидный',
       pattern: '(\\+[0-9]|[0-9])([0-9]{10})',
     });
     const inputPassword = new Input({
       label: 'Пароль',
       id: 'password',
       type: 'password',
-      //onkeypress: handleKeypress(),
+      autocomplete: 'new-password',
+      events: {
+        change: (event) => {this.password = event.target.value},
+      },
     });
     const inputVerifyPassword = new Input({
       label: 'Пароль (еще раз)',
       id: 'verify_password',
       type: 'password',
-      //onkeypress: handleKeypress(),
-      error: 'Пароли не совпадают',
+      events: {
+        change: (event) => {
+          console.log(this.password, event.target.value);
+          if (!Mediator.Instance.validatePassword(this.password, event.target.value)) {
+            inputVerifyPassword.setProps({error: 'Пароли не совпадают', value: event.target.value});
+          }
+        },
+      },
     });
     const entryLink = new Link({
       label: 'Войти',
