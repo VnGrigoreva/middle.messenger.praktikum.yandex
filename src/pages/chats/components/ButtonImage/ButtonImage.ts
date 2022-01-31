@@ -1,6 +1,6 @@
 import { Block } from '../../../../components';
 import template from './template';
-import compile from '../../../../utils/compile';
+import { compile } from '../../../../utils';
 
 type ButtonImagePropsType = {
   src: string;

@@ -1,10 +1,10 @@
 import template from './template';
 import { Input, Block, Link } from '../../../components';
-import compile from '../../../utils/compile';
+import { compile } from '../../../utils';
 import { Mediator } from '../../../modules/mediator';
 
 export class Registration extends Block {
-  password='';
+  password = '';
 
   constructor() {
     super({}, 'div', 'authorization');
@@ -30,7 +30,9 @@ export class Registration extends Block {
       type: 'password',
       autocomplete: 'new-password',
       events: {
-        change: (event) => {this.password = event.target.value},
+        change: (event) => {
+          this.password = event.target.value;
+        },
       },
     });
     const inputVerifyPassword = new Input({
@@ -40,8 +42,16 @@ export class Registration extends Block {
       events: {
         change: (event) => {
           console.log(this.password, event.target.value);
-          if (!Mediator.Instance.validatePassword(this.password, event.target.value)) {
-            inputVerifyPassword.setProps({error: 'Пароли не совпадают', value: event.target.value});
+          if (
+            !Mediator.Instance.validatePassword(
+              this.password,
+              event.target.value
+            )
+          ) {
+            inputVerifyPassword.setProps({
+              error: 'Пароли не совпадают',
+              value: event.target.value,
+            });
           }
         },
       },

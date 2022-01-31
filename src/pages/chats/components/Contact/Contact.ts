@@ -1,6 +1,6 @@
 import { Block } from '../../../../components';
 import template from './template';
-import compile from '../../../../utils/compile';
+import { compile } from '../../../../utils';
 import { Badge } from '../Badge/Badge';
 
 type ContactPropsType = {
@@ -15,7 +15,7 @@ export class Contact extends Block<ContactPropsType> {
   }
 
   render() {
-    const badge = new Badge({count: 4});
+    const badge = new Badge({ count: 4 });
     return compile(template, { ...this.props, badge: badge });
   }
 }

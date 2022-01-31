@@ -1,7 +1,7 @@
 import { Block } from '../Block/Block';
 import template from './template';
 import { Link } from '../Link/Link';
-import compile from '../../utils/compile';
+import { compile } from '../../utils';
 
 type ErrorPagePropsType = {
   code: string;
@@ -17,12 +17,12 @@ export class ErrorPage extends Block<ErrorPagePropsType> {
     const backLink = new Link({
       label: 'Назад к чатам',
       path: '/',
-      mode: 'primary'
+      mode: 'primary',
     });
 
     return compile(template, {
       backLink: backLink,
-      ...this.props
+      ...this.props,
     });
   }
 }
