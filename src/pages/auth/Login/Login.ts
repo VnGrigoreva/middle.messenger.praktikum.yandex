@@ -12,19 +12,11 @@ export class Login extends Block {
     const inputLogin = new Input({
       label: 'Логин',
       id: 'login',
-      error: 'error',
       events: {
         click: (event) => console.log(event.target.value),
       },
     });
     const inputPas = new Input({ label: 'Пароль', id: 'password', type: 'password' });
-
-    // setTimeout(() => {
-    //   inputLogin.setProps({
-    //     label: 'Hello mazafacker, please',
-    //     id: 'login'
-    //   });
-    // }, 2000);
 
     return compile(template, {
       login: inputLogin,
