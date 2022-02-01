@@ -1,7 +1,7 @@
 import pug from 'pug';
 import { Block } from '../components';
 
-export default function compile(tmpl: string, props: any = {}): DocumentFragment {
+export default function (tmpl: string, props: any = {}): DocumentFragment {
   const fragment = document.createElement('template');
   const components: Record<string, Block> = {};
 
