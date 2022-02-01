@@ -16,20 +16,16 @@ export class PasswordEditing extends Block {
   componentDidMount(): void {
     const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
       event.preventDefault();
-      console.log(event.target);
 
       const formData = new FormData(event.target);
       const fromEntries = Object.fromEntries(formData);
       const {new_password, verify_new_password} = fromEntries;
-      console.log(fromEntries);
 
       if (new_password && !Mediator.Instance.validatePassword(new_password as string)  
         && new_password === verify_new_password
       ) {
         console.log({new_password});
       }
-
-      return false;
     };
 
     this.setProps({

@@ -1,6 +1,7 @@
 import { Block } from '../../../../components';
 import template from './template';
 import { compile } from '../../../../utils';
+import { EventsType } from '../../../../types';
 
 type InputChatPropsType = {
   className: 'chat-search' | 'chat-footer__message';
@@ -8,7 +9,7 @@ type InputChatPropsType = {
   id: string;
   error?: string;
   value?: string;
-  events?: any;
+  events?: EventsType;
 };
 
 export class InputChat extends Block<InputChatPropsType> {

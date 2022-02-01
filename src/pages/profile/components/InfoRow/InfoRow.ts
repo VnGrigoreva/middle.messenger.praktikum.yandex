@@ -1,6 +1,7 @@
 import { Block } from '../../../../components';
 import template from './template';
 import { compile } from '../../../../utils';
+import { EventsType } from '../../../../types';
 
 type InfoRowPropsType = {
   label: string;
@@ -8,7 +9,7 @@ type InfoRowPropsType = {
   id: string;
   type?: string;
   readonly?: boolean;
-  events?: any;
+  events?: EventsType;
   error?: string;
   required?: boolean;
 };

@@ -21,8 +21,6 @@ export class Login extends Block {
       if (login && !Mediator.Instance.validateLogin(login as string) && password) {
         console.log(fromEntries);
       }
-
-      return false;
     };
 
     this.setProps({

@@ -1,6 +1,7 @@
 import { Block } from '../../components';
 import template from './template';
 import { compile } from '../../utils';
+import { EventsType } from '../../types';
 
 type InputPropsType = {
   label: string;
@@ -8,7 +9,7 @@ type InputPropsType = {
   id: string;
   required?: boolean;
   type?: string;
-  events?: any;//!
+  events?: EventsType;
   autocomplete?: 'new-password' | 'username';
   value?: string;
   maxlength?: string;

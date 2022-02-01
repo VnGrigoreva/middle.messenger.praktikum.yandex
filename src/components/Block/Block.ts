@@ -1,6 +1,7 @@
 import { EventBus } from '../../modules';
 import { CallbackType } from '../../modules/eventBus/eventBus';
 import { nanoid } from 'nanoid';
+import { EventsType } from '../../types';
 
 export type PropsType = { [key: string]: any };
 
@@ -184,7 +185,7 @@ export class Block<TProps extends PropsType = any> {
   }
 
   _addEvents() {
-    const events: Record<string, (() => void) | {selector: string, handler: () => void}> = (this.props as any).events;
+    const events: EventsType = (this.props as any).events;
     
     if (!events) {
       return;

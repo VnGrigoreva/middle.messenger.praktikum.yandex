@@ -15,9 +15,6 @@ export class Registration extends Block {
     const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      console.log(event.target);
-
-
       const formData = new FormData(event.target);
       const fromEntries = Object.fromEntries(formData);
       const {email, first_name, login, password, phone, second_name, verify_password} = fromEntries;
@@ -30,8 +27,6 @@ export class Registration extends Block {
       && second_name && !Mediator.Instance.validateUserName(second_name as string)) {
         console.log({email, first_name, login, password, phone, second_name});
       }
-
-      return false;
     };
 
     this.setProps({
