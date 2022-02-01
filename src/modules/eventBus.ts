@@ -1,4 +1,4 @@
-export type CallbackType = (...args: unknown[]) => void;
+import { CallbackType } from "../types";
 
 export class EventBus {
   private listeners: {[key: string]: CallbackType[]};

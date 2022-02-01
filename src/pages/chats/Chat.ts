@@ -9,7 +9,7 @@ import send from '../../assets/images/send.png';
 import { Message } from './components/Message/Message';
 import { InputChat } from './components/InputChat/InputChat';
 import { HTMLElementEvent } from '../../types';
-import { Mediator } from '../../modules/mediator';
+import { Mediator } from '../../modules';
 
 export class Chat extends Block {
   constructor() {

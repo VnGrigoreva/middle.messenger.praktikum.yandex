@@ -3,7 +3,7 @@ import { Aside, InfoRow } from '../components';
 import template from './template';
 import { compile } from '../../../utils';
 import { HTMLElementEvent } from '../../../types';
-import { Mediator } from '../../../modules/mediator';
+import { Mediator } from '../../../modules';
 import avatar from '../../../assets/images/default_avatar.png';
 
 export class PasswordEditing extends Block {

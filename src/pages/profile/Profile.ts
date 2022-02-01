@@ -4,7 +4,7 @@ import template from './template';
 import { compile } from '../../utils';
 import avatarUrl from '../../assets/images/default_avatar.png';
 import { EventsType, HTMLElementEvent } from '../../types';
-import { Mediator } from '../../modules/mediator';
+import { Mediator } from '../../modules';
 
 export type ProfilePropsType = {
   isView: boolean;

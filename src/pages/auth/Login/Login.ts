@@ -1,9 +1,8 @@
-import { Block } from '../../../components/Block/Block';
+import { Block, Input } from '../../../components';
 import template from './template';
-import { Input } from '../../../components/Input/Input';
 import { compile } from '../../../utils';
 import { HTMLElementEvent } from '../../../types';
-import { Mediator } from '../../../modules/mediator';
+import { Mediator } from '../../../modules';
 
 export class Login extends Block {
   constructor() {

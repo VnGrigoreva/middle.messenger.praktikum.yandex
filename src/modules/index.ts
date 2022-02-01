@@ -1,1 +1,2 @@
-export {EventBus} from './eventBus/eventBus';
+export {EventBus} from './eventBus';
+export {Mediator} from './mediator';

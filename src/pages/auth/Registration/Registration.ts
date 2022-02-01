@@ -1,7 +1,7 @@
 import template from './template';
 import { Input, Block, Link } from '../../../components';
 import { compile } from '../../../utils';
-import { Mediator } from '../../../modules/mediator';
+import { Mediator } from '../../../modules';
 import { HTMLElementEvent } from '../../../types';
 
 export class Registration extends Block {

@@ -1,4 +1,4 @@
-import { Block } from '../../components';
+import { Block } from '../Block/Block';
 import template from './template';
 import { compile } from '../../utils';
 import { EventsType } from '../../types';
