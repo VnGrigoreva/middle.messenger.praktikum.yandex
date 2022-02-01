@@ -15,6 +15,9 @@ export class Registration extends Block {
     const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
       event.preventDefault();
 
+      console.log(event.target);
+
+
       const formData = new FormData(event.target);
       const fromEntries = Object.fromEntries(formData);
       const {email, first_name, login, password, phone, second_name, verify_password} = fromEntries;
@@ -54,6 +57,7 @@ export class Registration extends Block {
         },
       }
     });
+
     const inputLogin = new Input({ 
       label: 'Логин', 
       id: 'login', 
@@ -68,6 +72,7 @@ export class Registration extends Block {
         },
       }
     });
+
     const inputFirstName = new Input({ 
       label: 'Имя', 
       id: 'first_name',
@@ -80,6 +85,7 @@ export class Registration extends Block {
         },
       }
     });
+
     const inputSecondName = new Input({ 
       label: 'Фамилия', 
       id: 'second_name',
@@ -92,6 +98,7 @@ export class Registration extends Block {
         },
       }
     });
+
     const inputPhone = new Input({
       label: 'Телефон',
       id: 'phone',
@@ -106,6 +113,7 @@ export class Registration extends Block {
         },
       }
     });
+
     const inputPassword = new Input({
       label: 'Пароль',
       id: 'password',
@@ -122,6 +130,7 @@ export class Registration extends Block {
         },
       },
     });
+
     const inputVerifyPassword = new Input({
       label: 'Пароль (еще раз)',
       id: 'verify_password',
@@ -135,6 +144,7 @@ export class Registration extends Block {
         },
       }
     });
+
     const entryLink = new Link({
       label: 'Войти',
       path: '/',

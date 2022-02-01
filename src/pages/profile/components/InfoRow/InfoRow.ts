@@ -8,6 +8,9 @@ type InfoRowPropsType = {
   id: string;
   type?: string;
   readonly?: boolean;
+  events?: any;
+  error?: string;
+  required?: boolean;
 };
 
 export class InfoRow extends Block<InfoRowPropsType> {

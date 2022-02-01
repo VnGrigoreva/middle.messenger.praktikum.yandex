@@ -93,7 +93,6 @@ export class Block<TProps extends PropsType = any> {
   }
 
   setProps = (nextProps: Partial<TProps>) => {
-  console.log('setProps', nextProps);
   if (!nextProps) {
       return;
     }
@@ -186,7 +185,7 @@ export class Block<TProps extends PropsType = any> {
 
   _addEvents() {
     const events: Record<string, (() => void) | {selector: string, handler: () => void}> = (this.props as any).events;
-console.log(events);
+    
     if (!events) {
       return;
     }
