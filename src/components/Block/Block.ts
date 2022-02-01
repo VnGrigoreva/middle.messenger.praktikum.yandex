@@ -16,7 +16,7 @@ export class Block<TProps extends PropsType = any> {
     INIT: Events.init,
     FLOW_CDM: Events.cdm,
     FLOW_RENDER: Events.render,
-    FLOW_CDU: Events.cdm,
+    FLOW_CDU: Events.cdu,
   };
 
   _meta: {
@@ -153,12 +153,8 @@ export class Block<TProps extends PropsType = any> {
     }
     const proxyData = new Proxy(newProps, {
       get(target, prop: string) {
-        if (prop.indexOf('_') === 0) {
-          return target[prop];
-          throw new Error('Отказано в доступе');
-        }
-        const value = target['_' + prop];
-        return typeof value === 'function' ? value.bind(target) : value;
+        const value = target[prop];
+        return typeof value === "function" ? value.bind(target) : value;
       },
       deleteProperty() {
         throw new Error('Отказано в доступе');
@@ -189,14 +185,19 @@ export class Block<TProps extends PropsType = any> {
   }
 
   _addEvents() {
-    const events: Record<string, () => void> = (this.props as any).events;
-
+    const events: Record<string, (() => void) | {selector: string, handler: () => void}> = (this.props as any).events;
+console.log(events);
     if (!events) {
       return;
     }
 
     Object.entries(events).forEach(([event, listener]) => {
-      this._element!.addEventListener(event, listener);
+      if (typeof listener === 'object') {
+        const target = this._element?.querySelector(listener.selector);
+        target?.addEventListener(event, listener.handler);
+      } else {
+        this._element?.addEventListener(event, listener);
+      }
     });
   }
 
@@ -208,7 +209,7 @@ export class Block<TProps extends PropsType = any> {
     }
 
     Object.entries(events).forEach(([event, listener]) => {
-      this._element!.removeEventListener(event, listener);
+      this._element?.removeEventListener(event, listener);
     });
   }
 }

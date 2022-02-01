@@ -10,11 +10,31 @@ export class Mediator {
     return Mediator.instance || (Mediator.instance = new Mediator()) 
   }
 
-  validateEmail(email: string): boolean {
+  validateEmail(email: string): string | undefined {
     return ValidateService.validateEmail(email);
   }
 
-  validatePassword(password: string): boolean {
+  validatePassword(password: string): string | undefined {
     return ValidateService.validatePassword(password);
+  }
+
+  comparePasswords(password: string, newPassword: string): string | undefined {
+    return ValidateService.comparePasswords(password, newPassword);
+  }
+
+  validatePhone(phone: string): string | undefined {
+    return ValidateService.validatePhone(phone);
+  }
+
+  validateMessage(message: string): string | undefined {
+    return ValidateService.validateMessage(message);
+  }
+  
+  validateLogin(login: string): string | undefined {
+    return ValidateService.validateLogin(login);
+  }
+
+  validateUserName(name: string): string | undefined {
+    return ValidateService.validateUserName(name);
   }
 }

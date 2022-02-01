@@ -5,15 +5,43 @@ import { Mediator } from '../../../modules/mediator';
 import { HTMLElementEvent } from '../../../types';
 
 export class Registration extends Block {
-  //создать объект полной модели данных
   password = '';
 
   constructor() {
     super({}, 'div', 'authorization');
   }
-//задать maxlength	<input type="text" maxlength="число"> для инпутов
-//сравниватть пароли тут
-//может валидаторы будут возвращать текст ошибки а не тру/фолс?
+
+  componentDidMount(): void {
+    const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const fromEntries = Object.fromEntries(formData);
+      const {email, first_name, login, password, phone, second_name, verify_password} = fromEntries;
+
+      if (email && !Mediator.Instance.validateEmail(email as string)
+      && first_name && !Mediator.Instance.validateUserName(first_name as string)
+      && login && !Mediator.Instance.validateLogin(login as string)
+      && password && !Mediator.Instance.validatePassword(password as string) && password === verify_password
+      && phone && !Mediator.Instance.validatePhone(phone as string)
+      && second_name && !Mediator.Instance.validateUserName(second_name as string)) {
+        console.log({email, first_name, login, password, phone, second_name});
+      }
+
+      return false;
+    };
+
+    this.setProps({
+      events: {
+        submit: {
+          selector: 'form',
+          handler: handleSubmit
+        },
+      }
+    });
+
+  }
+
   render() {
     const inputEmail = new Input({
       label: 'Почта',
@@ -21,35 +49,77 @@ export class Registration extends Block {
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           inputEmail.setProps({
-            error: undefined,
+            error: Mediator.Instance.validateEmail(event.target.value),
             value: event.target.value,
           });
-          if (!Mediator.Instance.validateEmail(event.target.value)) {
-            inputEmail.setProps({
-              error: 'Почта не валидна',
-              value: event.target.value,
-            });
-          }
         },
       }
     });
-    const inputLogin = new Input({ label: 'Логин', id: 'login', autocomplete: 'username' });
-    const inputFirstName = new Input({ label: 'Имя', id: 'first_name' });
-    const inputSecondName = new Input({ label: 'Фамилия', id: 'second_name' });
+    const inputLogin = new Input({ 
+      label: 'Логин', 
+      id: 'login', 
+      autocomplete: 'username', 
+      maxlength: '20',
+      events: {
+        change: (event: HTMLElementEvent<HTMLInputElement>) => {
+          inputLogin.setProps({
+            error: Mediator.Instance.validateLogin(event.target.value),
+            value: event.target.value,
+          });
+        },
+      }
+    });
+    const inputFirstName = new Input({ 
+      label: 'Имя', 
+      id: 'first_name',
+      events: {
+        change: (event: HTMLElementEvent<HTMLInputElement>) => {
+          inputFirstName.setProps({
+            error: Mediator.Instance.validateUserName(event.target.value),
+            value: event.target.value,
+          });
+        },
+      }
+    });
+    const inputSecondName = new Input({ 
+      label: 'Фамилия', 
+      id: 'second_name',
+      events: {
+        change: (event: HTMLElementEvent<HTMLInputElement>) => {
+          inputSecondName.setProps({
+            error: Mediator.Instance.validateUserName(event.target.value),
+            value: event.target.value,
+          });
+        },
+      }
+    });
     const inputPhone = new Input({
       label: 'Телефон',
       id: 'phone',
       type: 'tel',
-      pattern: '(\\+[0-9]|[0-9])([0-9]{10})',
+      maxlength: '15',
+      events: {
+        change: (event: HTMLElementEvent<HTMLInputElement>) => {
+          inputPhone.setProps({
+            error: Mediator.Instance.validatePhone(event.target.value),
+            value: event.target.value,
+          });
+        },
+      }
     });
     const inputPassword = new Input({
       label: 'Пароль',
       id: 'password',
       type: 'password',
       autocomplete: 'new-password',
+      maxlength: '40',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           this.password = event.target.value;
+          inputPassword.setProps({
+            error: Mediator.Instance.validatePassword(event.target.value),
+            value: event.target.value,
+          });
         },
       },
     });
@@ -60,17 +130,11 @@ export class Registration extends Block {
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           inputVerifyPassword.setProps({
-            error: undefined,
+            error: Mediator.Instance.comparePasswords(this.password ,event.target.value),
             value: event.target.value,
           });
-          if (!Mediator.Instance.validatePassword(event.target.value)) {
-            inputVerifyPassword.setProps({
-              error: 'Пароль не валидный',
-              value: event.target.value,
-            });
-          }
         },
-      },
+      }
     });
     const entryLink = new Link({
       label: 'Войти',
@@ -87,7 +151,6 @@ export class Registration extends Block {
       password: inputPassword,
       verifyPassword: inputVerifyPassword,
       entry: entryLink,
-      //добавить событие онклика для сабмита
     });
   }
 }

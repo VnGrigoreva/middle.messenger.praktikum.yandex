@@ -7,12 +7,11 @@ type InputPropsType = {
   error?: string;
   id: string;
   required?: boolean;
-  pattern?: string;
-  onkeypress?(): void;
   type?: string;
   events?: any;
   autocomplete?: 'new-password' | 'username';
   value?: string;
+  maxlength?: string;
 };
 
 export class Input extends Block<InputPropsType> {
