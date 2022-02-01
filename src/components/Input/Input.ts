@@ -8,7 +8,7 @@ type InputPropsType = {
   id: string;
   required?: boolean;
   type?: string;
-  events?: any;
+  events?: any;//!
   autocomplete?: 'new-password' | 'username';
   value?: string;
   maxlength?: string;

@@ -6,6 +6,9 @@ type InputChatPropsType = {
   className: 'chat-search' | 'chat-footer__message';
   placeholder: string;
   id: string;
+  error?: string;
+  value?: string;
+  events?: any;
 };
 
 export class InputChat extends Block<InputChatPropsType> {

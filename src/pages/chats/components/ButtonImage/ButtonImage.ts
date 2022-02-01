@@ -4,6 +4,7 @@ import { compile } from '../../../../utils';
 
 type ButtonImagePropsType = {
   src: string;
+  events?: any;
 };
 
 export class ButtonImage extends Block<ButtonImagePropsType> {

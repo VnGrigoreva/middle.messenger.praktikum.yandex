@@ -39,7 +39,6 @@ export class Registration extends Block {
         },
       }
     });
-
   }
 
   render() {
