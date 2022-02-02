@@ -4,6 +4,7 @@
   "author": "VnGrigoreva <vn.grigoreva@yandex.ru>",
   "license": "MIT",
   "private": "true",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "dev": "parcel src/*.pug --open --port 3000",
     "start": "parcel build src/*.pug && node server/index",
@@ -24,7 +25,8 @@
   "dependencies": {
     "express": "^4.17.2",
     "nanoid": "^3.2.0",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "pug-runtime": "^3.0.1"
   },
   "engines": {
     "node": "14.17.3"
