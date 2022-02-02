@@ -10,7 +10,7 @@
 - Регистрация
 - Профиль
 - Страницы 500 и 404
-- Список чатов (заглушка)
+- Список чатов
 
 [Ссылка](https://condescending-lamport-4f12e6.netlify.app) для просмотра
 
@@ -27,4 +27,12 @@
 
 ## Pull requests
 
-https://github.com/VnGrigoreva/middle.messenger.praktikum.yandex/pull/1
+- Добавлен компонентный подход
+- Жизненный цикл компонентов реализован с применением Event Bus
+- Обновление пропсов компонентов работает через Proxy
+- Добавлена валидация на все формы
+- Проект переведен на ts
+- Добавлены  ESLint, Stylelint
+- Добавлен класс для работы с АПИ
+
+https://github.com/VnGrigoreva/middle.messenger.praktikum.yandex/pull/2
