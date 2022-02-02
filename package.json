@@ -4,20 +4,29 @@
   "author": "VnGrigoreva <vn.grigoreva@yandex.ru>",
   "license": "MIT",
   "private": "true",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "dev": "parcel src/*.pug --open --port 3000",
     "start": "parcel build src/*.pug && node server/index",
     "build": "parcel build src/*.pug"
   },
   "devDependencies": {
-    "@parcel/transformer-pug": "^2.2.0",
-    "@parcel/transformer-sass": "^2.2.0",
-    "parcel": "2.2.0",
-    "pug": "^3.0.2",
-    "sass": "^1.45.2"
+    "@parcel/transformer-pug": "^2.2.1",
+    "@parcel/transformer-sass": "^2.2.1",
+    "@types/pug": "^2.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "eslint": "^8.7.0",
+    "parcel": "2.2.1",
+    "sass": "^1.49.0",
+    "stylelint": "^14.3.0",
+    "typescript": "^4.5.5"
   },
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "nanoid": "^3.2.0",
+    "pug": "^3.0.2",
+    "pug-runtime": "^3.0.1"
   },
   "engines": {
     "node": "14.17.3"
