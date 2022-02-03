@@ -42,12 +42,11 @@ export class Chat extends Block {
           const error = Mediator.Instance.validateMessage(this.message);
           if (!error) {
             console.log({ message: this.message });
-          } else {
-            newMessageInput.setProps({
-              error: error,
-              value: this.message,
-            });
           }
+          newMessageInput.setProps({
+            error: error,
+            value: '',
+          });
         },
       },
     });
