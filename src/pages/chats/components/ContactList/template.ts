@@ -4,4 +4,4 @@ export default `
   #{search}
 .chat-list__contacts
   #{contact}
-`
+`;

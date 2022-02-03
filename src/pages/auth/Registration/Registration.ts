@@ -11,20 +11,37 @@ export class Registration extends Block {
     super({}, 'div', 'authorization');
   }
 
-  handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const {email, first_name, login, password, phone, second_name, verify_password} = fromEntries;
+    const {
+      email,
+      first_name,
+      login,
+      password,
+      phone,
+      second_name,
+      verify_password,
+    } = fromEntries;
 
-    if (email && !Mediator.Instance.validateEmail(email as string)
-    && first_name && !Mediator.Instance.validateUserName(first_name as string)
-    && login && !Mediator.Instance.validateLogin(login as string)
-    && password && !Mediator.Instance.validatePassword(password as string) && password === verify_password
-    && phone && !Mediator.Instance.validatePhone(phone as string)
-    && second_name && !Mediator.Instance.validateUserName(second_name as string)) {
-      console.log({email, first_name, login, password, phone, second_name});
+    if (
+      email &&
+      !Mediator.Instance.validateEmail(email as string) &&
+      first_name &&
+      !Mediator.Instance.validateUserName(first_name as string) &&
+      login &&
+      !Mediator.Instance.validateLogin(login as string) &&
+      password &&
+      !Mediator.Instance.validatePassword(password as string) &&
+      password === verify_password &&
+      phone &&
+      !Mediator.Instance.validatePhone(phone as string) &&
+      second_name &&
+      !Mediator.Instance.validateUserName(second_name as string)
+    ) {
+      console.log({ email, first_name, login, password, phone, second_name });
     }
   }
 
@@ -33,9 +50,9 @@ export class Registration extends Block {
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit
+          handler: this.handleSubmit,
         },
-      }
+      },
     });
   }
 
@@ -50,13 +67,13 @@ export class Registration extends Block {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
-    const inputLogin = new Input({ 
-      label: 'Логин', 
-      id: 'login', 
-      autocomplete: 'username', 
+    const inputLogin = new Input({
+      label: 'Логин',
+      id: 'login',
+      autocomplete: 'username',
       maxlength: '20',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -65,11 +82,11 @@ export class Registration extends Block {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
-    const inputFirstName = new Input({ 
-      label: 'Имя', 
+    const inputFirstName = new Input({
+      label: 'Имя',
       id: 'first_name',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -78,11 +95,11 @@ export class Registration extends Block {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
-    const inputSecondName = new Input({ 
-      label: 'Фамилия', 
+    const inputSecondName = new Input({
+      label: 'Фамилия',
       id: 'second_name',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -91,7 +108,7 @@ export class Registration extends Block {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     const inputPhone = new Input({
@@ -106,7 +123,7 @@ export class Registration extends Block {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     const inputPassword = new Input({
@@ -133,11 +150,14 @@ export class Registration extends Block {
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           inputVerifyPassword.setProps({
-            error: Mediator.Instance.comparePasswords(this.password ,event.target.value),
+            error: Mediator.Instance.comparePasswords(
+              this.password,
+              event.target.value
+            ),
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     const entryLink = new Link({

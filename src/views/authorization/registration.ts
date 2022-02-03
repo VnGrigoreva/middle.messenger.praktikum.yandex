@@ -1,5 +1,5 @@
-import {Registration} from '../../pages';
-import {render} from '../../utils';
+import { Registration } from '../../pages';
+import { render } from '../../utils';
 
 const registration = new Registration();
-render(".app", registration);
+render('.app', registration);

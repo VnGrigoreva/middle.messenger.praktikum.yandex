@@ -12,7 +12,7 @@ export default function (tmpl: string, props: any = {}): DocumentFragment {
     }
   });
 
-  fragment.innerHTML = pug.render(tmpl, {doctype: 'html', ...props});
+  fragment.innerHTML = pug.render(tmpl, { doctype: 'html', ...props });
 
   Object.entries(components).forEach(([id, component]) => {
     const stub = fragment.content.querySelector(`#id-${id}`);
@@ -21,7 +21,7 @@ export default function (tmpl: string, props: any = {}): DocumentFragment {
       return;
     }
     stub.replaceWith(component.getContent());
-});
+  });
 
   return fragment.content;
 }

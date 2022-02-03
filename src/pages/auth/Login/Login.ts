@@ -9,7 +9,7 @@ export class Login extends Block {
     super({}, 'div', 'authorization');
   }
 
-  handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);

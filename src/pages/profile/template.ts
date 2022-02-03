@@ -25,4 +25,4 @@ export default `
       #{phone}
       .profile-content__inner.ai-c
         input(type='submit', value='Сохранить', class='button')
-`
+`;

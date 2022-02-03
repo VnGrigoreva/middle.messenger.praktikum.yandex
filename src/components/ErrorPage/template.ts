@@ -3,4 +3,4 @@ export default `
   .error-code #{code}
   .error-message #{message}
   #{backLink}
-`
+`;

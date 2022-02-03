@@ -41,7 +41,7 @@ export class Chat extends Block {
         click: () => {
           const error = Mediator.Instance.validateMessage(this.message);
           if (!error) {
-            console.log({message: this.message});
+            console.log({ message: this.message });
           } else {
             newMessageInput.setProps({
               error: error,

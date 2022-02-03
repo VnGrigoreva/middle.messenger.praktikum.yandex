@@ -9,6 +9,6 @@ export class Aside extends Block {
   }
 
   render() {
-    return compile(template, {src: backUrl});
+    return compile(template, { src: backUrl });
   }
 }

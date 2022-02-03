@@ -14,4 +14,4 @@ export default `
       input(type='submit', value='Зарегистрироваться', class='button', id='registration')
       #{entry}
 script(src='./authorization.ts')
-`
+`;

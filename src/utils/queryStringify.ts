@@ -1,4 +1,4 @@
-export default function (data: {[key: string]: string} | undefined): string {
+export default function (data: { [key: string]: string } | undefined): string {
   if (!data || typeof data !== 'object') {
     return '';
   }

@@ -16,19 +16,27 @@ export class Profile extends Block<ProfilePropsType> {
     super(props, 'div', 'profile');
   }
 
-  handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const {display_name, email, first_name, login, phone, second_name} = fromEntries;
+    const { display_name, email, first_name, login, phone, second_name } =
+      fromEntries;
 
-    if (email && !Mediator.Instance.validateEmail(email as string)
-    && first_name && !Mediator.Instance.validateUserName(first_name as string)
-    && login && !Mediator.Instance.validateLogin(login as string)
-    && phone && !Mediator.Instance.validatePhone(phone as string)
-    && second_name && !Mediator.Instance.validateUserName(second_name as string)
-    && display_name) {
+    if (
+      email &&
+      !Mediator.Instance.validateEmail(email as string) &&
+      first_name &&
+      !Mediator.Instance.validateUserName(first_name as string) &&
+      login &&
+      !Mediator.Instance.validateLogin(login as string) &&
+      phone &&
+      !Mediator.Instance.validatePhone(phone as string) &&
+      second_name &&
+      !Mediator.Instance.validateUserName(second_name as string) &&
+      display_name
+    ) {
       console.log(fromEntries);
     }
   }
@@ -38,9 +46,9 @@ export class Profile extends Block<ProfilePropsType> {
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit
+          handler: this.handleSubmit,
         },
-      }
+      },
     });
   }
 
@@ -62,7 +70,7 @@ export class Profile extends Block<ProfilePropsType> {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     const loginInfo = new InfoRow({
@@ -77,7 +85,7 @@ export class Profile extends Block<ProfilePropsType> {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     const firstNameInfo = new InfoRow({
@@ -92,7 +100,7 @@ export class Profile extends Block<ProfilePropsType> {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     const secondNameInfo = new InfoRow({
@@ -107,7 +115,7 @@ export class Profile extends Block<ProfilePropsType> {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     const displayNameInfo = new InfoRow({
@@ -116,7 +124,7 @@ export class Profile extends Block<ProfilePropsType> {
       id: 'display_name',
       readonly: isView,
     });
-    
+
     const phoneInfo = new InfoRow({
       label: 'Телефон',
       value: '+79099673030',
@@ -130,7 +138,7 @@ export class Profile extends Block<ProfilePropsType> {
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     const changeDataLink = new Link({

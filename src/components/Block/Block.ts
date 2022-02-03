@@ -5,28 +5,28 @@ import { CallbackType, EventsType } from '../../types';
 export type PropsType = { [key: string]: any };
 
 export enum Events {
-  init = 'init',
-  cdm = 'flow:component-did-mount',
-  cdu = 'flow:component-did-update',
-  render = 'flow:render',
+  Init = 'init',
+  Cdm = 'flow:component-did-mount',
+  Cdu = 'flow:component-did-update',
+  Render = 'flow:render',
 }
 
 export class Block<TProps extends PropsType = any> {
-  static EVENTS = {
-    INIT: Events.init,
-    FLOW_CDM: Events.cdm,
-    FLOW_RENDER: Events.render,
-    FLOW_CDU: Events.cdu,
+  private static EVENTS = {
+    INIT: Events.Init,
+    FLOW_CDM: Events.Cdm,
+    FLOW_RENDER: Events.Render,
+    FLOW_CDU: Events.Cdu,
   };
 
-  _meta: {
+  private _meta: {
     props: TProps;
     tagName: string;
     className?: string;
   };
-  _element: HTMLElement | null = null;
-  props: TProps;
-  eventBus: () => EventBus;
+  private _element: HTMLElement | null = null;
+  protected props: TProps;
+  private eventBus: () => EventBus;
   public id = nanoid(6);
 
   /** JSDoc
@@ -52,7 +52,7 @@ export class Block<TProps extends PropsType = any> {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _registerEvents(eventBus: EventBus) {
+  private _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(
@@ -69,7 +69,7 @@ export class Block<TProps extends PropsType = any> {
     }
   }
 
-  _componentDidMount() {
+  private _componentDidMount() {
     this.componentDidMount();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
@@ -81,7 +81,7 @@ export class Block<TProps extends PropsType = any> {
     this._componentDidMount();
   }
 
-  _componentDidUpdate(oldProps: TProps, newProps: TProps) {
+  private _componentDidUpdate(oldProps: TProps, newProps: TProps) {
     if (oldProps !== newProps) {
       const response = this.componentDidUpdate(oldProps, newProps);
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
@@ -112,7 +112,7 @@ export class Block<TProps extends PropsType = any> {
     return this._element;
   }
 
-  _render() {
+  private _render() {
     const template = this.render();
 
     this._removeEvents();
@@ -130,7 +130,7 @@ export class Block<TProps extends PropsType = any> {
     return this._element as HTMLElement;
   }
 
-  _makePropsProxy(props: TProps) {
+  private _makePropsProxy(props: TProps) {
     const newProps = { ...props };
     for (const key in props) {
       if (key.indexOf('_') !== 0) {
@@ -151,7 +151,7 @@ export class Block<TProps extends PropsType = any> {
     return proxyData;
   }
 
-  _createDocumentElement() {
+  private _createDocumentElement() {
     const {tagName, className} = this._meta;
     const result = document.createElement(tagName);
     if (className) {
@@ -172,7 +172,7 @@ export class Block<TProps extends PropsType = any> {
     }
   }
 
-  _addEvents() {
+  private _addEvents() {
     const events: EventsType = (this.props as any).events;
     
     if (!events) {
@@ -189,7 +189,7 @@ export class Block<TProps extends PropsType = any> {
     });
   }
 
-  _removeEvents() {
+  private _removeEvents() {
     const events: Record<string, () => void> = (this.props as any).events;
 
     if (!events || !this.element) {

@@ -1,10 +1,10 @@
 import { queryStringify } from '../utils';
 
 export enum Methods {
-  GET = 'GET',
-  PUT = 'PUT',
-  POST = 'POST',
-  DELETE = 'DELETE',
+  Get = 'GET',
+  Put = 'PUT',
+  Post = 'POST',
+  Delete = 'DELETE',
 }
 
 export type OptionsType = {
@@ -18,7 +18,7 @@ export class HTTPTransport {
   get = (url: string, options?: OptionsType) => {
     return this.request(
       url,
-      { ...options, method: Methods.GET },
+      { ...options, method: Methods.Get },
       options?.timeout
     );
   };
@@ -26,7 +26,7 @@ export class HTTPTransport {
   put = (url: string, options?: OptionsType) => {
     return this.request(
       url,
-      { ...options, method: Methods.PUT },
+      { ...options, method: Methods.Put },
       options?.timeout
     );
   };
@@ -34,7 +34,7 @@ export class HTTPTransport {
   post = (url: string, options?: OptionsType) => {
     return this.request(
       url,
-      { ...options, method: Methods.POST },
+      { ...options, method: Methods.Post },
       options?.timeout
     );
   };
@@ -42,7 +42,7 @@ export class HTTPTransport {
   delete = (url: string, options?: OptionsType) => {
     return this.request(
       url,
-      { ...options, method: Methods.DELETE },
+      { ...options, method: Methods.Delete },
       options?.timeout
     );
   };

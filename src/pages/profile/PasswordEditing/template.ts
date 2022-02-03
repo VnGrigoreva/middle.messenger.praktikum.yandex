@@ -9,4 +9,4 @@ export default `
     #{verifynewPassword}
     .profile-content__inner.ai-c
       input(type='submit', value='Сохранить', class='button')
-`
+`;

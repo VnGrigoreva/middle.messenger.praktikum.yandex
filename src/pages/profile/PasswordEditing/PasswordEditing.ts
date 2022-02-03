@@ -11,19 +11,21 @@ export class PasswordEditing extends Block {
     super({}, 'div', 'profile');
   }
 
-  newPassword ='';
+  private newPassword = '';
 
-  handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const {new_password, verify_new_password} = fromEntries;
+    const { new_password, verify_new_password } = fromEntries;
 
-    if (new_password && !Mediator.Instance.validatePassword(new_password as string)  
-      && new_password === verify_new_password
+    if (
+      new_password &&
+      !Mediator.Instance.validatePassword(new_password as string) &&
+      new_password === verify_new_password
     ) {
-      console.log({new_password});
+      console.log({ new_password });
     }
   }
 
@@ -32,9 +34,9 @@ export class PasswordEditing extends Block {
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit
+          handler: this.handleSubmit,
         },
-      }
+      },
     });
   }
 
@@ -77,11 +79,14 @@ export class PasswordEditing extends Block {
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           verifynewPasswordInfo.setProps({
-            error: Mediator.Instance.comparePasswords(this.newPassword ,event.target.value),
+            error: Mediator.Instance.comparePasswords(
+              this.newPassword,
+              event.target.value
+            ),
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     return compile(template, {

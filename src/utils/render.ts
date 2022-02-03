@@ -1,4 +1,4 @@
-import {Block} from '../components';
+import { Block } from '../components';
 
 export default function (query: string, block: Block) {
   const root = document.querySelector(query);
