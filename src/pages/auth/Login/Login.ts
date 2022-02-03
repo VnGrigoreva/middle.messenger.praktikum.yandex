@@ -9,26 +9,30 @@ export class Login extends Block {
     super({}, 'div', 'authorization');
   }
 
+  handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const fromEntries = Object.fromEntries(formData);
+    const { login, password } = fromEntries;
+
+    if (
+      login &&
+      !Mediator.Instance.validateLogin(login as string) &&
+      password
+    ) {
+      console.log(fromEntries);
+    }
+  }
+
   componentDidMount(): void {
-    const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const formData = new FormData(event.target);
-      const fromEntries = Object.fromEntries(formData);
-      const {login, password} = fromEntries;
-
-      if (login && !Mediator.Instance.validateLogin(login as string) && password) {
-        console.log(fromEntries);
-      }
-    };
-
     this.setProps({
       events: {
         submit: {
           selector: 'form',
-          handler: handleSubmit
+          handler: this.handleSubmit,
         },
-      }
+      },
     });
   }
 
@@ -43,7 +47,7 @@ export class Login extends Block {
             value: event.target.value,
           });
         },
-      }
+      },
     });
     const inputPas = new Input({
       label: 'Пароль',

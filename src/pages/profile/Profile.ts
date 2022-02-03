@@ -16,29 +16,29 @@ export class Profile extends Block<ProfilePropsType> {
     super(props, 'div', 'profile');
   }
 
+  handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const fromEntries = Object.fromEntries(formData);
+    const {display_name, email, first_name, login, phone, second_name} = fromEntries;
+
+    if (email && !Mediator.Instance.validateEmail(email as string)
+    && first_name && !Mediator.Instance.validateUserName(first_name as string)
+    && login && !Mediator.Instance.validateLogin(login as string)
+    && phone && !Mediator.Instance.validatePhone(phone as string)
+    && second_name && !Mediator.Instance.validateUserName(second_name as string)
+    && display_name) {
+      console.log(fromEntries);
+    }
+  }
+
   componentDidMount(): void {
-    const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const formData = new FormData(event.target);
-      const fromEntries = Object.fromEntries(formData);
-      const {display_name, email, first_name, login, phone, second_name} = fromEntries;
-
-      if (email && !Mediator.Instance.validateEmail(email as string)
-      && first_name && !Mediator.Instance.validateUserName(first_name as string)
-      && login && !Mediator.Instance.validateLogin(login as string)
-      && phone && !Mediator.Instance.validatePhone(phone as string)
-      && second_name && !Mediator.Instance.validateUserName(second_name as string)
-      && display_name) {
-        console.log(fromEntries);
-      }
-    };
-
     this.setProps({
       events: {
         submit: {
           selector: 'form',
-          handler: handleSubmit
+          handler: this.handleSubmit
         },
       }
     });

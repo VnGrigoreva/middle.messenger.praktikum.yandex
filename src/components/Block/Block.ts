@@ -117,21 +117,10 @@ export class Block<TProps extends PropsType = any> {
 
     this._removeEvents();
     this._element!.innerHTML = '';
-    // const result = this._createDocumentElement(template);
-    // if (!this._element) {
-    //   this._element = template as unknown as HTMLElement;
-    // } else {
-    //   this._element.innerHTML = (template as unknown as HTMLElement)?.innerHTML;
-    // }
 
     this._element!.appendChild(template);
     this._addEvents();
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  // render(): string {
-  //   return '';
-  // }
 
   render(): DocumentFragment {
     return new DocumentFragment();

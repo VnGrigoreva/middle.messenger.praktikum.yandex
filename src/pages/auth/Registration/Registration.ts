@@ -11,29 +11,29 @@ export class Registration extends Block {
     super({}, 'div', 'authorization');
   }
 
+  handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const fromEntries = Object.fromEntries(formData);
+    const {email, first_name, login, password, phone, second_name, verify_password} = fromEntries;
+
+    if (email && !Mediator.Instance.validateEmail(email as string)
+    && first_name && !Mediator.Instance.validateUserName(first_name as string)
+    && login && !Mediator.Instance.validateLogin(login as string)
+    && password && !Mediator.Instance.validatePassword(password as string) && password === verify_password
+    && phone && !Mediator.Instance.validatePhone(phone as string)
+    && second_name && !Mediator.Instance.validateUserName(second_name as string)) {
+      console.log({email, first_name, login, password, phone, second_name});
+    }
+  }
+
   componentDidMount(): void {
-    const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const formData = new FormData(event.target);
-      const fromEntries = Object.fromEntries(formData);
-      const {email, first_name, login, password, phone, second_name, verify_password} = fromEntries;
-
-      if (email && !Mediator.Instance.validateEmail(email as string)
-      && first_name && !Mediator.Instance.validateUserName(first_name as string)
-      && login && !Mediator.Instance.validateLogin(login as string)
-      && password && !Mediator.Instance.validatePassword(password as string) && password === verify_password
-      && phone && !Mediator.Instance.validatePhone(phone as string)
-      && second_name && !Mediator.Instance.validateUserName(second_name as string)) {
-        console.log({email, first_name, login, password, phone, second_name});
-      }
-    };
-
     this.setProps({
       events: {
         submit: {
           selector: 'form',
-          handler: handleSubmit
+          handler: this.handleSubmit
         },
       }
     });
