@@ -1,0 +1,18 @@
+.info-row {
+  min-width: 510px;
+  border-bottom: solid 1px $gray20;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+
+  &__right {
+    color: $gray;
+    font-size: 13px;
+    line-height: 13px;
+    text-align: right;
+    flex-grow: 1;
+  }
+  &__left {
+    margin-right: 10px;
+  }
+}
