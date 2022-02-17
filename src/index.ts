@@ -7,7 +7,6 @@ import {
   Registration,
   Error400Page,
 } from './pages';
-import {ErrorPage} from './components';
 import {Routes} from './types';
 
 const router = new Router('.app');

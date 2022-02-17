@@ -12,7 +12,7 @@ export class Error400Page extends Block {
   render() {
     const backLink = new Link({
       label: 'Назад к чатам',
-      path: Routes.Login,
+      path: Routes.Chat,
       mode: 'primary',
     });
 
