@@ -1,19 +1,18 @@
-import {Block, Link} from '../../components';
-import {Aside, InfoRow} from './components';
+import {Block, Link} from '../../../components';
+import {Aside, InfoRow} from '../components';
 import template from './template';
-import {compile} from '../../utils';
-import avatarUrl from '../../assets/images/default_avatar.png';
-import {EventsType, HTMLElementEvent} from '../../types';
-import {Mediator} from '../../modules';
+import {compile} from '../../../utils';
+import avatarUrl from '../../../assets/images/default_avatar.png';
+import {EventsType, HTMLElementEvent, Routes} from '../../../types';
+import {Mediator, Router} from '../../../modules';
 
 export type ProfilePropsType = {
-  isView: boolean;
   events?: EventsType;
 };
 
-export class Profile extends Block<ProfilePropsType> {
-  constructor(props: ProfilePropsType) {
-    super(props, 'div', 'profile');
+export class Settings extends Block<ProfilePropsType> {
+  constructor() {
+    super({}, 'div', 'profile');
   }
 
   private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
@@ -38,6 +37,9 @@ export class Profile extends Block<ProfilePropsType> {
       display_name
     ) {
       console.warn(fromEntries);
+
+      const router = new Router('.app');
+      router.go(Routes.Profile);
     }
   }
 
@@ -53,8 +55,6 @@ export class Profile extends Block<ProfilePropsType> {
   }
 
   render() {
-    const {isView} = this.props;
-
     const aside = new Aside();
 
     const emailInfo = new InfoRow({
@@ -62,7 +62,7 @@ export class Profile extends Block<ProfilePropsType> {
       value: 'pochta@yandex.ru',
       id: 'email',
       type: 'email',
-      readonly: isView,
+      readonly: false,
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           emailInfo.setProps({
@@ -77,7 +77,7 @@ export class Profile extends Block<ProfilePropsType> {
       label: 'Логин',
       value: 'ivanivanov',
       id: 'login',
-      readonly: isView,
+      readonly: false,
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           loginInfo.setProps({
@@ -92,7 +92,7 @@ export class Profile extends Block<ProfilePropsType> {
       label: 'Имя',
       value: 'Иван',
       id: 'first_name',
-      readonly: isView,
+      readonly: false,
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           firstNameInfo.setProps({
@@ -107,7 +107,7 @@ export class Profile extends Block<ProfilePropsType> {
       label: 'Фамилия',
       value: 'Иванов',
       id: 'second_name',
-      readonly: isView,
+      readonly: false,
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           secondNameInfo.setProps({
@@ -122,7 +122,7 @@ export class Profile extends Block<ProfilePropsType> {
       label: 'Имя в чате',
       value: 'Иван',
       id: 'display_name',
-      readonly: isView,
+      readonly: false,
     });
 
     const phoneInfo = new InfoRow({
@@ -130,7 +130,7 @@ export class Profile extends Block<ProfilePropsType> {
       value: '+79099673030',
       type: 'tel',
       id: 'phone',
-      readonly: isView,
+      readonly: false,
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           phoneInfo.setProps({
@@ -141,18 +141,6 @@ export class Profile extends Block<ProfilePropsType> {
       },
     });
 
-    const changeDataLink = new Link({
-      label: 'Изменить данные',
-      path: '/',
-      mode: 'border',
-    });
-    const changePasswordLink = new Link({
-      label: 'Изменить пароль',
-      path: '/',
-      mode: 'border',
-    });
-    const logoutLink = new Link({label: 'Выйти', path: '/', mode: 'danger'});
-
     return compile(template, {
       ...this.props,
       aside: aside,
@@ -162,9 +150,6 @@ export class Profile extends Block<ProfilePropsType> {
       secondName: secondNameInfo,
       displayName: displayNameInfo,
       phone: phoneInfo,
-      changeData: changeDataLink,
-      changePassword: changePasswordLink,
-      logout: logoutLink,
       src: avatarUrl,
     });
   }

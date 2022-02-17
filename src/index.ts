@@ -6,6 +6,7 @@ import {
   Profile,
   Registration,
   Error400Page,
+  Settings,
 } from './pages';
 import {Routes} from './types';
 
@@ -15,6 +16,7 @@ router
   .use(Routes.Chat, Chat)
   .use(Routes.PasswordEditing, PasswordEditing)
   .use(Routes.Profile, Profile)
+  .use(Routes.Settings, Settings)
   .use(Routes.Registration, Registration)
   .useError(Error400Page)
   .start();
