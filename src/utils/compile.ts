@@ -1,5 +1,5 @@
 import pug from 'pug';
-import { Block } from '../components';
+import {Block} from '../components';
 
 export const compile = (tmpl: string, props: any = {}): DocumentFragment => {
   const fragment = document.createElement('template');
@@ -12,7 +12,7 @@ export const compile = (tmpl: string, props: any = {}): DocumentFragment => {
     }
   });
 
-  fragment.innerHTML = pug.render(tmpl, { doctype: 'html', ...props });
+  fragment.innerHTML = pug.render(tmpl, {doctype: 'html', ...props});
 
   Object.entries(components).forEach(([id, component]) => {
     const stub = fragment.content.querySelector(`#id-${id}`);

@@ -1,10 +1,10 @@
-import { Block, Link } from '../../components';
-import { Aside, InfoRow } from './components';
+import {Block, Link} from '../../components';
+import {Aside, InfoRow} from './components';
 import template from './template';
-import { compile } from '../../utils';
+import {compile} from '../../utils';
 import avatarUrl from '../../assets/images/default_avatar.png';
-import { EventsType, HTMLElementEvent } from '../../types';
-import { Mediator } from '../../modules';
+import {EventsType, HTMLElementEvent} from '../../types';
+import {Mediator} from '../../modules';
 
 export type ProfilePropsType = {
   isView: boolean;
@@ -21,7 +21,7 @@ export class Profile extends Block<ProfilePropsType> {
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const { display_name, email, first_name, login, phone, second_name } =
+    const {display_name, email, first_name, login, phone, second_name} =
       fromEntries;
 
     if (
@@ -37,7 +37,7 @@ export class Profile extends Block<ProfilePropsType> {
       !Mediator.Instance.validateUserName(second_name as string) &&
       display_name
     ) {
-      console.log(fromEntries);
+      console.warn(fromEntries);
     }
   }
 
@@ -53,7 +53,7 @@ export class Profile extends Block<ProfilePropsType> {
   }
 
   render() {
-    const { isView } = this.props;
+    const {isView} = this.props;
 
     const aside = new Aside();
 
@@ -151,7 +151,7 @@ export class Profile extends Block<ProfilePropsType> {
       path: '/',
       mode: 'border',
     });
-    const logoutLink = new Link({ label: 'Выйти', path: '/', mode: 'danger' });
+    const logoutLink = new Link({label: 'Выйти', path: '/', mode: 'danger'});
 
     return compile(template, {
       ...this.props,

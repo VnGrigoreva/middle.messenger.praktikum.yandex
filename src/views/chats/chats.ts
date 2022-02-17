@@ -1,5 +1,5 @@
-import { Chat } from '../../pages';
-import { render } from '../../utils';
+import {Chat} from '../../pages';
+import {render} from '../../utils';
 
-const chat = new Chat();
-render('.app', chat);
+//export const chat = new Chat();
+// render('.app', chat);

@@ -1,4 +1,4 @@
-import { queryStringify } from '../utils';
+import {queryStringify} from '../utils';
 
 export enum Methods {
   Get = 'GET',
@@ -8,17 +8,17 @@ export enum Methods {
 }
 
 export type OptionsType = {
-  timeout?: number,
-  method: Methods,
-  headers?: {[key: string]: string},
-  data?: {[key: string]: string} ,
-}
+  timeout?: number;
+  method: Methods;
+  headers?: {[key: string]: string};
+  data?: {[key: string]: string};
+};
 
 export class HTTPTransport {
   get = (url: string, options?: OptionsType) => {
     return this.request(
       url,
-      { ...options, method: Methods.Get },
+      {...options, method: Methods.Get},
       options?.timeout
     );
   };
@@ -26,7 +26,7 @@ export class HTTPTransport {
   put = (url: string, options?: OptionsType) => {
     return this.request(
       url,
-      { ...options, method: Methods.Put },
+      {...options, method: Methods.Put},
       options?.timeout
     );
   };
@@ -34,7 +34,7 @@ export class HTTPTransport {
   post = (url: string, options?: OptionsType) => {
     return this.request(
       url,
-      { ...options, method: Methods.Post },
+      {...options, method: Methods.Post},
       options?.timeout
     );
   };
@@ -42,13 +42,13 @@ export class HTTPTransport {
   delete = (url: string, options?: OptionsType) => {
     return this.request(
       url,
-      { ...options, method: Methods.Delete },
+      {...options, method: Methods.Delete},
       options?.timeout
     );
   };
 
   request = (url: string, options?: OptionsType, timeout = 5000) => {
-    const { headers = {}, method, data } = options || {};
+    const {headers = {}, method, data} = options || {};
 
     return new Promise((resolve, reject) => {
       const methodType = method || 'GET';

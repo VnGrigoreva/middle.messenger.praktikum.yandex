@@ -7,4 +7,5 @@ export default `
       #{password}
     .authorization-form__inner
       input(type='submit', value='Авторизироваться', class='button')
+  #{registration}
 `;

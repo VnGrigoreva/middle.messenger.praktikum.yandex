@@ -1,9 +1,9 @@
-import { Block } from '../../../components';
-import { Aside, InfoRow } from '../components';
+import {Block} from '../../../components';
+import {Aside, InfoRow} from '../components';
 import template from './template';
-import { compile } from '../../../utils';
-import { HTMLElementEvent } from '../../../types';
-import { Mediator } from '../../../modules';
+import {compile} from '../../../utils';
+import {HTMLElementEvent} from '../../../types';
+import {Mediator} from '../../../modules';
 import avatar from '../../../assets/images/default_avatar.png';
 
 export class PasswordEditing extends Block {
@@ -18,14 +18,14 @@ export class PasswordEditing extends Block {
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const { new_password, verify_new_password } = fromEntries;
+    const {new_password, verify_new_password} = fromEntries;
 
     if (
       new_password &&
       !Mediator.Instance.validatePassword(new_password as string) &&
       new_password === verify_new_password
     ) {
-      console.log({ new_password });
+      console.warn({new_password});
     }
   }
 

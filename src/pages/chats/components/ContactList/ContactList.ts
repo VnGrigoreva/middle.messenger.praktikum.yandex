@@ -1,8 +1,9 @@
-import { Block, Link } from '../../../../components';
+import {Block, Link} from '../../../../components';
 import template from './template';
-import { compile } from '../../../../utils';
-import { InputChat } from '../InputChat/InputChat';
-import { Contact } from '../Contact/Contact';
+import {compile} from '../../../../utils';
+import {InputChat} from '../InputChat/InputChat';
+import {Contact} from '../Contact/Contact';
+import {Routes} from '../../../../types';
 
 export class ContactList extends Block {
   constructor() {
@@ -11,7 +12,7 @@ export class ContactList extends Block {
 
   render() {
     const profileLink = new Link({
-      path: '/',
+      path: Routes.Profile,
       label: 'Профиль >',
       mode: 'secondary',
     });

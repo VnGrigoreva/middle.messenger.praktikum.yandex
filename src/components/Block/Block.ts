@@ -1,8 +1,8 @@
-import { EventBus } from '../../modules';
-import { nanoid } from 'nanoid';
-import { CallbackType, EventsType } from '../../types';
+import {EventBus} from '../../modules';
+import {nanoid} from 'nanoid';
+import {CallbackType, EventsType} from '../../types';
 
-export type PropsType = { [key: string]: any };
+export type PropsType = {[key: string]: any};
 
 export enum Events {
   Init = 'init',
@@ -93,7 +93,7 @@ export class Block<TProps extends PropsType = any> {
   }
 
   setProps = (nextProps: Partial<TProps>) => {
-  if (!nextProps) {
+    if (!nextProps) {
       return;
     }
     const oldProps = this.props;
@@ -104,7 +104,7 @@ export class Block<TProps extends PropsType = any> {
       }
     }
 
-    this.props = this._makePropsProxy({ ...newProps, ...nextProps });
+    this.props = this._makePropsProxy({...newProps, ...nextProps});
     this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
   };
 
@@ -131,7 +131,7 @@ export class Block<TProps extends PropsType = any> {
   }
 
   private _makePropsProxy(props: TProps) {
-    const newProps = { ...props };
+    const newProps = {...props};
     for (const key in props) {
       if (key.indexOf('_') !== 0) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -142,7 +142,7 @@ export class Block<TProps extends PropsType = any> {
     const proxyData = new Proxy(newProps, {
       get(target, prop: string) {
         const value = target[prop];
-        return typeof value === "function" ? value.bind(target) : value;
+        return typeof value === 'function' ? value.bind(target) : value;
       },
       deleteProperty() {
         throw new Error('Отказано в доступе');
@@ -162,7 +162,7 @@ export class Block<TProps extends PropsType = any> {
 
   show() {
     if (this.element) {
-      this.element.setAttribute('style', 'display: block');
+      this.element.setAttribute('style', 'display: flex');
     }
   }
 
@@ -174,7 +174,7 @@ export class Block<TProps extends PropsType = any> {
 
   private _addEvents() {
     const events: EventsType = (this.props as any).events;
-    
+
     if (!events) {
       return;
     }

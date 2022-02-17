@@ -9,3 +9,11 @@ export type EventsType = Record<
 >;
 
 export type CallbackType = (...args: unknown[]) => void;
+
+export enum Routes {
+  Login = '/',
+  Chat = '/messenger',
+  PasswordEditing = '/changePassword',
+  Registration = '/sign-up',
+  Profile = '/settings',
+}

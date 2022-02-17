@@ -1,8 +1,9 @@
-import { Block, Input } from '../../../components';
+import {Block, Input, Link} from '../../../components';
 import template from './template';
-import { compile } from '../../../utils';
-import { HTMLElementEvent } from '../../../types';
-import { Mediator } from '../../../modules';
+import {compile} from '../../../utils';
+import {HTMLElementEvent, Routes} from '../../../types';
+import {Mediator} from '../../../modules';
+import {Router} from '../../../modules';
 
 export class Login extends Block {
   constructor() {
@@ -14,14 +15,17 @@ export class Login extends Block {
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const { login, password } = fromEntries;
+    const {login, password} = fromEntries;
 
     if (
       login &&
       !Mediator.Instance.validateLogin(login as string) &&
       password
     ) {
-      console.log(fromEntries);
+      console.warn(fromEntries);
+
+      const router = new Router('.app');
+      router.go(Routes.Chat);
     }
   }
 
@@ -54,10 +58,17 @@ export class Login extends Block {
       id: 'password',
       type: 'password',
     });
+    const registrationLink = new Link({
+      label: 'Нет аккаунта',
+      path: Routes.Registration,
+      mode: 'primary',
+      className: 'link',
+    });
 
     return compile(template, {
       login: inputLogin,
       password: inputPas,
+      registration: registrationLink,
     });
   }
 }

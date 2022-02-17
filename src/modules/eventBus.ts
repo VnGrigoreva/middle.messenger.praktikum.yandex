@@ -1,7 +1,7 @@
-import { CallbackType } from '../types';
+import {CallbackType} from '../types';
 
 export class EventBus {
-  private listeners: { [key: string]: CallbackType[] };
+  private listeners: {[key: string]: CallbackType[]};
 
   constructor() {
     this.listeners = {};

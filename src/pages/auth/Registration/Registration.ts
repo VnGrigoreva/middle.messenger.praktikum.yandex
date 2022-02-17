@@ -1,8 +1,8 @@
 import template from './template';
-import { Input, Block, Link } from '../../../components';
-import { compile } from '../../../utils';
-import { Mediator } from '../../../modules';
-import { HTMLElementEvent } from '../../../types';
+import {Input, Block, Link} from '../../../components';
+import {compile} from '../../../utils';
+import {Mediator, Router} from '../../../modules';
+import {HTMLElementEvent, Routes} from '../../../types';
 
 export class Registration extends Block {
   password = '';
@@ -41,7 +41,10 @@ export class Registration extends Block {
       second_name &&
       !Mediator.Instance.validateUserName(second_name as string)
     ) {
-      console.log({ email, first_name, login, password, phone, second_name });
+      console.warn({email, first_name, login, password, phone, second_name});
+
+      const router = new Router('.app');
+      router.go(Routes.Chat);
     }
   }
 
@@ -162,7 +165,7 @@ export class Registration extends Block {
 
     const entryLink = new Link({
       label: 'Войти',
-      path: '/',
+      path: Routes.Login,
       mode: 'primary',
     });
 
