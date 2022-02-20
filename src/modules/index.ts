@@ -1,4 +1,4 @@
 export {EventBus} from './eventBus';
 export {Mediator} from './mediator';
 export {Router} from './router';
-export {HTTPTransport} from './httpTransport';
+export {HTTPTransport} from './HTTPTransport';

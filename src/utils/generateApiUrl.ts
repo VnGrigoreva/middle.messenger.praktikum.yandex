@@ -1,12 +1,12 @@
 import config from './config';
 import {trimSlashes} from './trim';
 
-export function generateApiUrl(
+export const generateApiUrl = (
   uri: string,
   apiVersion?: number,
   apiPrefix?: string
-): string {
+): string => {
   return `${trimSlashes(config.apiBasePath)}/${trimSlashes(
     apiPrefix || config.apiPrefix
   )}/v${apiVersion || config.apiVersion}/${trimSlashes(uri)}`;
-}
+};
