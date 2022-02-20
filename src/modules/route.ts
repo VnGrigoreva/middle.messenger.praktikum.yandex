@@ -8,14 +8,14 @@ export class Route {
   private _block: any;
   private _props: any;
 
-  constructor(pathname, view, props) {
+  constructor(pathname: string, view: any, props: any) {
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;
     this._props = props;
   }
 
-  navigate(pathname) {
+  navigate(pathname: string) {
     if (this.match(pathname)) {
       this._pathname = pathname;
       this.render();
@@ -28,7 +28,7 @@ export class Route {
     }
   }
 
-  match(pathname) {
+  match(pathname: string) {
     return isEqual(pathname, this._pathname);
   }
 
@@ -43,6 +43,6 @@ export class Route {
   }
 }
 
-function isEqual(lhs, rhs) {
+function isEqual(lhs: string, rhs: string) {
   return lhs === rhs;
 }

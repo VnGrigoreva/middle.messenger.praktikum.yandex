@@ -11,7 +11,12 @@ export default `
       #{password}
       #{verifyPassword}
     .authorization-form__inner
-      input(type='submit', value='Зарегистрироваться', class='button', id='registration')
+      input(type='submit', value='Зарегистрироваться', class='button', id='registration' disabled=isLoading)
       #{entry}
-script(src='./authorization.ts')
+      if isLoading
+        .loading Пожалуйста подождите...
+      if isError
+        .error #{error}
+      if isSuccess
+        .success #{success}
 `;

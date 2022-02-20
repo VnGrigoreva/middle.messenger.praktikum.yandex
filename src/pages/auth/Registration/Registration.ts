@@ -1,7 +1,7 @@
 import template from './template';
 import {Input, Block, Link} from '../../../components';
 import {compile} from '../../../utils';
-import {Mediator, Router} from '../../../modules';
+import {HTTPTransport, Mediator} from '../../../modules';
 import {HTMLElementEvent, Routes} from '../../../types';
 
 export class Registration extends Block {
@@ -11,7 +11,7 @@ export class Registration extends Block {
     super({}, 'div', 'authorization');
   }
 
-  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -41,10 +41,30 @@ export class Registration extends Block {
       second_name &&
       !Mediator.Instance.validateUserName(second_name as string)
     ) {
-      console.warn({email, first_name, login, password, phone, second_name});
+      const data = {email, first_name, login, password, phone, second_name};
 
-      const router = new Router('.app');
-      router.go(Routes.Chat);
+      const api = new HTTPTransport();
+      this.setProps({
+        isLoading: true,
+      });
+      try {
+        const response = await api.post('auth/signup', {body: data});
+        if (response?.status === 200) {
+          this.setProps({
+            isSuccess: true,
+            success: 'Поздравляем! Вы зарегистрированы.',
+          });
+        } else {
+          const error = JSON.parse(response?.responseText)?.reason;
+          throw new Error(error);
+        }
+      } catch (e) {
+        this.setProps({isError: true, error: e.toString()});
+      } finally {
+        this.setProps({
+          isLoading: false,
+        });
+      }
     }
   }
 
@@ -53,7 +73,7 @@ export class Registration extends Block {
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit,
+          handler: this.handleSubmit.bind(this),
         },
       },
     });
@@ -61,6 +81,7 @@ export class Registration extends Block {
 
   render() {
     const inputEmail = new Input({
+      value: 'pochta@pochta.ru',
       label: 'Почта',
       id: 'email',
       events: {
@@ -74,6 +95,7 @@ export class Registration extends Block {
     });
 
     const inputLogin = new Input({
+      value: 'BlackHeart',
       label: 'Логин',
       id: 'login',
       autocomplete: 'username',
@@ -89,6 +111,7 @@ export class Registration extends Block {
     });
 
     const inputFirstName = new Input({
+      value: 'Serkan',
       label: 'Имя',
       id: 'first_name',
       events: {
@@ -102,6 +125,7 @@ export class Registration extends Block {
     });
 
     const inputSecondName = new Input({
+      value: 'Baraban',
       label: 'Фамилия',
       id: 'second_name',
       events: {
@@ -115,6 +139,7 @@ export class Registration extends Block {
     });
 
     const inputPhone = new Input({
+      value: '+71111111111',
       label: 'Телефон',
       id: 'phone',
       type: 'tel',
@@ -130,6 +155,7 @@ export class Registration extends Block {
     });
 
     const inputPassword = new Input({
+      value: 'zxcD_231',
       label: 'Пароль',
       id: 'password',
       type: 'password',
@@ -147,6 +173,7 @@ export class Registration extends Block {
     });
 
     const inputVerifyPassword = new Input({
+      value: 'zxcD_231',
       label: 'Пароль (еще раз)',
       id: 'verify_password',
       type: 'password',
@@ -178,6 +205,7 @@ export class Registration extends Block {
       password: inputPassword,
       verifyPassword: inputVerifyPassword,
       entry: entryLink,
+      ...this.props,
     });
   }
 }

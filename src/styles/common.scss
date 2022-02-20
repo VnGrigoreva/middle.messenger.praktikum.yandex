@@ -65,11 +65,18 @@ h3 {
 }
 
 .error {
+  @include message;
   color: $red;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 8px;
-  margin: 7px 0;
+}
+
+.loading {
+  @include message;
+  color: $darkBlue;
+}
+
+.success {
+  @include message;
+  color: $green;
 }
 
 input[type='tel'],
@@ -93,4 +100,8 @@ input[type='email'] {
 
 .w100 {
   width: 100%;
+}
+
+input[type='submit']:disabled {
+  background: $grey50;
 }
