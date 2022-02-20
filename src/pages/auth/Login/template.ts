@@ -8,4 +8,8 @@ export default `
     .authorization-form__inner
       input(type='submit', value='Авторизироваться', class='button')
   #{registration}
+  if isLoading
+    .loading Пожалуйста подождите...
+  if isError
+    .error #{error}
 `;

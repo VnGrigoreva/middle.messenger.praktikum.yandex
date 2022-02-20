@@ -4,10 +4,37 @@ import template from './template';
 import {compile} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
 import {Routes} from '../../../types';
+import {HTTPTransport} from '../../../modules';
 
 export class Profile extends Block {
+  private data = null;
   constructor() {
     super({}, 'div', 'profile');
+  }
+
+  async componentDidMount() {
+    const api = new HTTPTransport();
+    this.setProps({
+      isLoading: true,
+    });
+    try {
+      const response = await api.get('auth/user', {
+        headers: {'access-control-expose-headers': 'Set-Cookie'},
+      });
+      if (response?.status === 200) {
+        this.data = JSON.parse(response);
+      } else {
+        const error = JSON.parse(response?.responseText)?.reason;
+        throw new Error(error);
+      }
+    } catch (e) {
+      this.setProps({isError: true, error: e.toString()});
+      this.data = null;
+    } finally {
+      this.setProps({
+        isLoading: false,
+      });
+    }
   }
 
   render() {
@@ -15,7 +42,7 @@ export class Profile extends Block {
 
     const emailInfo = new InfoRow({
       label: 'Почта',
-      value: 'pochta@yandex.ru',
+      value: this.data?.email,
       id: 'email',
       type: 'email',
       readonly: true,
@@ -23,35 +50,35 @@ export class Profile extends Block {
 
     const loginInfo = new InfoRow({
       label: 'Логин',
-      value: 'ivanivanov',
+      value: this.data?.login,
       id: 'login',
       readonly: true,
     });
 
     const firstNameInfo = new InfoRow({
       label: 'Имя',
-      value: 'Иван',
+      value: this.data?.first_name,
       id: 'first_name',
       readonly: true,
     });
 
     const secondNameInfo = new InfoRow({
       label: 'Фамилия',
-      value: 'Иванов',
+      value: this.data?.second_name,
       id: 'second_name',
       readonly: true,
     });
 
     const displayNameInfo = new InfoRow({
       label: 'Имя в чате',
-      value: 'Иван',
+      value: this.data?.display_name,
       id: 'display_name',
       readonly: true,
     });
 
     const phoneInfo = new InfoRow({
       label: 'Телефон',
-      value: '+79099673030',
+      value: this.data?.phone,
       type: 'tel',
       id: 'phone',
       readonly: true,
@@ -85,6 +112,7 @@ export class Profile extends Block {
       changePassword: changePasswordLink,
       logout: logoutLink,
       src: avatarUrl,
+      ...this.props,
     });
   }
 }

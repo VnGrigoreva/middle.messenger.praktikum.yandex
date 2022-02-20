@@ -2,7 +2,7 @@ import {Block, Input, Link} from '../../../components';
 import template from './template';
 import {compile} from '../../../utils';
 import {HTMLElementEvent, Routes} from '../../../types';
-import {Mediator} from '../../../modules';
+import {HTTPTransport, Mediator} from '../../../modules';
 import {Router} from '../../../modules';
 
 export class Login extends Block {
@@ -10,7 +10,7 @@ export class Login extends Block {
     super({}, 'div', 'authorization');
   }
 
-  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -24,8 +24,30 @@ export class Login extends Block {
     ) {
       console.warn(fromEntries);
 
-      const router = new Router('.app');
-      router.go(Routes.Chat);
+      const api = new HTTPTransport();
+      this.setProps({
+        isLoading: true,
+      });
+      try {
+        const response = await api.post('auth/signin', {
+          body: fromEntries,
+          headers: {'access-control-expose-headers': 'Set-Cookie'},
+        });
+        console.log(response.getAllResponseHeaders());
+        if (response?.status === 200) {
+          const router = new Router('.app');
+          router.go(Routes.Chat);
+        } else {
+          const error = JSON.parse(response?.responseText)?.reason;
+          throw new Error(error);
+        }
+      } catch (e) {
+        this.setProps({isError: true, error: e.toString()});
+      } finally {
+        this.setProps({
+          isLoading: false,
+        });
+      }
     }
   }
 
@@ -34,7 +56,7 @@ export class Login extends Block {
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit,
+          handler: this.handleSubmit.bind(this),
         },
       },
     });
@@ -69,6 +91,7 @@ export class Login extends Block {
       login: inputLogin,
       password: inputPas,
       registration: registrationLink,
+      ...this.props,
     });
   }
 }
