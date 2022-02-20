@@ -12,5 +12,5 @@ export default `
   if isLoading
     .loading Пожалуйста подождите...
   if isError
-    .error #{error}
+    .error-center #{error}
 `;

@@ -14,7 +14,7 @@ export type OptionsType = {
     'Content-Type'?: string;
   };
   parametrs?: {[key: string]: string};
-  body?: {[key: string]: FormDataEntryValue | string};
+  body?: {[key: string]: FormDataEntryValue | string | FormData};
 };
 
 export type ResponseType<T = any> = {
@@ -108,7 +108,11 @@ export class HTTPTransport {
       xhr.timeout = timeout;
       xhr.ontimeout = reject;
       if (body) {
-        xhr.send(JSON.stringify(body));
+        if (body?.get('avatar')) {
+          xhr.send(body);
+        } else {
+          xhr.send(JSON.stringify(body));
+        }
       } else {
         xhr.send();
       }

@@ -90,12 +90,46 @@ export class Settings extends Block<ProfilePropsType> {
     }
   }
 
+  private async changeAvatar(event) {
+    const file = event.target.files[0];
+    const body = new FormData();
+    body.append('avatar', file);
+    const api = new HTTPTransport();
+
+    this.setProps({
+      isLoading: true,
+    });
+    try {
+      const response = await api.put('user/profile/avatar', {
+        body,
+        headers: {'Content-Type': 'multipart/form-data'},
+      });
+      if (response?.status === 200) {
+        alert('успех');
+      } else {
+        const error = response?.data?.reason;
+        throw new Error(error);
+      }
+    } catch (e) {
+      const err = e as Error;
+      this.setProps({isError: true, error: err.toString()});
+    } finally {
+      this.setProps({
+        isLoading: false,
+      });
+    }
+  }
+
   async componentDidMount() {
     this.setProps({
       events: {
         submit: {
           selector: 'form',
           handler: this.handleSubmit.bind(this),
+        },
+        change: {
+          selector: 'input[type="file"]',
+          handler: (event) => this.changeAvatar.bind(this)(event),
         },
       },
     });

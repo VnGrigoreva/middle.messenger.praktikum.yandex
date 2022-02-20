@@ -67,15 +67,24 @@ h3 {
 .error {
   @include message;
   color: $red;
+  text-align: left;
+}
+
+.error-center {
+  @include message;
+  text-align: center;
+  color: $red;
 }
 
 .loading {
   @include message;
+  text-align: center;
   color: $darkBlue;
 }
 
 .success {
   @include message;
+  text-align: center;
   color: $green;
 }
 
