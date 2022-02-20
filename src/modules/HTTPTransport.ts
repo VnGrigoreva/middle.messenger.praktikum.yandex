@@ -15,6 +15,7 @@ export type OptionsType = {
   };
   parametrs?: {[key: string]: string};
   body?: {[key: string]: FormDataEntryValue | string | FormData};
+  withFiles?: boolean;
 };
 
 export type ResponseType<T = any> = {
@@ -71,9 +72,9 @@ export class HTTPTransport {
     timeout = 5000,
     apiVersion?: number
   ) => {
-    const {headers = {}, method, parametrs, body} = options || {};
+    const {headers = {}, method, parametrs, body, withFiles} = options || {};
 
-    if (!headers['Content-Type']) {
+    if (!headers['Content-Type'] && !withFiles) {
       headers['Content-Type'] = 'application/json';
     }
 
@@ -108,7 +109,7 @@ export class HTTPTransport {
       xhr.timeout = timeout;
       xhr.ontimeout = reject;
       if (body) {
-        if (body?.get('avatar')) {
+        if (withFiles) {
           xhr.send(body);
         } else {
           xhr.send(JSON.stringify(body));

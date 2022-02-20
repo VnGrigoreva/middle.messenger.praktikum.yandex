@@ -102,10 +102,10 @@ export class Settings extends Block<ProfilePropsType> {
     try {
       const response = await api.put('user/profile/avatar', {
         body,
-        headers: {'Content-Type': 'multipart/form-data'},
+        withFiles: true,
       });
       if (response?.status === 200) {
-        alert('успех');
+        this.data = response?.data;
       } else {
         const error = response?.data?.reason;
         throw new Error(error);
@@ -231,7 +231,9 @@ export class Settings extends Block<ProfilePropsType> {
       secondName: secondNameInfo,
       displayName: displayNameInfo,
       phone: phoneInfo,
-      src: avatarUrl,
+      src: this.data?.avatar
+        ? 'https://ya-praktikum.tech/api/v2/' + this.data?.avatar
+        : avatarUrl,
       displayNameTitle: this.data?.display_name,
       ...this.props,
     });

@@ -5,7 +5,6 @@ import {compile} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
 import {Routes} from '../../../types';
 import {HTTPTransport, Router} from '../../../modules';
-import config from '../../../utils/config';
 
 export class Profile extends Block {
   private data = null;
@@ -143,7 +142,7 @@ export class Profile extends Block {
       changePassword: changePasswordLink,
       logout: logoutLink,
       src: this.data?.avatar
-        ? 'https://ya-praktikum.tech/api/v2/uploads' + this.data?.avatar
+        ? 'https://ya-praktikum.tech/api/v2' + this.data?.avatar
         : avatarUrl,
       displayNameTitle: this.data?.display_name,
       ...this.props,
