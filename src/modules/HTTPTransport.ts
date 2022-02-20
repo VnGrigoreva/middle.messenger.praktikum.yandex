@@ -17,6 +17,11 @@ export type OptionsType = {
   body?: {[key: string]: FormDataEntryValue | string};
 };
 
+export type ResponseType<T = any> = {
+  data: T | {reason: string} | string;
+  status: number;
+};
+
 export class HTTPTransport {
   private static _instance: HTTPTransport;
 
@@ -28,39 +33,39 @@ export class HTTPTransport {
     return (HTTPTransport._instance = this);
   }
 
-  get = (url: string, options?: OptionsType) => {
-    return this.request(
+  get = <T = any>(url: string, options?: OptionsType) => {
+    return this.request<T>(
       url,
       {...options, method: Methods.Get},
       options?.timeout
     );
   };
 
-  put = (url: string, options?: OptionsType) => {
-    return this.request(
+  put = <T = any>(url: string, options?: OptionsType) => {
+    return this.request<T>(
       url,
       {...options, method: Methods.Put},
       options?.timeout
     );
   };
 
-  post = (url: string, options?: OptionsType) => {
-    return this.request(
+  post = <T = any>(url: string, options?: OptionsType) => {
+    return this.request<T>(
       url,
       {...options, method: Methods.Post},
       options?.timeout
     );
   };
 
-  delete = (url: string, options?: OptionsType) => {
-    return this.request(
+  delete = <T = any>(url: string, options?: OptionsType) => {
+    return this.request<T>(
       url,
       {...options, method: Methods.Delete},
       options?.timeout
     );
   };
 
-  request = (
+  request = <T>(
     url: string,
     options?: OptionsType,
     timeout = 5000,
@@ -72,20 +77,30 @@ export class HTTPTransport {
       headers['Content-Type'] = 'application/json';
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise<ResponseType<T>>((resolve, reject) => {
       const methodType = method || 'GET';
 
       const xhr = new XMLHttpRequest();
 
       const apiUrl = generateApiUrl(url, apiVersion);
       xhr.open(methodType, `${apiUrl}${queryStringify(parametrs)}`);
+      xhr.withCredentials = true;
 
       Object.entries(headers).forEach(([key, value]) => {
         xhr.setRequestHeader(key, value);
       });
 
       xhr.onload = function () {
-        resolve(xhr);
+        let data = xhr?.responseText;
+        try {
+          data = JSON.parse(data);
+          // eslint-disable-next-line no-empty
+        } catch {}
+        const response: ResponseType<T> = {
+          data,
+          status: xhr.status,
+        };
+        resolve(response);
       };
 
       xhr.onabort = reject;

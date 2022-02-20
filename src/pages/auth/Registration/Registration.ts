@@ -55,11 +55,12 @@ export class Registration extends Block {
             success: 'Поздравляем! Вы зарегистрированы.',
           });
         } else {
-          const error = JSON.parse(response?.responseText)?.reason;
+          const error = response?.data?.reason;
           throw new Error(error);
         }
       } catch (e) {
-        this.setProps({isError: true, error: e.toString()});
+        const err = e as Error;
+        this.setProps({isError: true, error: err.toString()});
       } finally {
         this.setProps({
           isLoading: false,

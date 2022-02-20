@@ -9,4 +9,8 @@ export default `
     #{verifynewPassword}
     .profile-content__inner.ai-c
       input(type='submit', value='Сохранить', class='button')
+  if isLoading
+    .loading Пожалуйста подождите...
+  if isError
+    .error #{error}
 `;

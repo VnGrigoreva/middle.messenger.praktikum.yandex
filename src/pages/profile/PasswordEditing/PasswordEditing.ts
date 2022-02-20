@@ -2,8 +2,8 @@ import {Block} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
 import {compile} from '../../../utils';
-import {HTMLElementEvent} from '../../../types';
-import {Mediator} from '../../../modules';
+import {HTMLElementEvent, Routes} from '../../../types';
+import {HTTPTransport, Mediator, Router} from '../../../modules';
 import avatar from '../../../assets/images/default_avatar.png';
 
 export class PasswordEditing extends Block {
@@ -13,19 +13,43 @@ export class PasswordEditing extends Block {
 
   private newPassword = '';
 
-  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const {new_password, verify_new_password} = fromEntries;
+    const {oldPassword, newPassword, verifyNewPassword} = fromEntries;
 
     if (
-      new_password &&
-      !Mediator.Instance.validatePassword(new_password as string) &&
-      new_password === verify_new_password
+      oldPassword &&
+      newPassword &&
+      !Mediator.Instance.validatePassword(newPassword as string) &&
+      newPassword === verifyNewPassword
     ) {
-      console.warn({new_password});
+      const api = new HTTPTransport();
+      this.setProps({
+        isLoading: true,
+        isError: false,
+      });
+      try {
+        const response = await api.put('/user/password', {
+          body: {oldPassword, newPassword},
+        });
+        if (response?.status === 200) {
+          const router = new Router('.app');
+          router.go(Routes.Profile);
+        } else {
+          const error = response?.data?.reason;
+          throw new Error(error);
+        }
+      } catch (e) {
+        const err = e as Error;
+        this.setProps({isError: true, error: err.toString()});
+      } finally {
+        this.setProps({
+          isLoading: false,
+        });
+      }
     }
   }
 
@@ -34,7 +58,7 @@ export class PasswordEditing extends Block {
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit,
+          handler: this.handleSubmit.bind(this),
         },
       },
     });
@@ -45,7 +69,7 @@ export class PasswordEditing extends Block {
 
     const oldPasswordInfo = new InfoRow({
       label: 'Старый пароль',
-      id: 'old_password',
+      id: 'oldPassword',
       type: 'password',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -59,7 +83,7 @@ export class PasswordEditing extends Block {
 
     const newPasswordInfo = new InfoRow({
       label: 'Новый пароль',
-      id: 'new_password',
+      id: 'newPassword',
       type: 'password',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -74,7 +98,7 @@ export class PasswordEditing extends Block {
 
     const verifynewPasswordInfo = new InfoRow({
       label: 'Повторите новый пароль',
-      id: 'verify_new_password',
+      id: 'verifyNewPassword',
       type: 'password',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -95,6 +119,7 @@ export class PasswordEditing extends Block {
       newPassword: newPasswordInfo,
       verifynewPassword: verifynewPasswordInfo,
       src: avatar,
+      ...this.props,
     });
   }
 }

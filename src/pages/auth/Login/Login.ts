@@ -31,18 +31,17 @@ export class Login extends Block {
       try {
         const response = await api.post('auth/signin', {
           body: fromEntries,
-          headers: {'access-control-expose-headers': 'Set-Cookie'},
         });
-        console.log(response.getAllResponseHeaders());
         if (response?.status === 200) {
           const router = new Router('.app');
           router.go(Routes.Chat);
         } else {
-          const error = JSON.parse(response?.responseText)?.reason;
+          const error = response?.data?.reason;
           throw new Error(error);
         }
       } catch (e) {
-        this.setProps({isError: true, error: e.toString()});
+        const err = e as Error;
+        this.setProps({isError: true, error: err.toString()});
       } finally {
         this.setProps({
           isLoading: false,
