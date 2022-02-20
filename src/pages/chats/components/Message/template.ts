@@ -1,1 +1,1 @@
-export default `div(class="message message-"+mode) #{text}`
+export default `div(class="message message-"+mode) #{text}`;

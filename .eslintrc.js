@@ -1,17 +1,11 @@
 module.exports = {
   env: {
     browser: true,
+    commonjs: true,
+    es6: true,
     node: true,
   },
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
-  // settings: {
-  //   'import/resolver': {
-  //     alias: {
-  //       map: [['@', './src']],
-  //       extensions: ['.ts,', '.js'],
-  //     },
-  //   },
-  // },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
@@ -19,6 +13,16 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    "max-len": [2, 200],
+    'no-console': ['error', {allow: ['warn', 'disableYellowBox']}],
+    'max-len': [2, 150],
+    'object-curly-spacing': ['error', 'never'],
+    'array-bracket-spacing': ['error', 'never'],
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.ts'],
+      },
+    },
   },
 };

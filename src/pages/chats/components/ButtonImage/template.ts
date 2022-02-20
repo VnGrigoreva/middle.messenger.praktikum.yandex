@@ -1,1 +1,1 @@
-export default `img(src=src, alt="attach")`
+export default `img(src=src, alt="attach")`;

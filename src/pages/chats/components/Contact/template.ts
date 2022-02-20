@@ -8,4 +8,4 @@ export default `
   .contact-content__inner
     span.contact-content__text #{text}
     #{badge}
-`
+`;

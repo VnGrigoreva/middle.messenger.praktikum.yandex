@@ -1,9 +1,9 @@
-import { Block } from '../../../components';
-import { Aside, InfoRow } from '../components';
+import {Block} from '../../../components';
+import {Aside, InfoRow} from '../components';
 import template from './template';
-import { compile } from '../../../utils';
-import { HTMLElementEvent } from '../../../types';
-import { Mediator } from '../../../modules';
+import {compile} from '../../../utils';
+import {HTMLElementEvent} from '../../../types';
+import {Mediator} from '../../../modules';
 import avatar from '../../../assets/images/default_avatar.png';
 
 export class PasswordEditing extends Block {
@@ -11,30 +11,32 @@ export class PasswordEditing extends Block {
     super({}, 'div', 'profile');
   }
 
-  newPassword ='';
+  private newPassword = '';
+
+  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const fromEntries = Object.fromEntries(formData);
+    const {new_password, verify_new_password} = fromEntries;
+
+    if (
+      new_password &&
+      !Mediator.Instance.validatePassword(new_password as string) &&
+      new_password === verify_new_password
+    ) {
+      console.warn({new_password});
+    }
+  }
 
   componentDidMount(): void {
-    const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const formData = new FormData(event.target);
-      const fromEntries = Object.fromEntries(formData);
-      const {new_password, verify_new_password} = fromEntries;
-
-      if (new_password && !Mediator.Instance.validatePassword(new_password as string)  
-        && new_password === verify_new_password
-      ) {
-        console.log({new_password});
-      }
-    };
-
     this.setProps({
       events: {
         submit: {
           selector: 'form',
-          handler: handleSubmit
+          handler: this.handleSubmit,
         },
-      }
+      },
     });
   }
 
@@ -77,11 +79,14 @@ export class PasswordEditing extends Block {
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
           verifynewPasswordInfo.setProps({
-            error: Mediator.Instance.comparePasswords(this.newPassword ,event.target.value),
+            error: Mediator.Instance.comparePasswords(
+              this.newPassword,
+              event.target.value
+            ),
             value: event.target.value,
           });
         },
-      }
+      },
     });
 
     return compile(template, {

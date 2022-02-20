@@ -1,34 +1,64 @@
-import { Block, Input } from '../../../components';
+import {Block, Input, Link} from '../../../components';
 import template from './template';
-import { compile } from '../../../utils';
-import { HTMLElementEvent } from '../../../types';
-import { Mediator } from '../../../modules';
+import {compile} from '../../../utils';
+import {HTMLElementEvent, Routes} from '../../../types';
+import {HTTPTransport, Mediator} from '../../../modules';
+import {Router} from '../../../modules';
 
 export class Login extends Block {
   constructor() {
     super({}, 'div', 'authorization');
   }
 
-  componentDidMount(): void {
-    const handleSubmit = (event: HTMLElementEvent<HTMLFormElement>) => {
-      event.preventDefault();
+  private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-      const formData = new FormData(event.target);
-      const fromEntries = Object.fromEntries(formData);
-      const {login, password} = fromEntries;
+    const formData = new FormData(event.target);
+    const fromEntries = Object.fromEntries(formData);
+    const {login, password} = fromEntries;
 
-      if (login && !Mediator.Instance.validateLogin(login as string) && password) {
-        console.log(fromEntries);
+    if (
+      login &&
+      !Mediator.Instance.validateLogin(login as string) &&
+      password
+    ) {
+      console.warn(fromEntries);
+
+      const api = new HTTPTransport();
+      this.setProps({
+        isLoading: true,
+      });
+      try {
+        const response = await api.post('auth/signin', {
+          body: fromEntries,
+          headers: {'access-control-expose-headers': 'Set-Cookie'},
+        });
+        console.log(response.getAllResponseHeaders());
+        if (response?.status === 200) {
+          const router = new Router('.app');
+          router.go(Routes.Chat);
+        } else {
+          const error = JSON.parse(response?.responseText)?.reason;
+          throw new Error(error);
+        }
+      } catch (e) {
+        this.setProps({isError: true, error: e.toString()});
+      } finally {
+        this.setProps({
+          isLoading: false,
+        });
       }
-    };
+    }
+  }
 
+  componentDidMount(): void {
     this.setProps({
       events: {
         submit: {
           selector: 'form',
-          handler: handleSubmit
+          handler: this.handleSubmit.bind(this),
         },
-      }
+      },
     });
   }
 
@@ -43,17 +73,25 @@ export class Login extends Block {
             value: event.target.value,
           });
         },
-      }
+      },
     });
     const inputPas = new Input({
       label: 'Пароль',
       id: 'password',
       type: 'password',
     });
+    const registrationLink = new Link({
+      label: 'Нет аккаунта',
+      path: Routes.Registration,
+      mode: 'primary',
+      className: 'link',
+    });
 
     return compile(template, {
       login: inputLogin,
       password: inputPas,
+      registration: registrationLink,
+      ...this.props,
     });
   }
 }

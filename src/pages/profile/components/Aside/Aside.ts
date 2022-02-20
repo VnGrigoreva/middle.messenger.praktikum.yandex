@@ -1,7 +1,8 @@
-import { Block } from '../../../../components';
+import {Block} from '../../../../components';
 import template from './template';
-import { compile } from '../../../../utils';
+import {compile} from '../../../../utils';
 import backUrl from '../../../../assets/images/back.png';
+import {Routes} from '../../../../types';
 
 export class Aside extends Block {
   constructor() {
@@ -9,6 +10,6 @@ export class Aside extends Block {
   }
 
   render() {
-    return compile(template, {src: backUrl});
+    return compile(template, {src: backUrl, link: Routes.Chat});
   }
 }

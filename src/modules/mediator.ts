@@ -1,13 +1,13 @@
-import * as ValidateService from "./validateService";
+import * as ValidateService from './validateService';
 
 export class Mediator {
-  private static instance: Mediator;
-  
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor () {}
+  private static _instance: Mediator;
 
-  public static get Instance(): Mediator {
-    return Mediator.instance || (Mediator.instance = new Mediator()) 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
+
+  static get Instance(): Mediator {
+    return Mediator._instance || (Mediator._instance = new Mediator());
   }
 
   validateEmail(email: string): string | undefined {
@@ -29,7 +29,7 @@ export class Mediator {
   validateMessage(message: string): string | undefined {
     return ValidateService.validateMessage(message);
   }
-  
+
   validateLogin(login: string): string | undefined {
     return ValidateService.validateLogin(login);
   }

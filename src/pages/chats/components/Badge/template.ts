@@ -1,1 +1,1 @@
-export default `span #{count}`
+export default `span #{count}`;

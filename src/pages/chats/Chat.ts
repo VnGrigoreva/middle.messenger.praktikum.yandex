@@ -1,15 +1,15 @@
-import { Block } from '../../components';
+import {Block} from '../../components';
 import template from './template';
-import { compile } from '../../utils';
-import { ContactList } from './components/ContactList/ContactList';
-import { ButtonImage } from './components/ButtonImage/ButtonImage';
+import {compile} from '../../utils';
+import {ContactList} from './components/ContactList/ContactList';
+import {ButtonImage} from './components/ButtonImage/ButtonImage';
 import menu from '../../assets/images/menu.png';
 import attach from '../../assets/images/attach.png';
 import send from '../../assets/images/send.png';
-import { Message } from './components/Message/Message';
-import { InputChat } from './components/InputChat/InputChat';
-import { HTMLElementEvent } from '../../types';
-import { Mediator } from '../../modules';
+import {Message} from './components/Message/Message';
+import {InputChat} from './components/InputChat/InputChat';
+import {HTMLElementEvent} from '../../types';
+import {Mediator} from '../../modules';
 
 export class Chat extends Block {
   constructor() {
@@ -21,7 +21,7 @@ export class Chat extends Block {
   render() {
     const contactListComp = new ContactList();
 
-    const menuBtn = new ButtonImage({ src: menu });
+    const menuBtn = new ButtonImage({src: menu});
 
     const messageCompL = new Message({
       text: 'Some message text',
@@ -33,7 +33,7 @@ export class Chat extends Block {
       mode: 'right',
     });
 
-    const attachBtn = new ButtonImage({ src: attach });
+    const attachBtn = new ButtonImage({src: attach});
 
     const sendBtn = new ButtonImage({
       src: send,
@@ -41,13 +41,12 @@ export class Chat extends Block {
         click: () => {
           const error = Mediator.Instance.validateMessage(this.message);
           if (!error) {
-            console.log({message: this.message});
-          } else {
-            newMessageInput.setProps({
-              error: error,
-              value: this.message,
-            });
+            console.warn({message: this.message});
           }
+          newMessageInput.setProps({
+            error: error,
+            value: '',
+          });
         },
       },
     });

@@ -1,4 +1,4 @@
-import { CallbackType } from "../types";
+import {CallbackType} from '../types';
 
 export class EventBus {
   private listeners: {[key: string]: CallbackType[]};
@@ -16,20 +16,20 @@ export class EventBus {
   }
 
   off(event: string, callback: CallbackType) {
-		if (!this.listeners[event]) {
+    if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
 
     this.listeners[event] = this.listeners[event].filter(
-      listener => listener !== callback
+      (listener) => listener !== callback
     );
   }
 
-	emit(event: string, ...args: unknown[]) {
+  emit(event: string, ...args: unknown[]) {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
-    
+
     this.listeners[event].forEach((listener) => {
       listener(...args);
     });

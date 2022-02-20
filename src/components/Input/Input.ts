@@ -1,7 +1,7 @@
-import { Block } from '../Block/Block';
+import {Block} from '../Block/Block';
 import template from './template';
-import { compile } from '../../utils';
-import { EventsType } from '../../types';
+import {compile} from '../../utils';
+import {EventsType} from '../../types';
 
 type InputPropsType = {
   label: string;
@@ -21,6 +21,6 @@ export class Input extends Block<InputPropsType> {
   }
 
   render() {
-    return compile(template, { ...this.props });
+    return compile(template, {...this.props});
   }
 }

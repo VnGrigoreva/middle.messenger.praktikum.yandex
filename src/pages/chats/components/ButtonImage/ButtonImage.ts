@@ -1,7 +1,7 @@
-import { Block } from '../../../../components';
+import {Block} from '../../../../components';
 import template from './template';
-import { compile } from '../../../../utils';
-import { EventsType } from '../../../../types';
+import {compile} from '../../../../utils';
+import {EventsType} from '../../../../types';
 
 type ButtonImagePropsType = {
   src: string;
@@ -14,6 +14,6 @@ export class ButtonImage extends Block<ButtonImagePropsType> {
   }
 
   render() {
-    return compile(template, { ...this.props });
+    return compile(template, {...this.props});
   }
 }

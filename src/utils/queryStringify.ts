@@ -1,4 +1,6 @@
-export default function (data: {[key: string]: string} | undefined): string {
+export const queryStringify = (
+  data: { [key: string]: string } | undefined
+): string => {
   if (!data || typeof data !== 'object') {
     return '';
   }
@@ -7,4 +9,4 @@ export default function (data: {[key: string]: string} | undefined): string {
     return agr + item + '=' + data[item] + (ind < keys.length - 1 ? '&' : '');
   }, '?');
   return result;
-}
+};

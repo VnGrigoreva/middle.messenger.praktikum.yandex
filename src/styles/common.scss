@@ -3,17 +3,17 @@ html {
   font-size: 12px;
 }
 
-*, 
+*,
 *::after,
 *::before {
   box-sizing: inherit;
 }
 
 body {
-	font-family: 'Inter';
+  font-family: 'Inter';
   font-style: normal;
-	font-size: 12px;
-	line-height: 15px;
+  font-size: 12px;
+  line-height: 15px;
 }
 
 input {
@@ -42,7 +42,7 @@ h3 {
   color: $white;
   font-weight: 500;
   font-size: 13px;
-  line-height: 13px;  
+  line-height: 13px;
   text-align: center;
   padding: 12px;
   margin-bottom: 14px;
@@ -65,11 +65,18 @@ h3 {
 }
 
 .error {
+  @include message;
   color: $red;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 8px;
-  margin: 7px 0;
+}
+
+.loading {
+  @include message;
+  color: $darkBlue;
+}
+
+.success {
+  @include message;
+  color: $green;
 }
 
 input[type='tel'],
@@ -77,10 +84,9 @@ input[type='email'] {
   &:invalid:not(:focus):not(:placeholder-shown) {
     color: $red;
 
-    &~div.is-hidden {
+    & ~ div.is-hidden {
       display: block;
     }
-    
   }
 }
 
@@ -94,4 +100,8 @@ input[type='email'] {
 
 .w100 {
   width: 100%;
+}
+
+input[type='submit']:disabled {
+  background: $grey50;
 }

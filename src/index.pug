@@ -1,11 +1,5 @@
 extends ./views/layout/layout
 
 block content
-  .main
-    a(href="./views/chats/chats.pug") Список чатов
-    a(href="./views/profile/profile.pug") Профиль
-    a(href="./views/profile/passwordEditing/passwordEditing.pug ") Смена пароля
-    a(href="./views/authorization/login.pug") Авторизация
-    a(href="./views/authorization/registration.pug") Регистрация
-    a(href="./views/errorPages/error500.pug") Ошибка 500
-    a(href="./views/errorPages/error400.pug") Ошибка 404
+  .app
+    script(src='./index.ts' type="module")
