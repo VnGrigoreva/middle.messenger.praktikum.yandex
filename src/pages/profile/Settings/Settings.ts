@@ -1,7 +1,7 @@
 import {Block} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
-import {compile} from '../../../utils';
+import {compile, generateApiUrl} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
 import {EventsType, HTMLElementEvent, Routes} from '../../../types';
 import {HTTPTransport, Mediator, Router} from '../../../modules';
@@ -232,7 +232,7 @@ export class Settings extends Block<ProfilePropsType> {
       displayName: displayNameInfo,
       phone: phoneInfo,
       src: this.data?.avatar
-        ? 'https://ya-praktikum.tech/api/v2/' + this.data?.avatar
+        ? generateApiUrl('resources') + this.data?.avatar
         : avatarUrl,
       displayNameTitle: this.data?.display_name,
       ...this.props,

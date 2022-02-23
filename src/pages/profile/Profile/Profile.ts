@@ -1,7 +1,7 @@
 import {Block, Link} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
-import {compile} from '../../../utils';
+import {compile, generateApiUrl} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
 import {Routes} from '../../../types';
 import {HTTPTransport, Router} from '../../../modules';
@@ -142,7 +142,7 @@ export class Profile extends Block {
       changePassword: changePasswordLink,
       logout: logoutLink,
       src: this.data?.avatar
-        ? 'https://ya-praktikum.tech/api/v2' + this.data?.avatar
+        ? generateApiUrl('resources') + this.data?.avatar
         : avatarUrl,
       displayNameTitle: this.data?.display_name,
       ...this.props,
