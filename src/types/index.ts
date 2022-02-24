@@ -18,3 +18,7 @@ export enum Routes {
   Profile = '/profile',
   Settings = '/settings',
 }
+
+export type Indexed<T = any> = {
+  [key in string]: T;
+};

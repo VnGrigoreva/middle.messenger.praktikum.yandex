@@ -14,12 +14,12 @@ export type OptionsType = {
     'Content-Type'?: string;
   };
   parametrs?: {[key: string]: string};
-  body?: {[key: string]: FormDataEntryValue | string | FormData};
+  body?: {[key: string]: FormDataEntryValue | string} | FormData;
   withFiles?: boolean;
 };
 
 export type ResponseType<T = any> = {
-  data: T | {reason: string} | string;
+  items: T | {reason: string} | string;
   status: number;
 };
 
@@ -98,7 +98,7 @@ export class HTTPTransport {
           // eslint-disable-next-line no-empty
         } catch {}
         const response: ResponseType<T> = {
-          data,
+          items: data,
           status: xhr.status,
         };
         resolve(response);

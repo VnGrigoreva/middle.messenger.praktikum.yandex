@@ -1,43 +1,14 @@
 import {Block, Link} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
-import {compile, generateApiUrl} from '../../../utils';
+import {compile, connect, generateApiUrl} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
 import {Routes} from '../../../types';
-import {HTTPTransport, Router} from '../../../modules';
+import userController from '../../../services/userController';
 
-export class Profile extends Block {
-  private data = null;
+class Profile extends Block {
   constructor() {
     super({}, 'div', 'profile');
-  }
-
-  async getProfile() {
-    const api = new HTTPTransport();
-    this.setProps({
-      isLoading: true,
-    });
-    try {
-      const response = await api.get('auth/user');
-      if (response?.status === 200) {
-        this.data = response?.data;
-      } else {
-        const error = response?.data?.reason;
-        throw new Error(error);
-      }
-    } catch (e) {
-      const err = e as Error;
-      this.setProps({isError: true, error: err.toString()});
-      this.data = null;
-    } finally {
-      this.setProps({
-        isLoading: false,
-      });
-    }
-  }
-
-  async componentDidMount() {
-    await this.getProfile();
   }
 
   render() {
@@ -45,7 +16,7 @@ export class Profile extends Block {
 
     const emailInfo = new InfoRow({
       label: 'Почта',
-      value: this.data?.email,
+      value: this.props?.data?.email,
       id: 'email',
       type: 'email',
       readonly: true,
@@ -53,35 +24,35 @@ export class Profile extends Block {
 
     const loginInfo = new InfoRow({
       label: 'Логин',
-      value: this.data?.login,
+      value: this.props?.data?.login,
       id: 'login',
       readonly: true,
     });
 
     const firstNameInfo = new InfoRow({
       label: 'Имя',
-      value: this.data?.first_name,
+      value: this.props?.data?.first_name,
       id: 'first_name',
       readonly: true,
     });
 
     const secondNameInfo = new InfoRow({
       label: 'Фамилия',
-      value: this.data?.second_name,
+      value: this.props?.data?.second_name,
       id: 'second_name',
       readonly: true,
     });
 
     const displayNameInfo = new InfoRow({
       label: 'Имя в чате',
-      value: this.data?.display_name,
+      value: this.props?.data?.display_name,
       id: 'display_name',
       readonly: true,
     });
 
     const phoneInfo = new InfoRow({
       label: 'Телефон',
-      value: this.data?.phone,
+      value: this.props?.data?.phone,
       type: 'tel',
       id: 'phone',
       readonly: true,
@@ -102,30 +73,8 @@ export class Profile extends Block {
       path: '#',
       mode: 'danger',
       events: {
-        click: async () => {
-          const api = new HTTPTransport();
-          this.setProps({
-            isLoading: true,
-          });
-          try {
-            const response = await api.post('/auth/logout');
-            if (response?.status === 200) {
-              this.data = response?.data;
-              const router = new Router('.app');
-              router.go(Routes.Login);
-            } else {
-              const error = response?.data?.reason;
-              throw new Error(error);
-            }
-          } catch (e) {
-            const err = e as Error;
-            this.setProps({isError: true, error: err.toString()});
-            this.data = null;
-          } finally {
-            this.setProps({
-              isLoading: false,
-            });
-          }
+        click: () => {
+          userController.leaveProfile();
         },
       },
     });
@@ -141,11 +90,21 @@ export class Profile extends Block {
       changeData: changeDataLink,
       changePassword: changePasswordLink,
       logout: logoutLink,
-      src: this.data?.avatar
-        ? generateApiUrl('resources') + this.data?.avatar
+      src: this.props?.data?.avatar
+        ? generateApiUrl('resources') + this.props?.data?.avatar
         : avatarUrl,
-      displayNameTitle: this.data?.display_name,
+      displayNameTitle: this.props?.data?.display_name,
       ...this.props,
     });
   }
 }
+
+function mapUserToProps(state: any) {
+  return {
+    data: state.user?.data,
+    isLoading: state.user?.isLoading,
+    error: state.user?.error,
+  };
+}
+
+export default connect(Profile, mapUserToProps);

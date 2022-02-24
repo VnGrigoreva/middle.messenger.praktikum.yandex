@@ -8,6 +8,7 @@ import {
   Error400Page,
   Settings,
 } from './pages';
+import userController from './services/userController';
 import {Routes} from './types';
 
 const router = new Router('.app');
@@ -20,3 +21,5 @@ router
   .use(Routes.Registration, Registration)
   .useError(Error400Page)
   .start();
+
+userController.getUser();

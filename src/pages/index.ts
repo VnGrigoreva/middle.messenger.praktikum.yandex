@@ -1,6 +1,6 @@
 export {Login} from './auth/Login/Login';
 export {Registration} from './auth/Registration/Registration';
-export {Profile} from './profile/Profile/Profile';
+export {default as Profile} from './profile/Profile/Profile';
 export {Settings} from './profile/Settings/Settings';
 export {PasswordEditing} from './profile/PasswordEditing/PasswordEditing';
 export {Chat} from './chats/Chat';
