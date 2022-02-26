@@ -4,9 +4,11 @@ import {compile} from '../../../../utils';
 import {Badge} from '../Badge/Badge';
 
 type ContactPropsType = {
-  userName: string;
+  userName?: string;
   text: string;
   time: string;
+  title: string;
+  id: string;
 };
 
 export class Contact extends Block<ContactPropsType> {

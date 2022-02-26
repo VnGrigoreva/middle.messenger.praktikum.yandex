@@ -1,21 +1,27 @@
 import {Block, Link} from '../../../../components';
 import template from './template';
-import {compile} from '../../../../utils';
+import {compile, connect} from '../../../../utils';
 import {InputChat} from '../InputChat/InputChat';
 import {Contact} from '../Contact/Contact';
 import {Routes} from '../../../../types';
 import {Router} from '../../../../modules';
-import {userController} from '../../../../services';
+import chatController from '../../../../services/chat/chatController';
+import {AddChat} from '../AddChat/AddChat';
 
-export class ContactList extends Block {
+class ContactList extends Block {
   constructor() {
     super({}, 'div', 'chat-list');
+  }
+
+  componentDidMount() {
+    chatController.getChats();
   }
 
   render() {
     const profileLink = new Link({
       label: 'Профиль >',
       mode: 'secondary',
+      className: 'ta-e',
       events: {
         click: () => {
           const router = new Router('.app');
@@ -28,27 +34,35 @@ export class ContactList extends Block {
       placeholder: 'Поиск',
       id: 'search',
     });
-    const contactBlocks = [
-      new Contact({
-        userName: 'Андрей',
-        text: 'Some short text',
-        time: '14:07',
-      }),
-      new Contact({
-        userName: 'Ваня',
-        text: 'Some short text1',
-        time: '14:09',
-      }),
-      new Contact({
-        userName: 'Петя',
-        text: 'Some short text2',
-        time: '16:09',
-      }),
-    ];
+    const addChat = new AddChat();
+    const contactBlocks = this.props?.data?.map((e: any) => {
+      return new Contact({
+        id: e?.id,
+        title: e?.title,
+        userName:
+          e?.last_message?.user?.first_name +
+          ' ' +
+          e?.last_message?.user?.second_name,
+        text: e?.last_message?.content,
+        time: e?.last_message?.time,
+      });
+    });
     return compile(template, {
       profile: profileLink,
       search: searchInput,
-      contacts: contactBlocks,
+      add: addChat,
+      contacts: contactBlocks?.length ? contactBlocks : [],
     });
   }
 }
+
+function mapStateToProps(state: any) {
+  return {
+    data: state.chat?.data,
+    isLoading: state.chat?.isLoading,
+    error: state.chat?.error,
+    isError: !!state.chat?.error,
+  };
+}
+
+export default connect(ContactList, mapStateToProps);
