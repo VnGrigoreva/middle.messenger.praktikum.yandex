@@ -1,22 +1,5 @@
+import {Methods, OptionsType} from '../types';
 import {queryStringify, generateApiUrl} from '../utils';
-
-export enum Methods {
-  Get = 'GET',
-  Put = 'PUT',
-  Post = 'POST',
-  Delete = 'DELETE',
-}
-
-export type OptionsType = {
-  timeout?: number;
-  method?: Methods;
-  headers?: {
-    'Content-Type'?: string;
-  };
-  parametrs?: {[key: string]: string};
-  body?: {[key: string]: FormDataEntryValue | string} | FormData;
-  withFiles?: boolean;
-};
 
 export type ResponseType<T = any> = {
   items: T | {reason: string} | string;
@@ -84,6 +67,7 @@ export class HTTPTransport {
       const xhr = new XMLHttpRequest();
 
       const apiUrl = generateApiUrl(url, apiVersion);
+
       xhr.open(methodType, `${apiUrl}${queryStringify(parametrs)}`);
       xhr.withCredentials = true;
 
@@ -110,6 +94,8 @@ export class HTTPTransport {
       xhr.ontimeout = reject;
       if (body) {
         if (withFiles) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           xhr.send(body);
         } else {
           xhr.send(JSON.stringify(body));

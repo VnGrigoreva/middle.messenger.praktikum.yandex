@@ -1,9 +1,9 @@
 import {Block, Input, Link} from '../../../components';
 import template from './template';
-import {compile} from '../../../utils';
+import {compile, connect} from '../../../utils';
 import {HTMLElementEvent, Routes} from '../../../types';
-import {HTTPTransport, Mediator} from '../../../modules';
-import {Router} from '../../../modules';
+import {Mediator} from '../../../modules';
+import {authController} from '../../../services';
 
 export class Login extends Block {
   constructor() {
@@ -22,31 +22,7 @@ export class Login extends Block {
       !Mediator.Instance.validateLogin(login as string) &&
       password
     ) {
-      console.warn(fromEntries);
-
-      const api = new HTTPTransport();
-      this.setProps({
-        isLoading: true,
-      });
-      try {
-        const response = await api.post('auth/signin', {
-          body: fromEntries,
-        });
-        if (response?.status === 200) {
-          const router = new Router('.app');
-          router.go(Routes.Chat);
-        } else {
-          const error = response?.data?.reason;
-          throw new Error(error);
-        }
-      } catch (e) {
-        const err = e as Error;
-        this.setProps({isError: true, error: err.toString()});
-      } finally {
-        this.setProps({
-          isLoading: false,
-        });
-      }
+      authController.signin(fromEntries);
     }
   }
 
@@ -94,3 +70,12 @@ export class Login extends Block {
     });
   }
 }
+
+function mapAuthStateToProps(state: any) {
+  return {
+    isLoading: state.auth?.isLoading,
+    error: state.auth?.error,
+  };
+}
+
+export default connect(Login, mapAuthStateToProps);

@@ -8,7 +8,7 @@ import {
   Error400Page,
   Settings,
 } from './pages';
-import userController from './services/userController';
+import {userController} from './services';
 import {Routes} from './types';
 
 const router = new Router('.app');

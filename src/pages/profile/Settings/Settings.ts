@@ -1,55 +1,28 @@
 import {Block} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
-import {compile, generateApiUrl} from '../../../utils';
+import {compile, connect, generateApiUrl} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
-import {EventsType, HTMLElementEvent, Routes} from '../../../types';
-import {HTTPTransport, Mediator, Router} from '../../../modules';
+import {EventsType, HTMLElementEvent} from '../../../types';
+import {Mediator} from '../../../modules';
+import {userController} from '../../../services';
 
 export type ProfilePropsType = {
   events?: EventsType;
-  isLoading?: boolean;
-  isError?: boolean;
-  error?: string;
 };
 
 export class Settings extends Block<ProfilePropsType> {
-  private data = null;
   constructor() {
     super({}, 'div', 'profile');
-  }
-
-  async getProfile() {
-    const api = new HTTPTransport();
-    this.setProps({
-      isLoading: true,
-    });
-    try {
-      const response = await api.get('auth/user');
-      if (response?.status === 200) {
-        this.data = response?.data;
-      } else {
-        const error = response?.data?.reason;
-        throw new Error(error);
-      }
-    } catch (e) {
-      const err = e as Error;
-      this.setProps({isError: true, error: err.toString()});
-      this.data = null;
-    } finally {
-      this.setProps({
-        isLoading: false,
-      });
-    }
   }
 
   private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
-    const fromEntries = Object.fromEntries(formData);
+    const formEntries = Object.fromEntries(formData);
     const {display_name, email, first_name, login, phone, second_name} =
-      fromEntries;
+      formEntries;
 
     if (
       email &&
@@ -64,60 +37,15 @@ export class Settings extends Block<ProfilePropsType> {
       !Mediator.Instance.validateUserName(second_name as string) &&
       display_name
     ) {
-      const api = new HTTPTransport();
-      this.setProps({
-        isLoading: true,
-      });
-      try {
-        const response = await api.put('user/profile', {
-          body: fromEntries,
-        });
-        if (response?.status === 200) {
-          const router = new Router('.app');
-          router.go(Routes.Profile);
-        } else {
-          const error = response?.data?.reason;
-          throw new Error(error);
-        }
-      } catch (e) {
-        const err = e as Error;
-        this.setProps({isError: true, error: err.toString()});
-      } finally {
-        this.setProps({
-          isLoading: false,
-        });
-      }
+      userController.setProfile(formEntries);
     }
   }
 
   private async changeAvatar(event) {
     const file = event.target.files[0];
-    const body = new FormData();
-    body.append('avatar', file);
-    const api = new HTTPTransport();
-
-    this.setProps({
-      isLoading: true,
-    });
-    try {
-      const response = await api.put('user/profile/avatar', {
-        body,
-        withFiles: true,
-      });
-      if (response?.status === 200) {
-        this.data = response?.data;
-      } else {
-        const error = response?.data?.reason;
-        throw new Error(error);
-      }
-    } catch (e) {
-      const err = e as Error;
-      this.setProps({isError: true, error: err.toString()});
-    } finally {
-      this.setProps({
-        isLoading: false,
-      });
-    }
+    const fileData = new FormData();
+    fileData.append('avatar', file);
+    userController.setAvatar(fileData);
   }
 
   async componentDidMount() {
@@ -133,7 +61,6 @@ export class Settings extends Block<ProfilePropsType> {
         },
       },
     });
-    await this.getProfile();
   }
 
   render() {
@@ -141,7 +68,7 @@ export class Settings extends Block<ProfilePropsType> {
 
     const emailInfo = new InfoRow({
       label: 'Почта',
-      value: this.data?.email,
+      value: this.props?.data?.email,
       id: 'email',
       type: 'email',
       readonly: false,
@@ -157,7 +84,7 @@ export class Settings extends Block<ProfilePropsType> {
 
     const loginInfo = new InfoRow({
       label: 'Логин',
-      value: this.data?.login,
+      value: this.props?.data?.login,
       id: 'login',
       readonly: false,
       events: {
@@ -172,7 +99,7 @@ export class Settings extends Block<ProfilePropsType> {
 
     const firstNameInfo = new InfoRow({
       label: 'Имя',
-      value: this.data?.first_name,
+      value: this.props?.data?.first_name,
       id: 'first_name',
       readonly: false,
       events: {
@@ -187,7 +114,7 @@ export class Settings extends Block<ProfilePropsType> {
 
     const secondNameInfo = new InfoRow({
       label: 'Фамилия',
-      value: this.data?.second_name,
+      value: this.props?.data?.second_name,
       id: 'second_name',
       readonly: false,
       events: {
@@ -202,14 +129,14 @@ export class Settings extends Block<ProfilePropsType> {
 
     const displayNameInfo = new InfoRow({
       label: 'Имя в чате',
-      value: this.data?.display_name,
+      value: this.props?.data?.display_name,
       id: 'display_name',
       readonly: false,
     });
 
     const phoneInfo = new InfoRow({
       label: 'Телефон',
-      value: this.data?.phone,
+      value: this.props?.data?.phone,
       type: 'tel',
       id: 'phone',
       readonly: false,
@@ -231,11 +158,21 @@ export class Settings extends Block<ProfilePropsType> {
       secondName: secondNameInfo,
       displayName: displayNameInfo,
       phone: phoneInfo,
-      src: this.data?.avatar
-        ? generateApiUrl('resources') + this.data?.avatar
+      src: this.props?.data?.avatar
+        ? generateApiUrl('resources') + this.props?.data?.avatar
         : avatarUrl,
-      displayNameTitle: this.data?.display_name,
+      displayNameTitle: this.props?.data?.display_name,
+      isError: !!this.props?.error,
       ...this.props,
     });
   }
 }
+
+function mapStateToProps(state: any) {
+  return {
+    isLoading: state.user?.isLoading,
+    error: state.user?.error,
+    data: state.user?.data,
+  };
+}
+export default connect(Settings, mapStateToProps);

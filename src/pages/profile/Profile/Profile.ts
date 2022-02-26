@@ -4,8 +4,7 @@ import template from './template';
 import {compile, connect, generateApiUrl} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
 import {Routes} from '../../../types';
-import userController from '../../../services/userController';
-
+import authController from '../../../services/auth/authController';
 class Profile extends Block {
   constructor() {
     super({}, 'div', 'profile');
@@ -74,7 +73,7 @@ class Profile extends Block {
       mode: 'danger',
       events: {
         click: () => {
-          userController.leaveProfile();
+          authController.logout();
         },
       },
     });
@@ -94,12 +93,13 @@ class Profile extends Block {
         ? generateApiUrl('resources') + this.props?.data?.avatar
         : avatarUrl,
       displayNameTitle: this.props?.data?.display_name,
+      isError: !!this.props.error,
       ...this.props,
     });
   }
 }
 
-function mapUserToProps(state: any) {
+function mapStateToProps(state: any) {
   return {
     data: state.user?.data,
     isLoading: state.user?.isLoading,
@@ -107,4 +107,4 @@ function mapUserToProps(state: any) {
   };
 }
 
-export default connect(Profile, mapUserToProps);
+export default connect(Profile, mapStateToProps);

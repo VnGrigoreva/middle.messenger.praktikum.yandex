@@ -1,8 +1,9 @@
 import template from './template';
 import {Input, Block, Link} from '../../../components';
-import {compile} from '../../../utils';
-import {HTTPTransport, Mediator} from '../../../modules';
+import {compile, connect} from '../../../utils';
+import {Mediator} from '../../../modules';
 import {HTMLElementEvent, Routes} from '../../../types';
+import {authController} from '../../../services';
 
 export class Registration extends Block {
   password = '';
@@ -43,29 +44,7 @@ export class Registration extends Block {
     ) {
       const data = {email, first_name, login, password, phone, second_name};
 
-      const api = new HTTPTransport();
-      this.setProps({
-        isLoading: true,
-      });
-      try {
-        const response = await api.post('auth/signup', {body: data});
-        if (response?.status === 200) {
-          this.setProps({
-            isSuccess: true,
-            success: 'Поздравляем! Вы зарегистрированы.',
-          });
-        } else {
-          const error = response?.data?.reason;
-          throw new Error(error);
-        }
-      } catch (e) {
-        const err = e as Error;
-        this.setProps({isError: true, error: err.toString()});
-      } finally {
-        this.setProps({
-          isLoading: false,
-        });
-      }
+      authController.signup(data);
     }
   }
 
@@ -210,3 +189,15 @@ export class Registration extends Block {
     });
   }
 }
+
+function mapRegistrationStateProps(state: any) {
+  return {
+    isLoading: state.registration?.isLoading,
+    isError: state.registration?.isError,
+    error: state.registration?.error,
+    isSuccess: state.registration?.isSuccess,
+    success: state.registration?.success,
+  };
+}
+
+export default connect(Registration, mapRegistrationStateProps);
