@@ -21,15 +21,27 @@ export class ContactList extends Block {
       placeholder: 'Поиск',
       id: 'search',
     });
-    const contactBlock = new Contact({
-      userName: 'Андрей',
-      text: 'Some short text',
-      time: '14:07',
-    });
+    const contactBlocks = [
+      new Contact({
+        userName: 'Андрей',
+        text: 'Some short text',
+        time: '14:07',
+      }),
+      new Contact({
+        userName: 'Ваня',
+        text: 'Some short text1',
+        time: '14:09',
+      }),
+      new Contact({
+        userName: 'Петя',
+        text: 'Some short text2',
+        time: '16:09',
+      }),
+    ];
     return compile(template, {
       profile: profileLink,
       search: searchInput,
-      contact: contactBlock,
+      contacts: contactBlocks,
     });
   }
 }

@@ -3,5 +3,6 @@ export default `
   #{profile}
   #{search}
 .chat-list__contacts
-  #{contact}
+  each contact in contacts
+    #{contact}
 `;
