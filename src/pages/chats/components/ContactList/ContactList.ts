@@ -6,7 +6,7 @@ import {Contact} from '../Contact/Contact';
 import {Routes} from '../../../../types';
 import {Router} from '../../../../modules';
 import chatController from '../../../../services/chat/chatController';
-import {AddChat} from '../AddChat/AddChat';
+import AddChat from '../AddChat/AddChat';
 
 class ContactList extends Block {
   constructor() {
@@ -39,12 +39,9 @@ class ContactList extends Block {
       return new Contact({
         id: e?.id,
         title: e?.title,
-        userName:
-          e?.last_message?.user?.first_name +
-          ' ' +
-          e?.last_message?.user?.second_name,
         text: e?.last_message?.content,
         time: e?.last_message?.time,
+        count: e?.unread_count,
       });
     });
     return compile(template, {
@@ -52,6 +49,7 @@ class ContactList extends Block {
       search: searchInput,
       add: addChat,
       contacts: contactBlocks?.length ? contactBlocks : [],
+      ...this.props,
     });
   }
 }

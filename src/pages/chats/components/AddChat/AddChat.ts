@@ -1,22 +1,33 @@
 import {Block, Input} from '../../../../components';
 import template from './template';
-import {compile} from '../../../../utils';
+import {compile, connect} from '../../../../utils';
+import chatController from '../../../../services/chat/chatController';
+import {HTMLElementEvent} from '../../../../types';
 
-export class AddChat extends Block {
+class AddChat extends Block {
   constructor() {
     super({}, 'div');
   }
 
-  // componentDidMount(): void {
-  //   this.setProps({
-  //     events: {
-  //       submit: {
-  //         selector: 'form',
-  //         handler: this.handleSubmit.bind(this),
-  //       },
-  //     },
-  //   });
-  // }
+  handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const fromEntries = Object.fromEntries(formData);
+    chatController.addChats(fromEntries);
+    chatController.getChats();
+  }
+
+  componentDidMount(): void {
+    this.setProps({
+      events: {
+        submit: {
+          selector: 'form',
+          handler: this.handleSubmit.bind(this),
+        },
+      },
+    });
+  }
 
   render() {
     const inputTitle = new Input({
@@ -26,3 +37,13 @@ export class AddChat extends Block {
     return compile(template, {title: inputTitle, ...this.props});
   }
 }
+
+function mapStateToProps(state: any) {
+  return {
+    isLoading: state.chat?.isLoading,
+    error: state.chat?.error,
+    isError: !!state.chat?.error,
+  };
+}
+
+export default connect(AddChat, mapStateToProps);

@@ -1,12 +1,13 @@
 import chatApi from './chatApi';
 import {store} from '../../modules';
+import {FromEntriesType} from '../../types';
 
 class ChatController {
   async getChats() {
     store.set('chat.isLoading', true);
     try {
       const response = await chatApi.getChats({
-        parametrs: {offset: '50', limit: '100'},
+        parametrs: {offset: '0', limit: '100'},
       });
       if (response?.status === 200) {
         store.set('chat.data', response?.items);
@@ -22,15 +23,13 @@ class ChatController {
     }
   }
 
-  async addChats() {
+  async addChats(data: FromEntriesType) {
     store.set('chat.isLoading', true);
     try {
-      const response = await chatApi.getChats({
-        parametrs: {offset: '50', limit: '100'},
+      const response = await chatApi.addChats({
+        body: data,
       });
-      if (response?.status === 200) {
-        store.set('chat.data', response?.items);
-      } else {
+      if (response?.status !== 200) {
         const error = response?.items?.reason;
         throw new Error(error);
       }

@@ -4,11 +4,11 @@ import {compile} from '../../../../utils';
 import {Badge} from '../Badge/Badge';
 
 type ContactPropsType = {
-  userName?: string;
   text: string;
   time: string;
   title: string;
   id: string;
+  count: number;
 };
 
 export class Contact extends Block<ContactPropsType> {
@@ -17,7 +17,8 @@ export class Contact extends Block<ContactPropsType> {
   }
 
   render() {
-    const badge = new Badge({count: 4});
+    const badge =
+      this.props.count > 0 ? new Badge({count: this.props.count}) : undefined;
     return compile(template, {...this.props, badge: badge});
   }
 }

@@ -21,5 +21,3 @@ router
   .use(Routes.Registration, Registration)
   .useError(Error400Page)
   .start();
-
-chatController.getChats();

@@ -4,9 +4,7 @@ export default `
 .contact-content
   .contact-content__inner
     span.name #{title}
-    span.contact-content__time 
-      b #{userName}:
-      #{time}
+    span.contact-content__time #{time}
   .contact-content__inner
     span.contact-content__text #{text}
     #{badge}
