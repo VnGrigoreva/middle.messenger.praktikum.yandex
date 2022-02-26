@@ -1,12 +1,13 @@
 import {Block} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
-import {compile} from '../../../utils';
-import {HTMLElementEvent, Routes} from '../../../types';
-import {HTTPTransport, Mediator, Router} from '../../../modules';
-import avatar from '../../../assets/images/default_avatar.png';
+import {compile, connect, generateApiUrl} from '../../../utils';
+import {HTMLElementEvent} from '../../../types';
+import {Mediator} from '../../../modules';
+import defaultAvatar from '../../../assets/images/default_avatar.png';
+import {userController} from '../../../services';
 
-export class PasswordEditing extends Block {
+class PasswordEditing extends Block {
   constructor() {
     super({}, 'div', 'profile');
   }
@@ -26,30 +27,7 @@ export class PasswordEditing extends Block {
       !Mediator.Instance.validatePassword(newPassword as string) &&
       newPassword === verifyNewPassword
     ) {
-      const api = new HTTPTransport();
-      this.setProps({
-        isLoading: true,
-        isError: false,
-      });
-      try {
-        const response = await api.put('/user/password', {
-          body: {oldPassword, newPassword},
-        });
-        if (response?.status === 200) {
-          const router = new Router('.app');
-          router.go(Routes.Profile);
-        } else {
-          const error = response?.data?.reason;
-          throw new Error(error);
-        }
-      } catch (e) {
-        const err = e as Error;
-        this.setProps({isError: true, error: err.toString()});
-      } finally {
-        this.setProps({
-          isLoading: false,
-        });
-      }
+      userController.setPassword({oldPassword, newPassword});
     }
   }
 
@@ -118,8 +96,21 @@ export class PasswordEditing extends Block {
       oldPassword: oldPasswordInfo,
       newPassword: newPasswordInfo,
       verifynewPassword: verifynewPasswordInfo,
-      src: avatar,
+      src: this.props?.data?.avatar
+        ? generateApiUrl('resources') + this.props?.data?.avatar
+        : defaultAvatar,
       ...this.props,
     });
   }
 }
+
+function mapStateToProps(state: any) {
+  return {
+    isLoading: state.user?.isLoading,
+    error: state.user?.error,
+    isError: !!state.user?.error,
+    data: state.user?.data,
+  };
+}
+
+export default connect(PasswordEditing, mapStateToProps);

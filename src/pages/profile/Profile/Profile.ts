@@ -2,7 +2,7 @@ import {Block, Link} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
 import {compile, connect, generateApiUrl} from '../../../utils';
-import avatarUrl from '../../../assets/images/default_avatar.png';
+import defaultAvatar from '../../../assets/images/default_avatar.png';
 import {Routes} from '../../../types';
 import authController from '../../../services/auth/authController';
 class Profile extends Block {
@@ -91,9 +91,8 @@ class Profile extends Block {
       logout: logoutLink,
       src: this.props?.data?.avatar
         ? generateApiUrl('resources') + this.props?.data?.avatar
-        : avatarUrl,
+        : defaultAvatar,
       displayNameTitle: this.props?.data?.display_name,
-      isError: !!this.props.error,
       ...this.props,
     });
   }
@@ -104,6 +103,7 @@ function mapStateToProps(state: any) {
     data: state.user?.data,
     isLoading: state.user?.isLoading,
     error: state.user?.error,
+    isError: !!state.user?.error,
   };
 }
 

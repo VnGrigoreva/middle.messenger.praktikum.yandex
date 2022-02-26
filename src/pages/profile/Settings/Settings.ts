@@ -162,7 +162,6 @@ export class Settings extends Block<ProfilePropsType> {
         ? generateApiUrl('resources') + this.props?.data?.avatar
         : avatarUrl,
       displayNameTitle: this.props?.data?.display_name,
-      isError: !!this.props?.error,
       ...this.props,
     });
   }
@@ -173,6 +172,7 @@ function mapStateToProps(state: any) {
     isLoading: state.user?.isLoading,
     error: state.user?.error,
     data: state.user?.data,
+    isError: !!state.user?.error,
   };
 }
 export default connect(Settings, mapStateToProps);

@@ -20,6 +20,7 @@ class UserController {
       store.set('user.isLoading', false);
     }
   }
+
   async setProfile(data: FromEntriesType) {
     store.set('user.isLoading', true);
     try {
@@ -41,6 +42,7 @@ class UserController {
       store.set('user.isLoading', false);
     }
   }
+
   async setAvatar(data: FormData) {
     store.set('user.isLoading', true);
     try {
@@ -50,6 +52,27 @@ class UserController {
       });
       if (response?.status === 200) {
         store.set('user.data', response.items);
+      } else {
+        const error = response?.items?.reason;
+        throw new Error(error);
+      }
+    } catch (e) {
+      const err = e as Error;
+      store.set('user.error', err.toString());
+    } finally {
+      store.set('user.isLoading', false);
+    }
+  }
+
+  async setPassword(data: FromEntriesType) {
+    store.set('user.isLoading', true);
+    try {
+      const response = await userApi.setPassword({
+        body: data,
+      });
+      if (response?.status === 200) {
+        const router = new Router('.app');
+        router.go(Routes.Profile);
       } else {
         const error = response?.items?.reason;
         throw new Error(error);

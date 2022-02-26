@@ -190,14 +190,14 @@ export class Registration extends Block {
   }
 }
 
-function mapRegistrationStateProps(state: any) {
+function mapStateProps(state: any) {
   return {
     isLoading: state.registration?.isLoading,
-    isError: state.registration?.isError,
+    isError: !!state.registration?.error,
     error: state.registration?.error,
-    isSuccess: state.registration?.isSuccess,
+    isSuccess: !!state.registration?.success,
     success: state.registration?.success,
   };
 }
 
-export default connect(Registration, mapRegistrationStateProps);
+export default connect(Registration, mapStateProps);

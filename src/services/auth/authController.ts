@@ -31,7 +31,6 @@ class AuthController {
         body: registrationData,
       });
       if (response?.status === 200) {
-        store.set('registration.isSuccess', true);
         store.set('registration.success', 'Поздравляем! Вы зарегистрированы.');
       } else {
         const error = response?.items?.reason;
@@ -39,7 +38,6 @@ class AuthController {
       }
     } catch (e) {
       const err = e as Error;
-      store.set('registration.isError', true);
       store.set('registration.error', err.toString());
     } finally {
       store.set('registration.isLoading', false);
