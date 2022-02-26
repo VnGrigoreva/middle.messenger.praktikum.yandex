@@ -5,9 +5,11 @@ import {compile, connect, generateApiUrl} from '../../../utils';
 import defaultAvatar from '../../../assets/images/default_avatar.png';
 import {Routes} from '../../../types';
 import authController from '../../../services/auth/authController';
+import {userController} from '../../../services';
 class Profile extends Block {
   constructor() {
     super({}, 'div', 'profile');
+    userController.getUser();
   }
 
   render() {

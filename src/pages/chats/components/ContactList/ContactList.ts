@@ -4,6 +4,8 @@ import {compile} from '../../../../utils';
 import {InputChat} from '../InputChat/InputChat';
 import {Contact} from '../Contact/Contact';
 import {Routes} from '../../../../types';
+import {Router} from '../../../../modules';
+import {userController} from '../../../../services';
 
 export class ContactList extends Block {
   constructor() {
@@ -12,9 +14,14 @@ export class ContactList extends Block {
 
   render() {
     const profileLink = new Link({
-      path: Routes.Profile,
       label: 'Профиль >',
       mode: 'secondary',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.Profile);
+        },
+      },
     });
     const searchInput = new InputChat({
       className: 'chat-search',

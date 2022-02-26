@@ -5,7 +5,7 @@ import {EventsType} from '../../types';
 
 type LinkPropsType = {
   label: string;
-  path: string;
+  path?: string;
   mode: 'primary' | 'secondary' | 'danger' | 'border';
   className?: string;
   events?: EventsType;
