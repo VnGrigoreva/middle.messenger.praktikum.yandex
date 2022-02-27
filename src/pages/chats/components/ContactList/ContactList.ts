@@ -9,12 +9,8 @@ import {chatController} from '../../../../services';
 import AddChat from '../AddChat/AddChat';
 
 class ContactList extends Block {
-  constructor() {
-    super({}, 'div', 'chat-list');
-  }
-
-  componentDidMount() {
-    chatController.getChats();
+  constructor(props = {}) {
+    super(props, 'div', 'chat-list');
   }
 
   render() {
@@ -35,13 +31,20 @@ class ContactList extends Block {
       id: 'search',
     });
     const addChat = new AddChat();
+
     const contactBlocks = this.props?.data?.map((e: any) => {
       return new Contact({
-        id: e?.id,
-        title: e?.title,
-        text: e?.last_message?.content,
-        time: e?.last_message?.time,
-        count: e?.unread_count,
+        id: e.id,
+        title: e.title,
+        text: e.last_message?.content,
+        time: e.last_message?.time,
+        count: e.unread_count,
+        events: {
+          click: () => {
+            chatController.setActiveChat(e.id);
+            const token = chatController.getToken(e.id);
+          },
+        },
       });
     });
     return compile(template, {
