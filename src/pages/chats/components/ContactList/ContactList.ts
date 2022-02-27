@@ -42,7 +42,7 @@ class ContactList extends Block {
         events: {
           click: () => {
             chatController.setActiveChat(e.id);
-            const token = chatController.getToken(e.id);
+            chatController.connect(e.id);
           },
         },
       });

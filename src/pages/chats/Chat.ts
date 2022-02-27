@@ -10,7 +10,7 @@ import {Message} from './components/Message/Message';
 import {InputChat} from './components/InputChat/InputChat';
 import {HTMLElementEvent} from '../../types';
 import {Mediator} from '../../modules';
-import {chatController} from '../../services';
+import {chatController, userController} from '../../services';
 
 class Chat extends Block {
   constructor() {
@@ -23,6 +23,9 @@ class Chat extends Block {
     if (!this.props?.data) {
       chatController.getChats();
     }
+    if (!this.props?.user) {
+      userController.getUser();
+    }
   }
 
   render() {
@@ -30,15 +33,14 @@ class Chat extends Block {
 
     const menuBtn = new ButtonImage({src: menu});
 
-    const messageCompL = new Message({
-      text: 'Some message text',
-      mode: 'left',
-    });
-
-    const messageCompR = new Message({
-      text: 'Some message text',
-      mode: 'right',
-    });
+    const messageComponents =
+      this.props?.messages?.map(
+        (e) =>
+          new Message({
+            text: e.content,
+            mode: e.user_id === this.props.user.id ? 'right' : 'left',
+          })
+      ) || [];
 
     const attachBtn = new ButtonImage({src: attach});
 
@@ -49,6 +51,7 @@ class Chat extends Block {
           const error = Mediator.Instance.validateMessage(this.message);
           if (!error) {
             console.warn({message: this.message});
+            chatController.send(this.props?.activeChat, this.message);
           }
           newMessageInput.setProps({
             error: error,
@@ -75,8 +78,7 @@ class Chat extends Block {
         (e) => e.id === this.props?.activeChat
       )[0]?.title,
       menu: menuBtn,
-      messageL: messageCompL,
-      messageR: messageCompR,
+      messages: messageComponents,
       attach: attachBtn,
       newMessage: newMessageInput,
       send: sendBtn,
@@ -88,6 +90,10 @@ function mapStateToProps(state: any) {
   return {
     activeChat: state?.chat?.activeChat,
     data: state?.chat?.data,
+    user: state?.user?.data,
+    messages:
+      state?.chat?.sessions?.find((e) => e.chatId === state?.chat?.activeChat)
+        ?.messages || [],
   };
 }
 

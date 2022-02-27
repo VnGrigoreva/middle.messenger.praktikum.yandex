@@ -3,6 +3,9 @@ import {store} from '../../modules';
 import {FromEntriesType} from '../../types';
 
 class ChatController {
+  constructor() {
+    this.ping();
+  }
   async getChats() {
     store.set('chat.isLoading', true);
     try {
@@ -78,6 +81,82 @@ class ChatController {
     } finally {
       store.set('chatBody.isLoading', false);
     }
+  }
+
+  async connect(chatId: string) {
+    const s = store
+      .getState()
+      ?.chat?.sessions?.find((e) => e.chatId === chatId);
+
+    if (s) {
+      return;
+    }
+
+    const token = await this.getToken(chatId);
+    const userId = store.getState()?.user?.data?.id;
+    const socket = new WebSocket(
+      `wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`
+    );
+
+    socket.addEventListener('open', () => {
+      console.warn('Соединение установлено');
+      let s = store.getState()?.chat?.sessions;
+      if (!s) {
+        s = [];
+      }
+      s.push({
+        socket,
+        chatId,
+        messages: [],
+      });
+      store.set('chat.sessions', s);
+    });
+    socket.addEventListener('message', (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'message') {
+          const s = store.getState().chat.sessions;
+          s.find((e) => e.chatId === chatId).messages.push(data);
+          store.set('chat.sessions', s);
+        }
+        // eslint-disable-next-line no-empty
+      } catch {}
+    });
+    socket.addEventListener('error', (event) => {
+      console.warn('Ошибка', event.message);
+      const s = store.getState().chat.sessions;
+      s.find((e) => e.chatId === chatId).socket = null;
+      store.set('chat.sessions', s);
+    });
+    socket.addEventListener('close', (event) => {
+      const s = store.getState().chat.sessions;
+      s.find((e) => e.chatId === chatId).socket = null;
+      store.set('chat.sessions', s);
+      if (event.wasClean) {
+        console.warn('Соединение закрыто чисто');
+      } else {
+        console.warn('Обрыв соединения');
+      }
+      console.warn(`Код: ${event.code} | Причина: ${event.reason}`);
+    });
+  }
+
+  send(chatId, message) {
+    const s = store.getState().chat.sessions.find((e) => e.chatId === chatId);
+    s.socket.send(JSON.stringify({content: message, type: 'message'}));
+  }
+
+  ping() {
+    setInterval(() => {
+      const activeChat = store.getState()?.chat?.activeChat;
+      if (!activeChat) {
+        return;
+      }
+      const s = store
+        .getState()
+        .chat.sessions.find((e) => e.chatId === activeChat);
+      s.socket.send(JSON.stringify({type: 'ping'}));
+    }, 5000);
   }
 }
 
