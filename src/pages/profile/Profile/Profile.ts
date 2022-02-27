@@ -4,11 +4,14 @@ import template from './template';
 import {compile, connect, generateApiUrl} from '../../../utils';
 import defaultAvatar from '../../../assets/images/default_avatar.png';
 import {Routes} from '../../../types';
-import authController from '../../../services/auth/authController';
-import {userController} from '../../../services';
+import {userController, authController} from '../../../services';
+import {Router} from '../../../modules';
 class Profile extends Block {
   constructor() {
     super({}, 'div', 'profile');
+  }
+
+  componentDidMount() {
     userController.getUser();
   }
 
@@ -61,21 +64,32 @@ class Profile extends Block {
 
     const changeDataLink = new Link({
       label: 'Изменить данные',
-      path: Routes.Settings,
       mode: 'border',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.Settings);
+        },
+      },
     });
     const changePasswordLink = new Link({
       label: 'Изменить пароль',
-      path: Routes.PasswordEditing,
       mode: 'border',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.PasswordEditing);
+        },
+      },
     });
     const logoutLink = new Link({
       label: 'Выйти',
-      path: '#',
       mode: 'danger',
       events: {
         click: () => {
           authController.logout();
+          const router = new Router('.app');
+          router.go(Routes.Login);
         },
       },
     });

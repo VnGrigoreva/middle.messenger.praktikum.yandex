@@ -8,7 +8,6 @@ import {
   Error400Page,
   Settings,
 } from './pages';
-import chatController from './services/chat/chatController';
 import {Routes} from './types';
 
 const router = new Router('.app');

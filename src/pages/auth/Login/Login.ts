@@ -2,7 +2,7 @@ import {Block, Input, Link} from '../../../components';
 import template from './template';
 import {compile, connect} from '../../../utils';
 import {HTMLElementEvent, Routes} from '../../../types';
-import {Mediator} from '../../../modules';
+import {Mediator, Router} from '../../../modules';
 import {authController} from '../../../services';
 
 export class Login extends Block {
@@ -57,9 +57,14 @@ export class Login extends Block {
     });
     const registrationLink = new Link({
       label: 'Нет аккаунта',
-      path: Routes.Registration,
       mode: 'primary',
       className: 'link',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.Registration);
+        },
+      },
     });
 
     return compile(template, {

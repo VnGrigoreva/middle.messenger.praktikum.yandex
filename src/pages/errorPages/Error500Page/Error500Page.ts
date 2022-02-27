@@ -3,6 +3,7 @@ import template from './template';
 import {Link} from '../../../components/Link/Link';
 import {compile} from '../../../utils';
 import {Routes} from '../../../types';
+import {Router} from '../../../modules';
 
 export class Error500Page extends Block {
   constructor() {
@@ -12,8 +13,13 @@ export class Error500Page extends Block {
   render() {
     const backLink = new Link({
       label: 'Назад к чатам',
-      path: Routes.Chat,
       mode: 'primary',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.Chat);
+        },
+      },
     });
 
     return compile(template, {

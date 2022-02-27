@@ -32,6 +32,7 @@ class PasswordEditing extends Block {
   }
 
   componentDidMount(): void {
+    userController.getUser();
     this.setProps({
       events: {
         submit: {

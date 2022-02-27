@@ -5,7 +5,7 @@ export default `
     img(src=src, alt="avatar", class="profile__avatar")
     input(type="file", name="avatar", accept="image/*")
     h3 #{displayNameTitle}
-  form(method=GET, action='/profile', class='profile-content__form')
+  form
     #{email}
     #{login}
     #{firstName}

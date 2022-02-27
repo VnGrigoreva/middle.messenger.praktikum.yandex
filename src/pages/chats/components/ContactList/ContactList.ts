@@ -5,7 +5,7 @@ import {InputChat} from '../InputChat/InputChat';
 import {Contact} from '../Contact/Contact';
 import {Routes} from '../../../../types';
 import {Router} from '../../../../modules';
-import chatController from '../../../../services/chat/chatController';
+import {chatController} from '../../../../services';
 import AddChat from '../AddChat/AddChat';
 
 class ContactList extends Block {

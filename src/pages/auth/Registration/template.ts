@@ -1,7 +1,7 @@
 export default `
 .authorization-container
   h2 Регистрация
-  form(method=GET, action='/registration', class='authorization-form')
+  form
     .authorization-form__inner
       #{email}
       #{login}

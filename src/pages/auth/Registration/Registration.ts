@@ -1,7 +1,7 @@
 import template from './template';
 import {Input, Block, Link} from '../../../components';
 import {compile, connect} from '../../../utils';
-import {Mediator} from '../../../modules';
+import {Mediator, Router} from '../../../modules';
 import {HTMLElementEvent, Routes} from '../../../types';
 import {authController} from '../../../services';
 
@@ -172,8 +172,13 @@ export class Registration extends Block {
 
     const entryLink = new Link({
       label: 'Войти',
-      path: Routes.Login,
       mode: 'primary',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.Login);
+        },
+      },
     });
 
     return compile(template, {

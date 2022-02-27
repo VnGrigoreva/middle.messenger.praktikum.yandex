@@ -1,7 +1,7 @@
 export default `
 .authorization-container
   h2 Вход
-  form(method=GET, action='/authorization', class='authorization-form')
+  form
     .authorization-form__inner
       #{login}
       #{password}

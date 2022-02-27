@@ -1,7 +1,7 @@
 import {Block, Input} from '../../../../components';
 import template from './template';
 import {compile, connect} from '../../../../utils';
-import chatController from '../../../../services/chat/chatController';
+import {chatController} from '../../../../services';
 import {HTMLElementEvent} from '../../../../types';
 
 class AddChat extends Block {

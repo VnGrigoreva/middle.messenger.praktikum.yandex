@@ -3,7 +3,7 @@ export default `
 .profile-content
   .profile-content__inner.ai-c
     img(src=src, alt="avatar", class="profile__avatar")
-  form(method=GET, action='/password', class='profile-content__form')
+  form
     #{oldPassword}
     #{newPassword}
     #{verifynewPassword}

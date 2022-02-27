@@ -1,4 +1,4 @@
 export default `
-a(href=link)
+a
   img(src=src, alt="back")
 `;
