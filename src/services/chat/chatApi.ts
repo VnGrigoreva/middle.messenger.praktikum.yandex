@@ -9,6 +9,12 @@ class ChatAPI {
   addChats(options: OptionsType) {
     return this.api.post('chats', options);
   }
+  deleteChat(options: OptionsType) {
+    return this.api.delete('chats', options);
+  }
+  getToken(id: string) {
+    return this.api.post(`chats/token/${id}`);
+  }
 }
 
 export default new ChatAPI();

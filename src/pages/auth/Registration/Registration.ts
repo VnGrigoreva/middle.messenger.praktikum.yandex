@@ -45,6 +45,9 @@ export class Registration extends Block {
       const data = {email, first_name, login, password, phone, second_name};
 
       authController.signup(data);
+
+      const router = new Router('.app');
+      router.go(Routes.Chat);
     }
   }
 

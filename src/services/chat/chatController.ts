@@ -40,6 +40,45 @@ class ChatController {
       store.set('chat.isLoading', false);
     }
   }
+
+  async deleteChat(data: FromEntriesType) {
+    store.set('chat.isLoading', true);
+    try {
+      const response = await chatApi.deleteChat({
+        body: data,
+      });
+      if (response?.status !== 200) {
+        const error = response?.items?.reason;
+        throw new Error(error);
+      }
+    } catch (e) {
+      const err = e as Error;
+      store.set('chat.error', err.toString());
+    } finally {
+      store.set('chat.isLoading', false);
+    }
+  }
+
+  setActiveChat(id: any) {
+    store.set('chat.activeChat', id);
+  }
+
+  async getToken(id: string) {
+    store.set('chatBody.isLoading', true);
+    try {
+      const response = await chatApi.getToken(id);
+      if (response?.status !== 200) {
+        const error = response?.items?.reason;
+        throw new Error(error);
+      } else return response.items.token;
+    } catch (e) {
+      const err = e as Error;
+      store.set('chatBody.error', err.toString());
+      return '';
+    } finally {
+      store.set('chatBody.isLoading', false);
+    }
+  }
 }
 
 export default new ChatController();

@@ -1,4 +1,5 @@
 export default `
+#{del}
 .avatar
   .avatar-img
 .contact-content

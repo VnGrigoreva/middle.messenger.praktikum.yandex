@@ -1,6 +1,6 @@
 import {Block} from '../../components';
 import template from './template';
-import {compile} from '../../utils';
+import {compile, connect} from '../../utils';
 import ContactList from './components/ContactList/ContactList';
 import {ButtonImage} from './components/ButtonImage/ButtonImage';
 import menu from '../../assets/images/menu.png';
@@ -10,13 +10,20 @@ import {Message} from './components/Message/Message';
 import {InputChat} from './components/InputChat/InputChat';
 import {HTMLElementEvent} from '../../types';
 import {Mediator} from '../../modules';
+import {chatController} from '../../services';
 
-export class Chat extends Block {
+class Chat extends Block {
   constructor() {
     super({}, 'div', 'chat');
   }
 
   message = '';
+
+  componentDidMount() {
+    if (!this.props?.data) {
+      chatController.getChats();
+    }
+  }
 
   render() {
     const contactListComp = new ContactList();
@@ -64,7 +71,9 @@ export class Chat extends Block {
 
     return compile(template, {
       contactList: contactListComp,
-      userName: 'Андрей',
+      userName: this.props?.data?.filter(
+        (e) => e.id === this.props?.activeChat
+      )[0]?.title,
       menu: menuBtn,
       messageL: messageCompL,
       messageR: messageCompR,
@@ -74,3 +83,12 @@ export class Chat extends Block {
     });
   }
 }
+
+function mapStateToProps(state: any) {
+  return {
+    activeChat: state?.chat?.activeChat,
+    data: state?.chat?.data,
+  };
+}
+
+export default connect(Chat, mapStateToProps);
