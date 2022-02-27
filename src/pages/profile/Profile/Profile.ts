@@ -66,9 +66,12 @@ class Profile extends Block {
       label: 'Изменить данные',
       mode: 'border',
       events: {
-        click: () => {
-          const router = new Router('.app');
-          router.go(Routes.Settings);
+        click: {
+          selector: 'a',
+          handler: () => {
+            const router = new Router('.app');
+            router.go(Routes.Settings);
+          },
         },
       },
     });

@@ -49,7 +49,9 @@ export class Settings extends Block<ProfilePropsType> {
   }
 
   async componentDidMount() {
-    userController.getUser();
+    if (!this.props?.data) {
+      userController.getUser();
+    }
     this.setProps({
       events: {
         submit: {
