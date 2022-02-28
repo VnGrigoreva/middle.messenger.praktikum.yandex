@@ -60,7 +60,8 @@ export class HTTPTransport {
     if (!headers['Content-Type'] && !withFiles) {
       headers['Content-Type'] = 'application/json';
     }
-
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return new Promise<ResponseType<T>>((resolve, reject) => {
       const methodType = method || 'GET';
 
@@ -94,8 +95,6 @@ export class HTTPTransport {
       xhr.ontimeout = reject;
       if (body) {
         if (withFiles) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           xhr.send(body);
         } else {
           xhr.send(JSON.stringify(body));
