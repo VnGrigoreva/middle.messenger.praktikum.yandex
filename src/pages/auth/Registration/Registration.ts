@@ -200,11 +200,11 @@ export class Registration extends Block {
 
 function mapStateProps(state: any) {
   return {
-    isLoading: state.registration?.isLoading,
-    isError: !!state.registration?.error,
-    error: state.registration?.error,
-    isSuccess: !!state.registration?.success,
-    success: state.registration?.success,
+    isLoading: state?.registration?.isLoading,
+    isError: !!state?.registration?.error,
+    error: state?.registration?.error,
+    isSuccess: !!state?.registration?.success,
+    success: state?.registration?.success,
   };
 }
 

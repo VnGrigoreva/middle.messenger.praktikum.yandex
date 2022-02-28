@@ -59,10 +59,10 @@ class ContactList extends Block {
 
 function mapStateToProps(state: StoreType) {
   return {
-    data: state.chat?.data,
-    isLoading: state.chat?.isLoading,
-    error: state.chat?.error,
-    isError: !!state.chat?.error,
+    data: state?.chat?.data,
+    isLoading: state?.chat?.isLoading,
+    error: state?.chat?.error,
+    isError: !!state?.chat?.error,
   };
 }
 

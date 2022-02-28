@@ -181,10 +181,10 @@ export class Settings extends Block<ProfilePropsType> {
 
 function mapStateToProps(state: StoreType) {
   return {
-    isLoading: state.user?.isLoading,
-    error: state.user?.error,
-    data: state.user?.data,
-    isError: !!state.user?.error,
+    isLoading: state?.user?.isLoading,
+    error: state?.user?.error,
+    data: state?.user?.data,
+    isError: !!state?.user?.error,
   };
 }
 export default connect(Settings, mapStateToProps);
