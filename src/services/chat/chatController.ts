@@ -1,6 +1,6 @@
 import chatApi from './chatApi';
 import {store} from '../../modules';
-import {FromEntriesType} from '../../types';
+import {DeleteChatParamsType, FromEntriesType} from '../../types';
 
 class ChatController {
   constructor() {
@@ -44,7 +44,7 @@ class ChatController {
     }
   }
 
-  async deleteChat(data: FromEntriesType) {
+  async deleteChat(data: DeleteChatParamsType) {
     store.set('chat.isLoading', true);
     try {
       const response = await chatApi.deleteChat({
@@ -66,7 +66,7 @@ class ChatController {
     store.set('chat.activeChat', id);
   }
 
-  async getToken(id: string) {
+  async getToken(id: number) {
     store.set('chatBody.isLoading', true);
     try {
       const response = await chatApi.getToken(id);
@@ -83,7 +83,7 @@ class ChatController {
     }
   }
 
-  async connect(chatId: string) {
+  async connect(chatId: number) {
     const s = store
       .getState()
       ?.chat?.sessions?.find((e) => e.chatId === chatId);
@@ -116,21 +116,30 @@ class ChatController {
         const data = JSON.parse(event.data);
         if (data.type === 'message') {
           const s = store.getState().chat.sessions;
-          s.find((e) => e.chatId === chatId).messages.push(data);
+          const session = s.find((e) => e?.chatId === chatId);
+          if (session) {
+            session.messages.push(data);
+          }
           store.set('chat.sessions', s);
         }
         // eslint-disable-next-line no-empty
       } catch {}
     });
-    socket.addEventListener('error', (event) => {
+    socket.addEventListener('error', (event: any) => {
       console.warn('Ошибка', event.message);
       const s = store.getState().chat.sessions;
-      s.find((e) => e.chatId === chatId).socket = null;
+      const session = s.find((e) => e?.chatId === chatId);
+      if (session) {
+        session.socket = null;
+      }
       store.set('chat.sessions', s);
     });
     socket.addEventListener('close', (event) => {
       const s = store.getState().chat.sessions;
-      s.find((e) => e.chatId === chatId).socket = null;
+      const session = s.find((e) => e?.chatId === chatId);
+      if (session) {
+        session.socket = null;
+      }
       store.set('chat.sessions', s);
       if (event.wasClean) {
         console.warn('Соединение закрыто чисто');
@@ -141,9 +150,9 @@ class ChatController {
     });
   }
 
-  send(chatId, message) {
+  send(chatId: number, message: string) {
     const s = store.getState().chat.sessions.find((e) => e.chatId === chatId);
-    s.socket.send(JSON.stringify({content: message, type: 'message'}));
+    s?.socket?.send(JSON.stringify({content: message, type: 'message'}));
   }
 
   ping() {
@@ -155,7 +164,7 @@ class ChatController {
       const s = store
         .getState()
         .chat.sessions.find((e) => e.chatId === activeChat);
-      s.socket.send(JSON.stringify({type: 'ping'}));
+      s?.socket?.send(JSON.stringify({type: 'ping'}));
     }, 5000);
   }
 }

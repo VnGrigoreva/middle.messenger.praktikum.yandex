@@ -1,12 +1,11 @@
 import {Block} from '../components';
 import store, {StoreEvents} from '../modules/store';
-import {Indexed} from '../types';
+import {Indexed, StoreType} from '../types';
 
-export function connect(
-  Component: typeof Block,
-  mapStateToProps: (state: Indexed) => Indexed
+export function connect<T>(
+  Component: {new (props: T): Block<T>},
+  mapStateToProps: (state: StoreType) => any
 ) {
-  // используем class expression
   return class extends Component {
     constructor(props = {}) {
       super({...props, ...mapStateToProps(store.getState())});

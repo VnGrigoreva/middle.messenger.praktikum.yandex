@@ -29,8 +29,6 @@ class UserController {
       });
       if (response?.status === 200) {
         store.set('user.data', response.items);
-        // const router = new Router('.app');
-        // router.go(Routes.Profile);
       } else {
         const error = response?.items?.reason;
         throw new Error(error);

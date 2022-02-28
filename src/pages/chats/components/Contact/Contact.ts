@@ -3,13 +3,13 @@ import template from './template';
 import {compile} from '../../../../utils';
 import {Badge} from '../Badge/Badge';
 import {chatController} from '../../../../services';
-import {EventsType} from '../../../../types';
+import {DeleteChatParamsType, EventsType} from '../../../../types';
 
 type ContactPropsType = {
   text: string;
   time: string;
   title: string;
-  id: string;
+  id: number;
   count: number;
   events: EventsType;
 };
@@ -28,8 +28,9 @@ export class Contact extends Block<ContactPropsType> {
       className: 'pr-10',
       events: {
         click: () => {
-          console.log('list', this.props?.id);
-          chatController.deleteChat({chatId: this.props?.id});
+          chatController.deleteChat({
+            chatId: this.props?.id,
+          } as DeleteChatParamsType);
           chatController.getChats();
         },
       },

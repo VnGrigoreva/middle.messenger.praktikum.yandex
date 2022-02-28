@@ -12,7 +12,7 @@ class ChatAPI {
   deleteChat(options: OptionsType) {
     return this.api.delete('chats', options);
   }
-  getToken(id: string) {
+  getToken(id: number) {
     return this.api.post(`chats/token/${id}`);
   }
 }

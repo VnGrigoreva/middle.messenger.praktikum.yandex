@@ -1,5 +1,5 @@
 import {EventBus} from './eventBus';
-import {Indexed} from '../types';
+import {Indexed, StoreType} from '../types';
 import {set} from '../utils';
 
 export enum StoreEvents {
@@ -7,14 +7,14 @@ export enum StoreEvents {
 }
 
 class Store extends EventBus {
-  private state: Indexed = {};
+  private state: StoreType | null = null;
 
   constructor() {
     super();
   }
 
   getState() {
-    return this.state;
+    return this.state as StoreType;
   }
 
   set(path: string, value: unknown) {

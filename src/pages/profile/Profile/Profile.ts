@@ -3,7 +3,7 @@ import {Aside, InfoRow} from '../components';
 import template from './template';
 import {compile, connect, generateApiUrl} from '../../../utils';
 import defaultAvatar from '../../../assets/images/default_avatar.png';
-import {Routes} from '../../../types';
+import {Routes, StoreType} from '../../../types';
 import {userController, authController} from '../../../services';
 import {Router} from '../../../modules';
 class Profile extends Block {
@@ -117,7 +117,7 @@ class Profile extends Block {
   }
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: StoreType) {
   return {
     data: state.user?.data,
     isLoading: state.user?.isLoading,

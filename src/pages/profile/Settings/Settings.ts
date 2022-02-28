@@ -3,17 +3,26 @@ import {Aside, InfoRow} from '../components';
 import template from './template';
 import {compile, connect, generateApiUrl} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
-import {EventsType, HTMLElementEvent} from '../../../types';
+import {
+  EventsType,
+  HTMLElementEvent,
+  StoreType,
+  UserItemType,
+} from '../../../types';
 import {Mediator} from '../../../modules';
 import {userController} from '../../../services';
 
 export type ProfilePropsType = {
   events?: EventsType;
+  isLoading?: boolean;
+  error?: string;
+  data: UserItemType;
+  isError: boolean;
 };
 
 export class Settings extends Block<ProfilePropsType> {
   constructor() {
-    super({}, 'div', 'profile');
+    super({} as ProfilePropsType, 'div', 'profile');
   }
 
   private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
@@ -41,7 +50,7 @@ export class Settings extends Block<ProfilePropsType> {
     }
   }
 
-  private async changeAvatar(event) {
+  private async changeAvatar(event: any) {
     const file = event.target.files[0];
     const fileData = new FormData();
     fileData.append('avatar', file);
@@ -170,7 +179,7 @@ export class Settings extends Block<ProfilePropsType> {
   }
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: StoreType) {
   return {
     isLoading: state.user?.isLoading,
     error: state.user?.error,

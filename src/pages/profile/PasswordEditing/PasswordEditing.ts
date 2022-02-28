@@ -2,7 +2,7 @@ import {Block} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
 import {compile, connect, generateApiUrl} from '../../../utils';
-import {HTMLElementEvent} from '../../../types';
+import {HTMLElementEvent, StoreType} from '../../../types';
 import {Mediator} from '../../../modules';
 import defaultAvatar from '../../../assets/images/default_avatar.png';
 import {userController} from '../../../services';
@@ -107,7 +107,7 @@ class PasswordEditing extends Block {
   }
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: StoreType) {
   return {
     isLoading: state.user?.isLoading,
     error: state.user?.error,

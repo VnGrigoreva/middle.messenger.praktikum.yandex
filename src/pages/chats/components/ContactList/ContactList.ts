@@ -3,7 +3,7 @@ import template from './template';
 import {compile, connect} from '../../../../utils';
 import {InputChat} from '../InputChat/InputChat';
 import {Contact} from '../Contact/Contact';
-import {Routes} from '../../../../types';
+import {ChatItemType, Routes, StoreType} from '../../../../types';
 import {Router} from '../../../../modules';
 import {chatController} from '../../../../services';
 import AddChat from '../AddChat/AddChat';
@@ -32,7 +32,7 @@ class ContactList extends Block {
     });
     const addChat = new AddChat();
 
-    const contactBlocks = this.props?.data?.map((e: any) => {
+    const contactBlocks = this.props?.data?.map((e: ChatItemType) => {
       return new Contact({
         id: e.id,
         title: e.title,
@@ -57,7 +57,7 @@ class ContactList extends Block {
   }
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: StoreType) {
   return {
     data: state.chat?.data,
     isLoading: state.chat?.isLoading,

@@ -8,7 +8,13 @@ import attach from '../../assets/images/attach.png';
 import send from '../../assets/images/send.png';
 import {Message} from './components/Message/Message';
 import {InputChat} from './components/InputChat/InputChat';
-import {HTMLElementEvent} from '../../types';
+import {
+  ChatItemType,
+  HTMLElementEvent,
+  MessageType,
+  sessionType,
+  StoreType,
+} from '../../types';
 import {Mediator} from '../../modules';
 import {chatController, userController} from '../../services';
 
@@ -35,7 +41,7 @@ class Chat extends Block {
 
     const messageComponents =
       this.props?.messages?.map(
-        (e) =>
+        (e: MessageType) =>
           new Message({
             text: e.content,
             mode: e.user_id === this.props.user.id ? 'right' : 'left',
@@ -74,8 +80,8 @@ class Chat extends Block {
 
     return compile(template, {
       contactList: contactListComp,
-      userName: this.props?.data?.filter(
-        (e) => e.id === this.props?.activeChat
+      userName: this.props?.data?.find(
+        (e: ChatItemType) => e.id === this.props?.activeChat
       )[0]?.title,
       menu: menuBtn,
       messages: messageComponents,
@@ -86,7 +92,7 @@ class Chat extends Block {
   }
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: StoreType) {
   return {
     activeChat: state?.chat?.activeChat,
     data: state?.chat?.data,

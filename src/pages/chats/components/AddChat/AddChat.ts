@@ -2,7 +2,7 @@ import {Block, Input} from '../../../../components';
 import template from './template';
 import {compile, connect} from '../../../../utils';
 import {chatController} from '../../../../services';
-import {HTMLElementEvent} from '../../../../types';
+import {HTMLElementEvent, StoreType} from '../../../../types';
 
 class AddChat extends Block {
   constructor() {
@@ -38,7 +38,7 @@ class AddChat extends Block {
   }
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: StoreType) {
   return {
     isLoading: state.chat?.isLoading,
     error: state.chat?.error,
