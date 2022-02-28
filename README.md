@@ -1,4 +1,5 @@
 ### [WiNMessager](https://condescending-lamport-4f12e6.netlify.app)
+
 ---
 
 Простой месседжер для общения.
@@ -15,6 +16,7 @@
 [Ссылка](https://condescending-lamport-4f12e6.netlify.app) для просмотра
 
 ## Как будет выглядеть месседжер
+
 Макет [здесь](https://www.figma.com/file/24EUnEHGEDNLdOcxg7ULwV/Chat?node-id=0%3A1)
 
 ## Скрипты
@@ -27,12 +29,7 @@
 
 ## Pull requests
 
-- Добавлен компонентный подход
-- Жизненный цикл компонентов реализован с применением Event Bus
-- Обновление пропсов компонентов работает через Proxy
-- Добавлена валидация на все формы
-- Проект переведен на ts
-- Добавлены  ESLint, Stylelint
-- Добавлен класс для работы с АПИ
+- Добавлен роутинг
+- Добавлена работа с АПИ
 
-https://github.com/VnGrigoreva/middle.messenger.praktikum.yandex/pull/2
+https://github.com/VnGrigoreva/middle.messenger.praktikum.yandex/pull/3
