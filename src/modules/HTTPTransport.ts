@@ -95,7 +95,7 @@ export class HTTPTransport {
       xhr.ontimeout = reject;
       if (body) {
         if (withFiles) {
-          xhr.send(body);
+          xhr.send(body as XMLHttpRequestBodyInit);
         } else {
           xhr.send(JSON.stringify(body));
         }

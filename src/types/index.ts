@@ -36,7 +36,7 @@ export type OptionsType = {
     'Content-Type'?: string;
   };
   parametrs?: {[key: string]: string};
-  body?: {[key: string]: FormDataEntryValue | string} | FormData;
+  body?: {[key: string]: FormDataEntryValue | string} | XMLHttpRequestBodyInit;
   withFiles?: boolean;
 };
 

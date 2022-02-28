@@ -22,7 +22,7 @@ describe('Router', () => {
   });
   it('use', () => {
     const router = new Router('.app');
-    const res = router.use('/', FakeBlock);
+    const res = router.use('/', FakeBlock as any);
     expect(res).to.eq(router);
   });
   it('should be singleton', () => {
@@ -32,7 +32,7 @@ describe('Router', () => {
   });
   it('go', () => {
     const router = new Router('.app');
-    router.use('/fakePage', FakeBlock);
+    router.use('/fakePage', FakeBlock as any);
     router.go('/fakePage');
 
     expect(document.getElementById('test')).not.to.be.null;

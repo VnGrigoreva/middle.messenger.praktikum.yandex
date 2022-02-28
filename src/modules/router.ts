@@ -1,40 +1,38 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
+import {Block} from '../components';
 import {Route} from './route';
 
 export type HistoryEvent = {
   currentTarget: Window;
 };
 export class Router {
-  //TODO
   private static _instance: Router;
   routes?: Route[];
-  errorBlock: any;
+  errorBlock: Block | null = null;
   history?: History;
-  private _currentRoute: any;
-  private _rootQuery: any;
+  private _currentRoute: Route | undefined = undefined;
+  private _rootQuery: string | null = null;
 
-  constructor(rootQuery: any) {
+  constructor(rootQuery: string) {
     if (Router._instance) {
       return Router._instance;
     }
 
     this.routes = [];
     this.history = window.history;
-    this._currentRoute = null;
+    this._currentRoute = undefined;
     this._rootQuery = rootQuery;
 
     Router._instance = this;
   }
 
-  use(pathname: string, block: any) {
+  use(pathname: string, block: Block) {
     const route = new Route(pathname, block, {rootQuery: this._rootQuery});
     this.routes?.push(route);
 
     return this;
   }
 
-  useError(block: any) {
+  useError(block: Block) {
     this.errorBlock = block;
 
     return this;
@@ -42,10 +40,7 @@ export class Router {
 
   start() {
     window.onpopstate = (event: PopStateEvent) => {
-      //TODO
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this._onRoute(event?.currentTarget?.location.pathname);
+      this._onRoute((event?.currentTarget as Window)?.location?.pathname);
     };
 
     this._onRoute(window.location.pathname);
@@ -65,7 +60,6 @@ export class Router {
     }
 
     this._currentRoute = route;
-    // route.render(route, pathname);
     route?.render();
   }
 
