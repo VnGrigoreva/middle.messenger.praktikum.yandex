@@ -3,8 +3,9 @@ export default `
 .profile-content
   .profile-content__inner.ai-c
     img(src=src, alt="avatar", class="profile__avatar")
-    h3 Иван
-  form(method=GET, action='/profile', class='profile-content__form')
+    input(type="file", name="avatar", accept="image/*")
+    h3 #{displayNameTitle}
+  form
     #{email}
     #{login}
     #{firstName}
@@ -12,5 +13,9 @@ export default `
     #{displayName}
     #{phone}
     .profile-content__inner.ai-c
-      input(type='submit', value='Сохранить', class='button')
+      input(type='submit', value='Сохранить', class='button' disabled=isLoading)
+    if isLoading
+      .loading Пожалуйста подождите...
+    if isError
+      .error-center #{error}
 `;

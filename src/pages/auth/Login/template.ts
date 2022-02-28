@@ -1,7 +1,7 @@
 export default `
 .authorization-container
   h2 Вход
-  form(method=GET, action='/authorization', class='authorization-form')
+  form
     .authorization-form__inner
       #{login}
       #{password}
@@ -11,5 +11,5 @@ export default `
   if isLoading
     .loading Пожалуйста подождите...
   if isError
-    .error #{error}
+    .error-center #{error}
 `;

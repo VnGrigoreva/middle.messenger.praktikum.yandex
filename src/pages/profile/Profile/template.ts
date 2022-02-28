@@ -5,11 +5,11 @@ export default `
     .loading Пожалуйста подождите...
   else
     if isError
-      .error #{error}
+      .error-center #{error}
     else
       .profile-content__inner.ai-c
         img(src=src, alt="avatar", class="profile__avatar")
-        h3 Иван
+        h3 #{displayNameTitle}
       #{email}
       #{login}
       #{firstName}

@@ -1,40 +1,45 @@
 import {Block} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
-import {compile} from '../../../utils';
-import {HTMLElementEvent} from '../../../types';
+import {compile, connect, generateApiUrl} from '../../../utils';
+import {HTMLElementEvent, StoreType} from '../../../types';
 import {Mediator} from '../../../modules';
-import avatar from '../../../assets/images/default_avatar.png';
+import defaultAvatar from '../../../assets/images/default_avatar.png';
+import {userController} from '../../../services';
 
-export class PasswordEditing extends Block {
+class PasswordEditing extends Block {
   constructor() {
     super({}, 'div', 'profile');
   }
 
   private newPassword = '';
 
-  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const {new_password, verify_new_password} = fromEntries;
+    const {oldPassword, newPassword, verifyNewPassword} = fromEntries;
 
     if (
-      new_password &&
-      !Mediator.Instance.validatePassword(new_password as string) &&
-      new_password === verify_new_password
+      oldPassword &&
+      newPassword &&
+      !Mediator.Instance.validatePassword(newPassword as string) &&
+      newPassword === verifyNewPassword
     ) {
-      console.warn({new_password});
+      userController.setPassword({oldPassword, newPassword});
     }
   }
 
   componentDidMount(): void {
+    if (!this.props?.data) {
+      userController.getUser();
+    }
     this.setProps({
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit,
+          handler: this.handleSubmit.bind(this),
         },
       },
     });
@@ -45,7 +50,7 @@ export class PasswordEditing extends Block {
 
     const oldPasswordInfo = new InfoRow({
       label: 'Старый пароль',
-      id: 'old_password',
+      id: 'oldPassword',
       type: 'password',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -59,7 +64,7 @@ export class PasswordEditing extends Block {
 
     const newPasswordInfo = new InfoRow({
       label: 'Новый пароль',
-      id: 'new_password',
+      id: 'newPassword',
       type: 'password',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -74,7 +79,7 @@ export class PasswordEditing extends Block {
 
     const verifynewPasswordInfo = new InfoRow({
       label: 'Повторите новый пароль',
-      id: 'verify_new_password',
+      id: 'verifyNewPassword',
       type: 'password',
       events: {
         change: (event: HTMLElementEvent<HTMLInputElement>) => {
@@ -94,7 +99,21 @@ export class PasswordEditing extends Block {
       oldPassword: oldPasswordInfo,
       newPassword: newPasswordInfo,
       verifynewPassword: verifynewPasswordInfo,
-      src: avatar,
+      src: this.props?.data?.avatar
+        ? generateApiUrl('resources') + this.props?.data?.avatar
+        : defaultAvatar,
+      ...this.props,
     });
   }
 }
+
+function mapStateToProps(state: StoreType) {
+  return {
+    isLoading: state.user?.isLoading,
+    error: state.user?.error,
+    isError: !!state.user?.error,
+    data: state.user?.data,
+  };
+}
+
+export default connect(PasswordEditing, mapStateToProps);

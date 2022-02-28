@@ -1,27 +1,37 @@
-import {Block, Link} from '../../../components';
+import {Block} from '../../../components';
 import {Aside, InfoRow} from '../components';
 import template from './template';
-import {compile} from '../../../utils';
+import {compile, connect, generateApiUrl} from '../../../utils';
 import avatarUrl from '../../../assets/images/default_avatar.png';
-import {EventsType, HTMLElementEvent, Routes} from '../../../types';
-import {Mediator, Router} from '../../../modules';
+import {
+  EventsType,
+  HTMLElementEvent,
+  StoreType,
+  UserItemType,
+} from '../../../types';
+import {Mediator} from '../../../modules';
+import {userController} from '../../../services';
 
 export type ProfilePropsType = {
   events?: EventsType;
+  isLoading?: boolean;
+  error?: string;
+  data: UserItemType;
+  isError: boolean;
 };
 
 export class Settings extends Block<ProfilePropsType> {
   constructor() {
-    super({}, 'div', 'profile');
+    super({} as ProfilePropsType, 'div', 'profile');
   }
 
-  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
-    const fromEntries = Object.fromEntries(formData);
+    const formEntries = Object.fromEntries(formData);
     const {display_name, email, first_name, login, phone, second_name} =
-      fromEntries;
+      formEntries;
 
     if (
       email &&
@@ -36,19 +46,30 @@ export class Settings extends Block<ProfilePropsType> {
       !Mediator.Instance.validateUserName(second_name as string) &&
       display_name
     ) {
-      console.warn(fromEntries);
-
-      const router = new Router('.app');
-      router.go(Routes.Profile);
+      userController.setProfile(formEntries);
     }
   }
 
-  componentDidMount(): void {
+  private async changeAvatar(event: any) {
+    const file = event.target.files[0];
+    const fileData = new FormData();
+    fileData.append('avatar', file);
+    userController.setAvatar(fileData);
+  }
+
+  async componentDidMount() {
+    if (!this.props?.data) {
+      userController.getUser();
+    }
     this.setProps({
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit,
+          handler: this.handleSubmit.bind(this),
+        },
+        change: {
+          selector: 'input[type="file"]',
+          handler: (event) => this.changeAvatar.bind(this)(event),
         },
       },
     });
@@ -59,7 +80,7 @@ export class Settings extends Block<ProfilePropsType> {
 
     const emailInfo = new InfoRow({
       label: 'Почта',
-      value: 'pochta@yandex.ru',
+      value: this.props?.data?.email,
       id: 'email',
       type: 'email',
       readonly: false,
@@ -75,7 +96,7 @@ export class Settings extends Block<ProfilePropsType> {
 
     const loginInfo = new InfoRow({
       label: 'Логин',
-      value: 'ivanivanov',
+      value: this.props?.data?.login,
       id: 'login',
       readonly: false,
       events: {
@@ -90,7 +111,7 @@ export class Settings extends Block<ProfilePropsType> {
 
     const firstNameInfo = new InfoRow({
       label: 'Имя',
-      value: 'Иван',
+      value: this.props?.data?.first_name,
       id: 'first_name',
       readonly: false,
       events: {
@@ -105,7 +126,7 @@ export class Settings extends Block<ProfilePropsType> {
 
     const secondNameInfo = new InfoRow({
       label: 'Фамилия',
-      value: 'Иванов',
+      value: this.props?.data?.second_name,
       id: 'second_name',
       readonly: false,
       events: {
@@ -120,14 +141,14 @@ export class Settings extends Block<ProfilePropsType> {
 
     const displayNameInfo = new InfoRow({
       label: 'Имя в чате',
-      value: 'Иван',
+      value: this.props?.data?.display_name,
       id: 'display_name',
       readonly: false,
     });
 
     const phoneInfo = new InfoRow({
       label: 'Телефон',
-      value: '+79099673030',
+      value: this.props?.data?.phone,
       type: 'tel',
       id: 'phone',
       readonly: false,
@@ -142,7 +163,6 @@ export class Settings extends Block<ProfilePropsType> {
     });
 
     return compile(template, {
-      ...this.props,
       aside: aside,
       email: emailInfo,
       login: loginInfo,
@@ -150,7 +170,21 @@ export class Settings extends Block<ProfilePropsType> {
       secondName: secondNameInfo,
       displayName: displayNameInfo,
       phone: phoneInfo,
-      src: avatarUrl,
+      src: this.props?.data?.avatar
+        ? generateApiUrl('resources') + this.props?.data?.avatar
+        : avatarUrl,
+      displayNameTitle: this.props?.data?.display_name,
+      ...this.props,
     });
   }
 }
+
+function mapStateToProps(state: StoreType) {
+  return {
+    isLoading: state.user?.isLoading,
+    error: state.user?.error,
+    data: state.user?.data,
+    isError: !!state.user?.error,
+  };
+}
+export default connect(Settings, mapStateToProps);

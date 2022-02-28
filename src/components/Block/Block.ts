@@ -78,12 +78,13 @@ export class Block<TProps extends PropsType = any> {
   componentDidMount(oldProps?: TProps) {}
 
   dispatchComponentDidMount() {
-    this._componentDidMount();
+    //this._componentDidMount();
+    this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
   private _componentDidUpdate(oldProps: TProps, newProps: TProps) {
     if (oldProps !== newProps) {
-      const response = this.componentDidUpdate(oldProps, newProps);
+      //const response = this.componentDidUpdate(oldProps, newProps);
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }

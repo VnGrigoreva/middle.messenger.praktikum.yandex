@@ -1,8 +1,9 @@
 import template from './template';
 import {Input, Block, Link} from '../../../components';
-import {compile} from '../../../utils';
-import {HTTPTransport, Mediator} from '../../../modules';
+import {compile, connect} from '../../../utils';
+import {Mediator, Router} from '../../../modules';
 import {HTMLElementEvent, Routes} from '../../../types';
+import {authController} from '../../../services';
 
 export class Registration extends Block {
   password = '';
@@ -43,28 +44,10 @@ export class Registration extends Block {
     ) {
       const data = {email, first_name, login, password, phone, second_name};
 
-      const api = new HTTPTransport();
-      this.setProps({
-        isLoading: true,
-      });
-      try {
-        const response = await api.post('auth/signup', {body: data});
-        if (response?.status === 200) {
-          this.setProps({
-            isSuccess: true,
-            success: 'Поздравляем! Вы зарегистрированы.',
-          });
-        } else {
-          const error = JSON.parse(response?.responseText)?.reason;
-          throw new Error(error);
-        }
-      } catch (e) {
-        this.setProps({isError: true, error: e.toString()});
-      } finally {
-        this.setProps({
-          isLoading: false,
-        });
-      }
+      authController.signup(data);
+
+      const router = new Router('.app');
+      router.go(Routes.Chat);
     }
   }
 
@@ -192,8 +175,13 @@ export class Registration extends Block {
 
     const entryLink = new Link({
       label: 'Войти',
-      path: Routes.Login,
       mode: 'primary',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.Login);
+        },
+      },
     });
 
     return compile(template, {
@@ -209,3 +197,15 @@ export class Registration extends Block {
     });
   }
 }
+
+function mapStateProps(state: any) {
+  return {
+    isLoading: state.registration?.isLoading,
+    isError: !!state.registration?.error,
+    error: state.registration?.error,
+    isSuccess: !!state.registration?.success,
+    success: state.registration?.success,
+  };
+}
+
+export default connect(Registration, mapStateProps);
