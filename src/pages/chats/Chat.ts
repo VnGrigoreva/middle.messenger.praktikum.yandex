@@ -82,7 +82,7 @@ class Chat extends Block {
       contactList: contactListComp,
       userName: this.props?.data?.find(
         (e: ChatItemType) => e.id === this.props?.activeChat
-      )[0]?.title,
+      )?.[0]?.title,
       menu: menuBtn,
       messages: messageComponents,
       attach: attachBtn,
