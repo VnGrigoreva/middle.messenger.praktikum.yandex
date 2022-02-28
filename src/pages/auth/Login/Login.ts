@@ -1,7 +1,7 @@
 import {Block, Input, Link} from '../../../components';
 import template from './template';
 import {compile, connect} from '../../../utils';
-import {HTMLElementEvent, Routes} from '../../../types';
+import {HTMLElementEvent, Routes, StoreType} from '../../../types';
 import {Mediator, Router} from '../../../modules';
 import {authController} from '../../../services';
 
@@ -76,10 +76,10 @@ export class Login extends Block {
   }
 }
 
-function mapAuthStateToProps(state: any) {
+function mapAuthStateToProps(state: StoreType) {
   return {
-    isLoading: state.auth?.isLoading,
-    error: state.auth?.error,
+    isLoading: state?.auth?.isLoading,
+    error: state?.auth?.error,
   };
 }
 

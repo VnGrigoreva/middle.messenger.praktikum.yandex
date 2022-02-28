@@ -119,10 +119,10 @@ class Profile extends Block {
 
 function mapStateToProps(state: StoreType) {
   return {
-    data: state.user?.data,
-    isLoading: state.user?.isLoading,
-    error: state.user?.error,
-    isError: !!state.user?.error,
+    data: state?.user?.data,
+    isLoading: state?.user?.isLoading,
+    error: state?.user?.error,
+    isError: !!state?.user?.error,
   };
 }
 

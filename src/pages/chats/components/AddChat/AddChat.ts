@@ -40,9 +40,9 @@ class AddChat extends Block {
 
 function mapStateToProps(state: StoreType) {
   return {
-    isLoading: state.chat?.isLoading,
-    error: state.chat?.error,
-    isError: !!state.chat?.error,
+    isLoading: state?.chat?.isLoading,
+    error: state?.chat?.error,
+    isError: !!state?.chat?.error,
   };
 }
 
