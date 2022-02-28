@@ -4,9 +4,17 @@ import {describe, it} from 'mocha';
 import {JSDOM} from 'jsdom';
 import 'mocha';
 
+class FakeBlock {
+  getContent() {
+    const div = document.createElement('div');
+    div.id = 'test';
+    return div;
+  }
+}
+
 describe('Router', () => {
   beforeEach(() => {
-    const dom = new JSDOM('<div id="app"></div>', {
+    const dom = new JSDOM('<div class="app"></div>', {
       url: 'http://localhost:3000',
     });
     global.document = dom.window.document;
@@ -14,7 +22,7 @@ describe('Router', () => {
   });
   it('use', () => {
     const router = new Router('.app');
-    const res = router.use('/', class {});
+    const res = router.use('/', FakeBlock);
     expect(res).to.eq(router);
   });
   it('should be singleton', () => {
@@ -23,18 +31,11 @@ describe('Router', () => {
     expect(new Router('.app')).to.eq(router);
   });
   it('go', () => {
-    class FakeBlock {
-      getContent() {
-        const div = document.createElement('div');
-        div.id = 'test';
-        return div;
-      }
-    }
     const router = new Router('.app');
-    router.use('/', FakeBlock);
-    router.go('/');
+    router.use('/fakePage', FakeBlock);
+    router.go('/fakePage');
 
-    expect(document.getElementById('test')).not.to.be.undefined;
+    expect(document.getElementById('test')).not.to.be.null;
     expect(window.location.pathname).to.eq('/');
   });
 });
