@@ -7,7 +7,7 @@ export enum StoreEvents {
 }
 
 class Store extends EventBus {
-  private state: StoreType | null = null;
+  private state: StoreType = {} as StoreType;
 
   constructor() {
     super();
