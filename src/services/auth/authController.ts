@@ -32,6 +32,8 @@ class AuthController {
       });
       if (response?.status === 200) {
         store.set('registration.success', 'Поздравляем! Вы зарегистрированы.');
+        const router = new Router('.app');
+        router.go(Routes.Chat);
       } else {
         const error = response?.items?.reason;
         throw new Error(error);
