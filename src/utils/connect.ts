@@ -1,6 +1,6 @@
 import {Block} from '../components';
 import store, {StoreEvents} from '../modules/store';
-import {Indexed, StoreType} from '../types';
+import {StoreType} from '../types';
 
 export function connect<T>(
   Component: {new (props: T): Block<T>},

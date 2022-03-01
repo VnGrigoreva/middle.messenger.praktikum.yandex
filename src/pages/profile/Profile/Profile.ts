@@ -6,6 +6,7 @@ import defaultAvatar from '../../../assets/images/default_avatar.png';
 import {Routes, StoreType} from '../../../types';
 import {userController, authController} from '../../../services';
 import {Router} from '../../../modules';
+
 class Profile extends Block {
   constructor() {
     super({}, 'div', 'profile');

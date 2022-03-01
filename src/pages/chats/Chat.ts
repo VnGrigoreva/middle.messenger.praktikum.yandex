@@ -12,7 +12,6 @@ import {
   ChatItemType,
   HTMLElementEvent,
   MessageType,
-  sessionType,
   StoreType,
 } from '../../types';
 import {Mediator} from '../../modules';
