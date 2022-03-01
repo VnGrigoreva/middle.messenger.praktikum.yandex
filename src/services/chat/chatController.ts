@@ -84,11 +84,11 @@ class ChatController {
   }
 
   async connect(chatId: number) {
-    const s = store
+    const currentSession = store
       .getState()
       ?.chat?.sessions?.find((e) => e.chatId === chatId);
 
-    if (s) {
+    if (currentSession) {
       return;
     }
 
@@ -100,16 +100,16 @@ class ChatController {
 
     socket.addEventListener('open', () => {
       console.warn('Соединение установлено');
-      let s = store.getState()?.chat?.sessions;
-      if (!s) {
-        s = [];
+      let allSessions = store.getState()?.chat?.sessions;
+      if (!allSessions) {
+        allSessions = [];
       }
-      s.push({
+      allSessions.push({
         socket,
         chatId,
         messages: [],
       });
-      store.set('chat.sessions', s);
+      store.set('chat.sessions', allSessions);
     });
     socket.addEventListener('message', (event) => {
       try {
