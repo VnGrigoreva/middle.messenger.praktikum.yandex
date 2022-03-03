@@ -1,0 +1,23 @@
+.error {
+  &-container {
+    @include full;
+    @include centered;
+    flex-direction: column;
+  }
+
+  &-code {
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &-message {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    margin-bottom: 69px;
+  }
+}

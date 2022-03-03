@@ -1,78 +1,104 @@
-import { queryStringify } from '../utils';
+import {Methods, OptionsType} from '../types';
+import {queryStringify, generateApiUrl} from '../utils';
 
-export enum Methods {
-  Get = 'GET',
-  Put = 'PUT',
-  Post = 'POST',
-  Delete = 'DELETE',
-}
-
-export type OptionsType = {
-  timeout?: number,
-  method: Methods,
-  headers?: {[key: string]: string},
-  data?: {[key: string]: string} ,
-}
+export type ResponseType<T = any> = {
+  items: T | {reason: string} | string;
+  status: number;
+};
 
 export class HTTPTransport {
-  get = (url: string, options?: OptionsType) => {
-    return this.request(
+  private static _instance: HTTPTransport;
+
+  constructor() {
+    if (HTTPTransport._instance) {
+      return HTTPTransport._instance;
+    }
+
+    return (HTTPTransport._instance = this);
+  }
+
+  get = <T = any>(url: string, options?: OptionsType) => {
+    return this.request<T>(
       url,
-      { ...options, method: Methods.Get },
+      {...options, method: Methods.Get},
       options?.timeout
     );
   };
 
-  put = (url: string, options?: OptionsType) => {
-    return this.request(
+  put = <T = any>(url: string, options?: OptionsType) => {
+    return this.request<T>(
       url,
-      { ...options, method: Methods.Put },
+      {...options, method: Methods.Put},
       options?.timeout
     );
   };
 
-  post = (url: string, options?: OptionsType) => {
-    return this.request(
+  post = <T = any>(url: string, options?: OptionsType) => {
+    return this.request<T>(
       url,
-      { ...options, method: Methods.Post },
+      {...options, method: Methods.Post},
       options?.timeout
     );
   };
 
-  delete = (url: string, options?: OptionsType) => {
-    return this.request(
+  delete = <T = any>(url: string, options?: OptionsType) => {
+    return this.request<T>(
       url,
-      { ...options, method: Methods.Delete },
+      {...options, method: Methods.Delete},
       options?.timeout
     );
   };
 
-  request = (url: string, options?: OptionsType, timeout = 5000) => {
-    const { headers = {}, method, data } = options || {};
+  request = <T>(
+    url: string,
+    options?: OptionsType,
+    timeout = 5000,
+    apiVersion?: number
+  ) => {
+    const {headers = {}, method, parametrs, body, withFiles} = options || {};
 
-    return new Promise((resolve, reject) => {
+    if (!headers['Content-Type'] && !withFiles) {
+      headers['Content-Type'] = 'application/json';
+    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return new Promise<ResponseType<T>>((resolve, reject) => {
       const methodType = method || 'GET';
 
       const xhr = new XMLHttpRequest();
 
-      xhr.open(methodType, `${url}${queryStringify(data)}`);
+      const apiUrl = generateApiUrl(url, apiVersion);
 
-      Object.keys(headers).forEach((key) => {
-        xhr.setRequestHeader(key, headers[key]);
+      xhr.open(methodType, `${apiUrl}${queryStringify(parametrs)}`);
+      xhr.withCredentials = true;
+
+      Object.entries(headers).forEach(([key, value]) => {
+        xhr.setRequestHeader(key, value);
       });
 
       xhr.onload = function () {
-        resolve(xhr);
+        let data = xhr?.responseText;
+        try {
+          data = JSON.parse(data);
+          // eslint-disable-next-line no-empty
+        } catch {}
+        const response: ResponseType<T> = {
+          items: data,
+          status: xhr.status,
+        };
+        resolve(response);
       };
 
       xhr.onabort = reject;
       xhr.onerror = reject;
       xhr.timeout = timeout;
       xhr.ontimeout = reject;
-      if (data) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        xhr.send(options?.data);
+      if (body) {
+        if (withFiles) {
+          xhr.send(body as XMLHttpRequestBodyInit);
+        } else {
+          xhr.send(JSON.stringify(body));
+        }
       } else {
         xhr.send();
       }

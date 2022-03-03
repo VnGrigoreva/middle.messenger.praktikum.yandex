@@ -1,6 +1,6 @@
-import { Block } from '../../../../components';
+import {Block} from '../../../../components';
 import template from './template';
-import { compile } from '../../../../utils';
+import {compile} from '../../../../utils';
 
 type MessagePropsType = {
   mode: 'left' | 'right';
@@ -13,6 +13,6 @@ export class Message extends Block<MessagePropsType> {
   }
 
   render() {
-    return compile(template, { ...this.props });
+    return compile(template, {...this.props});
   }
 }

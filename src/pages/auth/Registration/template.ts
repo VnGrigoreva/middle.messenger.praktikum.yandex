@@ -1,7 +1,7 @@
 export default `
 .authorization-container
   h2 Регистрация
-  form(method=GET, action='/registration', class='authorization-form')
+  form
     .authorization-form__inner
       #{email}
       #{login}
@@ -11,7 +11,12 @@ export default `
       #{password}
       #{verifyPassword}
     .authorization-form__inner
-      input(type='submit', value='Зарегистрироваться', class='button', id='registration')
+      input(type='submit', value='Зарегистрироваться', class='button', id='registration' disabled=isLoading)
       #{entry}
-script(src='./authorization.ts')
+      if isLoading
+        .loading Пожалуйста подождите...
+      if isError
+        .error-center #{error}
+      if isSuccess
+        .success #{success}
 `;

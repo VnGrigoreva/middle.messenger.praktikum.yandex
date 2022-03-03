@@ -1,8 +1,9 @@
 import template from './template';
-import { Input, Block, Link } from '../../../components';
-import { compile } from '../../../utils';
-import { Mediator } from '../../../modules';
-import { HTMLElementEvent } from '../../../types';
+import {Input, Block, Link} from '../../../components';
+import {compile, connect} from '../../../utils';
+import {Mediator, Router} from '../../../modules';
+import {HTMLElementEvent, Routes} from '../../../types';
+import {authController} from '../../../services';
 
 export class Registration extends Block {
   password = '';
@@ -11,7 +12,7 @@ export class Registration extends Block {
     super({}, 'div', 'authorization');
   }
 
-  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -41,7 +42,9 @@ export class Registration extends Block {
       second_name &&
       !Mediator.Instance.validateUserName(second_name as string)
     ) {
-      console.log({ email, first_name, login, password, phone, second_name });
+      const data = {email, first_name, login, password, phone, second_name};
+
+      authController.signup(data);
     }
   }
 
@@ -50,7 +53,7 @@ export class Registration extends Block {
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit,
+          handler: this.handleSubmit.bind(this),
         },
       },
     });
@@ -58,6 +61,7 @@ export class Registration extends Block {
 
   render() {
     const inputEmail = new Input({
+      value: 'pochta@pochta.ru',
       label: 'Почта',
       id: 'email',
       events: {
@@ -71,6 +75,7 @@ export class Registration extends Block {
     });
 
     const inputLogin = new Input({
+      value: 'BlackHeart',
       label: 'Логин',
       id: 'login',
       autocomplete: 'username',
@@ -86,6 +91,7 @@ export class Registration extends Block {
     });
 
     const inputFirstName = new Input({
+      value: 'Serkan',
       label: 'Имя',
       id: 'first_name',
       events: {
@@ -99,6 +105,7 @@ export class Registration extends Block {
     });
 
     const inputSecondName = new Input({
+      value: 'Baraban',
       label: 'Фамилия',
       id: 'second_name',
       events: {
@@ -112,6 +119,7 @@ export class Registration extends Block {
     });
 
     const inputPhone = new Input({
+      value: '+71111111111',
       label: 'Телефон',
       id: 'phone',
       type: 'tel',
@@ -127,6 +135,7 @@ export class Registration extends Block {
     });
 
     const inputPassword = new Input({
+      value: 'zxcD_231',
       label: 'Пароль',
       id: 'password',
       type: 'password',
@@ -144,6 +153,7 @@ export class Registration extends Block {
     });
 
     const inputVerifyPassword = new Input({
+      value: 'zxcD_231',
       label: 'Пароль (еще раз)',
       id: 'verify_password',
       type: 'password',
@@ -162,8 +172,13 @@ export class Registration extends Block {
 
     const entryLink = new Link({
       label: 'Войти',
-      path: '/',
       mode: 'primary',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.Login);
+        },
+      },
     });
 
     return compile(template, {
@@ -175,6 +190,19 @@ export class Registration extends Block {
       password: inputPassword,
       verifyPassword: inputVerifyPassword,
       entry: entryLink,
+      ...this.props,
     });
   }
 }
+
+function mapStateProps(state: any) {
+  return {
+    isLoading: state?.registration?.isLoading,
+    isError: !!state?.registration?.error,
+    error: state?.registration?.error,
+    isSuccess: !!state?.registration?.success,
+    success: state?.registration?.success,
+  };
+}
+
+export default connect(Registration, mapStateProps);

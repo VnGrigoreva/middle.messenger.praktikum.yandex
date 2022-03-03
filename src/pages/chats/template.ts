@@ -9,8 +9,8 @@ export default `
     .chat-header__right
       #{menu}
   .chat-messager
-    #{messageL}
-    #{messageR}
+    each message in messages
+      #{message}
   .chat-footer
     #{attach}
     #{newMessage}

@@ -3,17 +3,17 @@ html {
   font-size: 12px;
 }
 
-*, 
+*,
 *::after,
 *::before {
   box-sizing: inherit;
 }
 
 body {
-	font-family: 'Inter';
+  font-family: 'Inter';
   font-style: normal;
-	font-size: 12px;
-	line-height: 15px;
+  font-size: 12px;
+  line-height: 15px;
 }
 
 input {
@@ -42,13 +42,13 @@ h3 {
   color: $white;
   font-weight: 500;
   font-size: 13px;
-  line-height: 13px;  
+  line-height: 13px;
   text-align: center;
   padding: 12px;
   margin-bottom: 14px;
   cursor: pointer;
   width: 100%;
-  width: 280px;
+  max-width: 280px;
 }
 
 .ai-c {
@@ -65,11 +65,27 @@ h3 {
 }
 
 .error {
+  @include message;
   color: $red;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 8px;
-  margin: 7px 0;
+  text-align: left;
+}
+
+.error-center {
+  @include message;
+  text-align: center;
+  color: $red;
+}
+
+.loading {
+  @include message;
+  text-align: center;
+  color: $darkBlue;
+}
+
+.success {
+  @include message;
+  text-align: center;
+  color: $green;
 }
 
 input[type='tel'],
@@ -77,10 +93,9 @@ input[type='email'] {
   &:invalid:not(:focus):not(:placeholder-shown) {
     color: $red;
 
-    &~div.is-hidden {
+    & ~ div.is-hidden {
       display: block;
     }
-    
   }
 }
 
@@ -92,6 +107,18 @@ input[type='email'] {
   padding: 10px 0;
 }
 
+.pr-10 {
+  padding-right: 10px;
+}
+
 .w100 {
   width: 100%;
+}
+
+input[type='submit']:disabled {
+  background: $grey50;
+}
+
+.ta-e {
+  text-align: end;
 }

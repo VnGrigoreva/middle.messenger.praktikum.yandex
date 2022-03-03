@@ -1,7 +1,7 @@
-import { CallbackType } from '../types';
+import {CallbackType} from '../types';
 
 export class EventBus {
-  private listeners: { [key: string]: CallbackType[] };
+  private listeners: {[key: string]: CallbackType[]};
 
   constructor() {
     this.listeners = {};
@@ -27,7 +27,8 @@ export class EventBus {
 
   emit(event: string, ...args: unknown[]) {
     if (!this.listeners[event]) {
-      throw new Error(`Нет события: ${event}`);
+      return;
+      // throw new Error(`Нет события: ${event}`);
     }
 
     this.listeners[event].forEach((listener) => {

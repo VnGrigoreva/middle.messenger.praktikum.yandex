@@ -1,27 +1,28 @@
-import { Block, Input } from '../../../components';
+import {Block, Input, Link} from '../../../components';
 import template from './template';
-import { compile } from '../../../utils';
-import { HTMLElementEvent } from '../../../types';
-import { Mediator } from '../../../modules';
+import {compile, connect} from '../../../utils';
+import {HTMLElementEvent, Routes, StoreType} from '../../../types';
+import {Mediator, Router} from '../../../modules';
+import {authController} from '../../../services';
 
 export class Login extends Block {
   constructor() {
     super({}, 'div', 'authorization');
   }
 
-  private handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
+  private async handleSubmit(event: HTMLElementEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const fromEntries = Object.fromEntries(formData);
-    const { login, password } = fromEntries;
+    const {login, password} = fromEntries;
 
     if (
       login &&
       !Mediator.Instance.validateLogin(login as string) &&
       password
     ) {
-      console.log(fromEntries);
+      authController.signin(fromEntries);
     }
   }
 
@@ -30,7 +31,7 @@ export class Login extends Block {
       events: {
         submit: {
           selector: 'form',
-          handler: this.handleSubmit,
+          handler: this.handleSubmit.bind(this),
         },
       },
     });
@@ -54,10 +55,32 @@ export class Login extends Block {
       id: 'password',
       type: 'password',
     });
+    const registrationLink = new Link({
+      label: 'Нет аккаунта',
+      mode: 'primary',
+      className: 'link',
+      events: {
+        click: () => {
+          const router = new Router('.app');
+          router.go(Routes.Registration);
+        },
+      },
+    });
 
     return compile(template, {
       login: inputLogin,
       password: inputPas,
+      registration: registrationLink,
+      ...this.props,
     });
   }
 }
+
+function mapAuthStateToProps(state: StoreType) {
+  return {
+    isLoading: state?.auth?.isLoading,
+    error: state?.auth?.error,
+  };
+}
+
+export default connect(Login, mapAuthStateToProps);
