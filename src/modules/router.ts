@@ -1,5 +1,5 @@
-import {Block} from '../components';
-import {Route} from './route';
+import {Block} from "../components";
+import {Route} from "./route";
 
 export type HistoryEvent = {
   currentTarget: Window;
@@ -25,14 +25,14 @@ export class Router {
     Router._instance = this;
   }
 
-  use(pathname: string, block: Block) {
+  use(pathname: string, block: any) {
     const route = new Route(pathname, block, {rootQuery: this._rootQuery});
     this.routes?.push(route);
 
     return this;
   }
 
-  useError(block: Block) {
+  useError(block: any) {
     this.errorBlock = block;
 
     return this;
@@ -64,7 +64,7 @@ export class Router {
   }
 
   go(pathname: string) {
-    this.history?.pushState({}, '', pathname);
+    this.history?.pushState({}, "", pathname);
     this._onRoute(pathname);
   }
 

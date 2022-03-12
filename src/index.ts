@@ -1,18 +1,20 @@
-import {Router} from './modules';
+import {Router} from "./modules";
 import {
   Chat,
-  Login,
+  // Login,
   PasswordEditing,
   Profile,
   Registration,
   Error400Page,
   Settings,
-} from './pages';
-import {Routes} from './types';
+} from "./pages";
+import {Routes} from "./types";
+import "./main.scss";
 
-const router = new Router('.app');
+const router = new Router(".app");
 router
-  .use(Routes.Login, Login)
+  // .use(Routes.Login, Login)
+  .use(Routes.Login, Chat)
   .use(Routes.Chat, Chat)
   .use(Routes.PasswordEditing, PasswordEditing)
   .use(Routes.Profile, Profile)
