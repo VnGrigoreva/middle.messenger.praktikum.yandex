@@ -6,19 +6,14 @@
   "private": "true",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "dev": "parcel src/index.pug --open --port 3000",
-    "start": "parcel build src/index.pug && node server/index",
-    "build": "parcel build src/index.pug",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\" }' TS_NODE_TRANSPILE_ONLY=true mocha --require ts-node/register src/**/*.test.ts",
     "build:dev": "env NODE_ENV=development webpack --config webpack.config.js",
     "build:prod": "env NODE_ENV=production webpack --config webpack.config.js",
-    "start:dev": "env NODE_ENV=development webpack serve"
+    "start": "env NODE_ENV=development webpack serve"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/register": "^7.17.0",
-    "@parcel/transformer-pug": "^2.2.1",
-    "@parcel/transformer-sass": "^2.2.1",
     "@types/assert": "^1.5.6",
     "@types/chai": "^4.3.0",
     "@types/jsdom": "^16.2.14",
@@ -36,7 +31,6 @@
     "jsdom": "^19.0.0",
     "mocha": "latest",
     "os-browserify": "^0.3.0",
-    "parcel": "2.2.1",
     "path-browserify": "^1.0.1",
     "postcss-loader": "^6.2.1",
     "process": "^0.11.10",
