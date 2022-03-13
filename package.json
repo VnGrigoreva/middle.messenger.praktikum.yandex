@@ -9,7 +9,9 @@
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\" }' TS_NODE_TRANSPILE_ONLY=true mocha --require ts-node/register src/**/*.test.ts",
     "build:dev": "env NODE_ENV=development webpack --config webpack.config.js",
     "build:prod": "env NODE_ENV=production webpack --config webpack.config.js",
-    "start": "env NODE_ENV=development webpack serve"
+    "start": "env NODE_ENV=development webpack serve",
+    "build:doc": "docker build -t messager .",
+    "start:doc": "docker run -p 3000:3000  messager"
   },
   "husky": {
     "hooks": {
