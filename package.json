@@ -7,11 +7,15 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\" }' TS_NODE_TRANSPILE_ONLY=true mocha --require ts-node/register src/**/*.test.ts",
-    "build:dev": "env NODE_ENV=development PORT=3000 webpack --config webpack.config.js",
-    "build:prod": "env NODE_ENV=production PORT=3000 webpack --config webpack.config.js",
-    "start": "env NODE_ENV=development  PORT=3000 webpack serve",
+    "build:dev": "env NODE_ENV=development webpack --config webpack.config.js",
+    "build:prod": "env NODE_ENV=production webpack --config webpack.config.js",
+    "start": "env NODE_ENV=development webpack serve",
     "build:doc": "docker build -t messager .",
-    "start:doc": "docker run -p 3000:3000  messager"
+    "start:doc": "docker run -p 3000:3000 -e PORT=3000 messager",
+    "deploy:step1": "docker buildx build --platform linux/amd64 -t app .",
+    "deploy:step2": "docker tag app registry.heroku.com/winmessager/web",
+    "deploy:step3": "docker push registry.heroku.com/winmessager/web",
+    "deploy:step4": "heroku container:release web -a winmessager"
   },
   "husky": {
     "hooks": {
