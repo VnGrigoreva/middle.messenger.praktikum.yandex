@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const NODE_ENV = process.env.NODE_ENV;
+const PORT = process.env.PORT;
 const HTMLWebpackPlugins = require("html-webpack-plugin");
 
 module.exports = {
@@ -66,7 +67,7 @@ module.exports = {
   ],
   devServer: {
     compress: true,
-    port: 3000,
+    port: PORT,
     open: true,
     hot: true,
   },
