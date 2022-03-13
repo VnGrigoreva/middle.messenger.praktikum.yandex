@@ -1,4 +1,4 @@
-import {Router} from './modules';
+import {Router} from "./modules";
 import {
   Chat,
   Login,
@@ -7,10 +7,11 @@ import {
   Registration,
   Error400Page,
   Settings,
-} from './pages';
-import {Routes} from './types';
+} from "./pages";
+import {Routes} from "./types";
+import "./main.scss";
 
-const router = new Router('.app');
+const router = new Router(".app");
 router
   .use(Routes.Login, Login)
   .use(Routes.Chat, Chat)

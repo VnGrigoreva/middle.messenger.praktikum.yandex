@@ -7,7 +7,7 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    //"noUnusedParameters": true,
     "moduleResolution": "node",
     "typeRoots": ["src/types/global.d.ts"],
     "esModuleInterop": true,
