@@ -11,6 +11,11 @@
     "build:prod": "env NODE_ENV=production webpack --config webpack.config.js",
     "start": "env NODE_ENV=development webpack serve"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn test"
+    }
+  },
   "devDependencies": {
     "@babel/core": "7.17.5",
     "@babel/register": "7.17.0",
@@ -28,6 +33,7 @@
     "eslint": "8.7.0",
     "file-loader": "6.2.0",
     "html-webpack-plugin": "5.5.0",
+    "husky": "7.0.4",
     "jsdom": "19.0.0",
     "mocha": "9.2.2",
     "os-browserify": "0.3.0",
