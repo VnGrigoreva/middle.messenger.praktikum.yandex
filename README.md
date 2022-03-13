@@ -1,4 +1,4 @@
-### [WiNMessager](https://condescending-lamport-4f12e6.netlify.app)
+### [WiNMessager](https://winmessager.herokuapp.com)
 
 ---
 
@@ -13,7 +13,7 @@
 - Страницы 500 и 404
 - Список чатов
 
-[Ссылка](https://condescending-lamport-4f12e6.netlify.app) для просмотра
+[Ссылка](https://winmessager.herokuapp.com) для просмотра
 
 ## Как будет выглядеть месседжер
 
@@ -23,13 +23,14 @@
 
 Для запуска проекта используются:
 
-- `yarn dev` — запуск приложения в режиме разработки, http://localhost:3000 для просмотра в браузере.
-- `yarn start` — сборка и запуск приложения с веб-сервером, http://localhost:3000 для просмотра в браузере.
-- `yarn build` — сборка стабильной версии.
+- `yarn build:dev` — сборка приложения в режиме разработки, http://localhost:3000 для просмотра в браузере.
+- `yarn start` — запуск приложения с веб-сервером, http://localhost:3000 для просмотра в браузере.
+- `yarn build:prod` — сборка стабильной версии.
 
 ## Pull requests
 
-- Добавлен роутинг
-- Добавлена работа с АПИ
+- Перевод проекта на webpack
+- Добавлен docker
+- Релиз на heroku
 
-https://github.com/VnGrigoreva/middle.messenger.praktikum.yandex/pull/3
+https://github.com/VnGrigoreva/middle.messenger.praktikum.yandex/pull/4
