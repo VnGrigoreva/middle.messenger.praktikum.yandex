@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const NODE_ENV = process.env.NODE_ENV;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const HTMLWebpackPlugins = require("html-webpack-plugin");
 
 module.exports = {
@@ -70,6 +70,7 @@ module.exports = {
     port: PORT,
     open: true,
     hot: true,
+    allowedHosts: "all",
   },
   devtool: "source-map",
 };
